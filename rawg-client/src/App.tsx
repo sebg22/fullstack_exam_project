@@ -3,7 +3,8 @@ import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import GameGrid from "./components/GameGrid";
 import CryptoTable from "./components/CryptoTable";
-import Login from "./login";
+import Login from "./Login";
+import MediumCryptoCard from "./components/MediumCryptoCard";
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
             <Route path="/" element={<GameGrid />} /> {/* Add a route to the GameGrid component */}
             <Route path="/login" element={<Login />} /> {/* Add a route to the Login component */}
           </Routes>
+        </GridItem>
+        <GridItem>
+          <MediumCryptoCard />
         </GridItem>
       </Grid>
       <CryptoTable />
