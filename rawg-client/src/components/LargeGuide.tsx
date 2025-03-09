@@ -11,7 +11,7 @@ interface props {
 const LargeGuide = ({ label, title, description }: props) => {
   return (
     <>
-      <Link display="block" _hover={{ textDecoration: "none" }} href="/">
+      <Link bg="blue" display="block" _hover={{ textDecoration: "none" }} href="/">
         <img src={logo} alt="Logo" />
         <span>{label}</span>
         <h3>{title}</h3>
