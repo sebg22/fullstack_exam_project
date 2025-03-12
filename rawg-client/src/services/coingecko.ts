@@ -12,14 +12,17 @@ const coingeckoApi = axios.create({
 
 // Define a TypeScript type for cryptocurrencies
 export interface Crypto {
-  price_change_percentage_24h: number;
   id: string;
   name: string;
   symbol: string;
+  image: string;
   current_price: number;
   market_cap: number;
-  image: string;
+  total_volume: number;
+  circulating_supply: number;
+  price_change_percentage_24h: number;
 }
+
 
 // Function to fetch the top 10 cryptocurrencies
 export const getTopCryptos = async (): Promise<Crypto[]> => {
