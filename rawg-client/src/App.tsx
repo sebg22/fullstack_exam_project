@@ -14,6 +14,15 @@ function App() {
   const { cryptos, loading } = useTopCryptos();
   const oneCrypto = cryptos[0]; // For the top, single card
   const fourCryptos = cryptos.slice(1, 5); // For the four cards at the bottom
+
+  //Below is shown how to use the component and props
+  //  {/* One card at the top, conditional check before passing oneCrypto to the component */}
+  //  {oneCrypto ? <MediumCryptoCard crypto={oneCrypto} /> : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
+  //  </GridItem>
+  //  <GridItem>
+  //    {/* Four cards at the bottom, only render when at least 4 cryptos are available */}
+  //    {fourCryptos.length > 3 ? fourCryptos.map((crypto) => <MediumCryptoCard key={crypto.id} crypto={crypto} />) : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
+
   // ####################################################################
 
   return (
@@ -22,47 +31,15 @@ function App() {
         <GridItem pl="2" area={"header"}>
           <NavBar />
         </GridItem>
-
         <Show above="lg">
           <GridItem w="150px" pl="2" area={"aside"}>
             aside
           </GridItem>
         </Show>
-
-        <GridItem pl="8" pr="8" area={"main"}>
-          <Routes>
-            <Route path="/" element={<GameGrid />} /> {/* Add a route to the GameGrid component */}
-            <Route path="/login" element={<Login />} /> {/* Add a route to the Login component */}
-          </Routes>
-        </GridItem>
-
-        <GridItem>
-          <GridItem>
-            {/* One card at the top, conditional check before passing oneCrypto to the component */}
-            {oneCrypto ? <MediumCryptoCard crypto={oneCrypto} /> : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
-          </GridItem>
-          <GridItem>
-            {/* Four cards at the bottom, only render when at least 4 cryptos are available */}
-            {fourCryptos.length > 3 ? fourCryptos.map((crypto) => <MediumCryptoCard key={crypto.id} crypto={crypto} />) : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
-          </GridItem>
+        <GridItem area={"main"}>
+          <CryptoTable />
         </GridItem>
       </Grid>
-      <CryptoTable />
-
-      <Grid templateAreas={{ base: `"header" "main"`, lg: `"header header" "aside main"` }}>
-        <GridItem pl="2" area={"header"}>
-          <NavBar />
-        </GridItem>
-        <Show above="lg">
-          <GridItem w="150px" pl="2" bg="gray.900" area={"aside"}>
-            aside
-          </GridItem>
-        </Show>
-        <GridItem pl="8" pr="8" area={"main"}>
-          <GameGrid></GameGrid>
-        </GridItem>
-      </Grid>
-      <CryptoTable />
     </Router>
   );
 }
