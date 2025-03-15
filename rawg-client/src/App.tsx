@@ -1,12 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
-import GameGrid from "./components/GameGrid";
 import CryptoTable from "./components/CryptoTable";
-import Login from "./Login";
-import MediumCryptoCard from "./components/MediumCryptoCard";
 import useTopCryptos from "./hooks/useTopCryptos";
-import MediumCryptoCardSkeleton from "./components/MediumCryptoCardSkeleton";
 
 function App() {
   // ###################For MediumCryptoCard#############################
