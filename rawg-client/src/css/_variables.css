@@ -1,74 +1,55 @@
 :root {
-    /* Fonts */
-    
-    --fontBody: 1rem;
-    --fontSmallerMediumHeader: 1.25rem;
-    --fontMediumHeader: 1.5rem;
-    --fontLargeHeader: 2.5rem;
-    --fontXlargeHeader: 5rem;
-  
-    
-    /* Colors UPDATE TO NEW COLORS*/
-    --primaryColor: #2a2929;
-    --secondaryColor: #041e8f;
-    --tertiaryColor: #ccd5ff;
-    --backgroundColor: #f6f5ee;
-    --buttonBlue: #2449e5;
-    --focusOutline: #f59a08;
-    --examRed: #FF0000;
-  
-    /* Margins */
-    --marginSmall: 0.5rem;
-    --marginMedium: 1rem;
-    --marginLarge: 1.5rem;
-    --marginLarger: 4rem;
-    --marginXlarge: 7rem;
-  
-    /* Paddings */
-    --paddingSmall: 0.5rem;
-    --paddingSmallerMedium: 0.75rem;
-    --paddingMedium: 1rem;
-    --paddingBiggerMedium: 1.25rem;
-    --paddingLarge: 1.5rem;
-    --paddingXlarge: 3rem;
-  
-    /* Aligns */
-    --alignLeft: left;
-    --alignCenter: center;
-    --alignRight: right;
-  
-    /* Border radius */
-    --borderRadius: 0.5rem;
-  
-    /* Standard border */
-    --border: 1px solid #2a2929;
-  
-    /* Border bottom */
-    --border-bottom: 2px solid #000;
-  
-    /* Font weights */
-    --fontWeightRegular: 400;
-    --fontWeightSemiBold: 600;
-    --fontWeightBold: 700;
-  
-    /* Hover */
-    --transition: transform 0.3s ease, box-shadow 0.3s ease;
-    --transform: translateY(-0.5rem);
-  
-    /* Widths */
-    --widthLarge: 7rem;
-    --cardWidth: 15.625rem;
-    --burgerMenuWidth: 3.125rem;
-    --width: 21.875rem;
-    --width2: 28.125rem;
-    --width3: 43.75rem;
-    --width4: 40.625rem;
-    --width5: 50rem;
-    --width6: 62.5rem;
-  
-    /* Gap */
-    --smallGap: 0.5rem;
-    --mediumGap: 1rem;
-    --largeGap: 2rem;
-    --negativeGap: -3rem;
-  }
+  /* Fonts */
+  --fontBody: 1rem;
+  --fontSmallerMediumHeader: 1.25rem;
+  --fontMediumHeader: 1.5rem;
+  --fontLargeHeader: 2.5rem;
+  --fontXlargeHeader: 5rem;
+
+  /* Colors UPDATE TO NEW COLORS*/
+  --primaryColor: #2a2929;
+  --secondaryColor: #041e8f;
+  --tertiaryColor: #ccd5ff;
+  --backgroundColor: #f6f5ee;
+  --buttonBlue: #2449e5;
+  --focusOutline: #f59a08;
+  --examRed: #ff0000;
+
+  /* Spaces/margin/padding */
+  --spaceSmall: 0.5rem;
+  --spaceMedium: 1rem;
+  --spaceLarge: 1.5rem;
+  --spaceLarger: 4rem;
+  --spaceXlarge: 7rem;
+
+  /* Aligns */
+  --alignLeft: left;
+  --alignCenter: center;
+  --alignRight: right;
+
+  /* Border radius */
+  --borderRadius: 0.5rem;
+
+  /* Standard border */
+  /* --border: 1px solid #2a2929; */
+
+  /* Border bottom */
+  /* --border-bottom: 2px solid #000; */
+
+  /* Font weights */
+  --fontWeightRegular: 400;
+  --fontWeightSemiBold: 600;
+  --fontWeightBold: 700;
+
+  /* Hover */
+  /* --transition: transform 0.3s ease, box-shadow 0.3s ease;
+  --transform: translateY(-0.5rem); */
+
+  /* Widths */
+  --width: 20rem;
+
+  /* Gap */
+  --smallGap: 0.5rem;
+  --mediumGap: 1rem;
+  --largeGap: 2rem;
+}
