@@ -17,7 +17,7 @@ function App() {
   // ####################################################################
 
   return (
-    <Router>
+   <>
       <Grid templateAreas={{ base: `"header" "main"`, lg: `"header header" "aside main"` }}>
         <GridItem pl="2" area={"header"}>
           <NavBar />
@@ -30,10 +30,12 @@ function App() {
         </Show>
 
         <GridItem pl="8" pr="8" area={"main"}>
+           <Router>
           <Routes>
             <Route path="/" element={<GameGrid />} /> {/* Add a route to the GameGrid component */}
             <Route path="/login" element={<Login />} /> {/* Add a route to the Login component */}
           </Routes>
+              </Router>
         </GridItem>
         <GridItem>
           <GridItem>
@@ -47,7 +49,24 @@ function App() {
         </GridItem>
       </Grid>
       <CryptoTable />
-    </Router>
+   
+
+      <Grid templateAreas={{ base: `"header" "main"`, lg: `"header header" "aside main"` }}>
+        <GridItem pl="2" area={"header"}>
+          <NavBar />
+        </GridItem>
+        <Show above="lg">
+          <GridItem w="150px" pl="2" bg="gray.900" area={"aside"}>
+            aside
+          </GridItem>
+        </Show>
+        <GridItem pl="8" pr="8" area={"main"}>
+          <GameGrid></GameGrid>
+        </GridItem>
+      </Grid>
+      <CryptoTable />
+ 
+    </>
   );
 }
 
