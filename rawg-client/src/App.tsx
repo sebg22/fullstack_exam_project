@@ -17,7 +17,7 @@ function App() {
   // ####################################################################
 
   return (
-   <>
+    <Router>
       <Grid templateAreas={{ base: `"header" "main"`, lg: `"header header" "aside main"` }}>
         <GridItem pl="2" area={"header"}>
           <NavBar />
@@ -30,13 +30,12 @@ function App() {
         </Show>
 
         <GridItem pl="8" pr="8" area={"main"}>
-           <Router>
           <Routes>
             <Route path="/" element={<GameGrid />} /> {/* Add a route to the GameGrid component */}
             <Route path="/login" element={<Login />} /> {/* Add a route to the Login component */}
           </Routes>
-              </Router>
         </GridItem>
+
         <GridItem>
           <GridItem>
             {/* One card at the top, conditional check before passing oneCrypto to the component */}
@@ -49,7 +48,6 @@ function App() {
         </GridItem>
       </Grid>
       <CryptoTable />
-   
 
       <Grid templateAreas={{ base: `"header" "main"`, lg: `"header header" "aside main"` }}>
         <GridItem pl="2" area={"header"}>
@@ -65,8 +63,7 @@ function App() {
         </GridItem>
       </Grid>
       <CryptoTable />
- 
-    </>
+    </Router>
   );
 }
 
