@@ -6,6 +6,7 @@ import CryptoTable from "./components/CryptoTable";
 import Login from "./Login";
 import MediumCryptoCard from "./components/MediumCryptoCard";
 import useTopCryptos from "./hooks/useTopCryptos";
+import MediumCryptoCardSkeleton from "./components/MediumCryptoCardSkeleton";
 
 function App() {
   // ###################For MediumCryptoCard#############################
@@ -37,11 +38,11 @@ function App() {
         <GridItem>
           <GridItem>
             {/* One card at the top, conditional check before passing oneCrypto to the component */}
-            {oneCrypto ? <MediumCryptoCard crypto={oneCrypto} /> : <p>Loading...</p>}
+            {oneCrypto ? <MediumCryptoCard crypto={oneCrypto} /> : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
           </GridItem>
           <GridItem>
             {/* Four cards at the bottom, only render when at least 4 cryptos are available */}
-            {fourCryptos.length > 3 ? fourCryptos.map((crypto) => <MediumCryptoCard key={crypto.id} crypto={crypto} />) : <p>Loading...</p>}
+            {fourCryptos.length > 3 ? fourCryptos.map((crypto) => <MediumCryptoCard key={crypto.id} crypto={crypto} />) : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
           </GridItem>
         </GridItem>
       </Grid>
