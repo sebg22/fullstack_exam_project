@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "CG-TaEdhsvdcW4G5HdmeJHgLM1B"
+const API_KEY = "CG-TaEdhsvdcW4G5HdmeJHgLM1B";
 const BASE_URL = "https://api.coingecko.com/api/v3";
 
 const coingeckoApi = axios.create({
@@ -11,7 +11,7 @@ const coingeckoApi = axios.create({
 });
 
 // Define a TypeScript type for cryptocurrencies
-export interface Crypto {
+export interface CryptoData {
   price_change_percentage_24h: number;
   id: string;
   name: string;
@@ -22,7 +22,7 @@ export interface Crypto {
 }
 
 // Function to fetch the top 10 cryptocurrencies
-export const getTopCryptos = async (): Promise<Crypto[]> => {
+export const getTopCryptos = async (): Promise<CryptoData[]> => {
   try {
     const response = await coingeckoApi.get("/coins/markets", {
       params: {
