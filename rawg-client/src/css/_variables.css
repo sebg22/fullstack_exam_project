@@ -1,0 +1,55 @@
+:root {
+  /* Fonts */
+  --fontBody: 1rem;
+  --fontSmallerMediumHeader: 1.25rem;
+  --fontMediumHeader: 1.5rem;
+  --fontLargeHeader: 2.5rem;
+  --fontXlargeHeader: 5rem;
+
+  /* Colors UPDATE TO NEW COLORS*/
+  --primaryColor: #2a2929;
+  --secondaryColor: #041e8f;
+  --tertiaryColor: #ccd5ff;
+  --backgroundColor: #f6f5ee;
+  --buttonBlue: #2449e5;
+  --focusOutline: #f59a08;
+  --examRed: #ff0000;
+
+  /* Spaces/margin/padding */
+  --spaceSmall: 0.5rem;
+  --spaceMedium: 1rem;
+  --spaceLarge: 1.5rem;
+  --spaceLarger: 4rem;
+  --spaceXlarge: 7rem;
+
+  /* Aligns */
+  --alignLeft: left;
+  --alignCenter: center;
+  --alignRight: right;
+
+  /* Border radius */
+  --borderRadius: 0.5rem;
+
+  /* Standard border */
+  /* --border: 1px solid #2a2929; */
+
+  /* Border bottom */
+  /* --border-bottom: 2px solid #000; */
+
+  /* Font weights */
+  --fontWeightRegular: 400;
+  --fontWeightSemiBold: 600;
+  --fontWeightBold: 700;
+
+  /* Hover */
+  /* --transition: transform 0.3s ease, box-shadow 0.3s ease;
+  --transform: translateY(-0.5rem); */
+
+  /* Widths */
+  --width: 20rem;
+
+  /* Gap */
+  --smallGap: 0.5rem;
+  --mediumGap: 1rem;
+  --largeGap: 2rem;
+}
