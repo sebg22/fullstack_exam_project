@@ -1,32 +1,20 @@
-import { useEffect, useState } from "react";
 import {
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
-  Td,
   TableContainer,
-  Image,
   Text,
-  Spinner,
   Center,
+  Spinner,
 } from "@chakra-ui/react";
-import { getTopCryptos, Crypto } from "../services/coingecko";
+import useCryptos from "../hooks/useCrypto";
+import CryptoRow from "./CryptoRow";
+import CryptoSkeleton from "./CryptoRowSkeleton";
 
 const CryptoTable = () => {
-  const [cryptos, setCryptos] = useState<Crypto[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCryptos = async () => {
-      const data = await getTopCryptos();
-      setCryptos(data);
-      setLoading(false);
-    };
-
-    fetchCryptos();
-  }, []);
+  const { cryptos, loading, error } = useCryptos(); // Get data using our custom hook
 
   if (loading) {
     return (
@@ -36,35 +24,33 @@ const CryptoTable = () => {
     );
   }
 
+  if (error) {
+    return <Text color="tomato">{error}</Text>; // Show error message if fetching fails
+  }
+
   return (
     <TableContainer>
-      <Table variant="striped" colorScheme="teal">
+      <Table bg="white" borderRadius="md" boxShadow="md" color="black">
         <Thead>
           <Tr>
-            <Th>#</Th>
             <Th>Coin</Th>
             <Th>Price</Th>
+            <Th>Chart</Th>
+            <Th>Change</Th>
             <Th>Market Cap</Th>
-            <Th>24h Change</Th>
+            <Th>Volume (24h)</Th>
+            <Th>Supply</Th>
+            <Th>Trade</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {cryptos.map((coin, index) => (
-            <Tr key={coin.id}>
-              <Td>{index + 1}</Td>
-              <Td>
-                <Image src={coin.image} alt={coin.name} boxSize="24px" mr={2} />
-                <Text as="span" fontWeight="bold">
-                  {coin.name} ({coin.symbol.toUpperCase()})
-                </Text>
-              </Td>
-              <Td>${coin.current_price.toLocaleString()}</Td>
-              <Td>${coin.market_cap.toLocaleString()}</Td>
-              <Td color={coin.price_change_percentage_24h >= 0 ? "green.500" : "red.500"}>
-                {coin.price_change_percentage_24h.toFixed(2)}%
-              </Td>
-            </Tr>
-          ))}
+          {loading ? ( 
+            // If data is still loading, display 10 skeleton rows as placeholders
+            Array.from({ length: 10 }).map((_, index) => <CryptoSkeleton key={index} />)
+          ) : (
+            // Once the data is fetched, map over the cryptos and render each row
+            cryptos.map((coin) => <CryptoRow key={coin.id} coin={coin} />)
+          )}
         </Tbody>
       </Table>
     </TableContainer>
