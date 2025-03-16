@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { getTopCryptos, Crypto } from "../services/coingecko";
+import { getTopCryptos, CryptoData } from "../services/coingecko";
 
 const useCryptos = () => {
   // State to store the list of cryptocurrencies
-  const [cryptos, setCryptos] = useState<Crypto[]>([]);
+  const [cryptos, setCryptos] = useState<CryptoData[]>([]);
   // State to manage loading status
   const [loading, setLoading] = useState(true);
   // State to store errors (if any)
