@@ -12,10 +12,10 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import { getTopCryptos, Crypto } from "../services/coingecko";
+import { getTopCryptos, CryptoData } from "../services/coingecko";
 
 const CryptoTable = () => {
-  const [cryptos, setCryptos] = useState<Crypto[]>([]);
+  const [cryptos, setCryptos] = useState<CryptoData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
