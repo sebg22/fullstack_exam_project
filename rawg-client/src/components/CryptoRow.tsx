@@ -1,8 +1,8 @@
 import { Tr, Td, Image, Text, HStack, Button } from "@chakra-ui/react";
-import { Crypto } from "../services/coingecko";
+import { CryptoData } from "../services/coingecko";
 
 interface Props {
-  coin: Crypto;
+  coin: CryptoData;
 }
 
 const CryptoRow = ({ coin }: Props) => {
