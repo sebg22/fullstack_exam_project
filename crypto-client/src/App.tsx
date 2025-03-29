@@ -3,13 +3,23 @@ import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import CryptoTable from "./components/CryptoTable";
 import useTopCryptos from "./hooks/useTopCryptos";
+import { useEffect, useState } from "react";
+
+type Crypto = {
+  id: string;
+  name: string;
+  symbol: string;
+  current_price?: number;
+  market_cap?: number;
+  image?: string;
+};
 
 function App() {
   // ###################For MediumCryptoCard#############################
   // Example: determine which crypto objects to send as a prop to the component:
-  const { cryptos, loading } = useTopCryptos();
-  const oneCrypto = cryptos[0]; // For the top, single card
-  const fourCryptos = cryptos.slice(1, 5); // For the four cards at the bottom
+  // const { cryptos, loading } = useTopCryptos();
+  // const oneCrypto = cryptos[0]; // For the top, single card
+  // const fourCryptos = cryptos.slice(1, 5); // For the four cards at the bottom
 
   //Below is shown how to use the component and props
   //  {/* One card at the top, conditional check before passing oneCrypto to the component */}
@@ -18,6 +28,27 @@ function App() {
   //  <GridItem>
   //    {/* Four cards at the bottom, only render when at least 4 cryptos are available */}
   //    {fourCryptos.length > 3 ? fourCryptos.map((crypto) => <MediumCryptoCard key={crypto.id} crypto={crypto} />) : <MediumCryptoCardSkeleton></MediumCryptoCardSkeleton>}
+
+  // ####################################################################
+
+  // #########################connect database to frontend##################
+  const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const [cryptos, setCryptos] = useState<Crypto[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/cryptos")
+      .then((res) => res.json())
+      .then((data) => setCryptos(data))
+      .catch((err) => console.error(err));
+  }, []);
 
   // ####################################################################
 
@@ -33,6 +64,23 @@ function App() {
           </GridItem>
         </Show>
         <GridItem area={"main"}>
+          <div>
+            <h1>Users</h1>
+            <ul>
+              {users.map((user) => (
+                <li key={user.id}>{user.name}</li>
+              ))}
+            </ul>
+          </div>
+          <br />
+          <div>
+            <h1>Cryptos</h1>
+            <ul>
+              {cryptos.map((crypto) => (
+                <li key={crypto.id}>{crypto.name}</li>
+              ))}
+            </ul>
+          </div>
           <CryptoTable />
         </GridItem>
       </Grid>
