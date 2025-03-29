@@ -5,14 +5,16 @@ import { Crypto } from "./entities/Crypto";
 
 dotenv.config();
 
+console.log("Using DATABASE_URL:", process.env.DATABASE_URL); // Debugging line
+
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL, // Use Render's PostgreSQL URL
-  entities: ["src/entities/*.ts", User, Crypto], // Path to entity files
-  synchronize: true, // ⚠️ Auto-syncs schema; disable in production
-  ssl: { rejectUnauthorized: false },
+  url: process.env.DATABASE_URL,
+  entities: [User, Crypto],
+  synchronize: true,
+  ssl: { rejectUnauthorized: false }, // Ensure SSL is enabled
 });
 
 AppDataSource.initialize()
-  .then(() => console.log("Connected to PostgreSQL with TypeORM"))
-  .catch((error) => console.log("Error connecting to DB:", error));
+  .then(() => console.log("✅ Connected to PostgreSQL with TypeORM"))
+  .catch((error) => console.log("❌ Error connecting to DB:", error));

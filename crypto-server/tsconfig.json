@@ -9,5 +9,7 @@
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
     "esModuleInterop": true
-  }
+  },
+  "include": ["src/**/*.ts"], // Include all TypeScript files in the src folder
+  "exclude": ["node_modules"] // Exclude the node_modules folder
 }

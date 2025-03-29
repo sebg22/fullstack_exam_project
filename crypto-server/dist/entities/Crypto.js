@@ -84,7 +84,7 @@ __decorate([
 ], Crypto.prototype, "total_supply", void 0);
 __decorate([
     (0, typeorm_1.Column)("bigint", { nullable: true }),
-    __metadata("design:type", Number)
+    __metadata("design:type", Object)
 ], Crypto.prototype, "max_supply", void 0);
 __decorate([
     (0, typeorm_1.Column)("decimal"),
@@ -116,15 +116,15 @@ __decorate([
 ], Crypto.prototype, "last_updated", void 0);
 __decorate([
     (0, typeorm_1.Column)("decimal", { nullable: true }),
-    __metadata("design:type", Number)
+    __metadata("design:type", Object)
 ], Crypto.prototype, "roi_times", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Crypto.prototype, "roi_currency", void 0);
 __decorate([
     (0, typeorm_1.Column)("decimal", { nullable: true }),
-    __metadata("design:type", Number)
+    __metadata("design:type", Object)
 ], Crypto.prototype, "roi_percentage", void 0);
 exports.Crypto = Crypto = __decorate([
     (0, typeorm_1.Entity)("cryptos")
