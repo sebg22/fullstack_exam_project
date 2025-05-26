@@ -11,6 +11,9 @@ const NavBar = () => {
       <Image src={logo} boxSize="60px" />
       <ColorModeSwitch />
       <Spacer /> {/* Pushes the login button to the right */}
+      <Button colorScheme="blue" onClick={() => navigate("/editProfile")}> {/* Navigate to /login */}
+        Edit Profile
+      </Button>
       <Button colorScheme="blue" onClick={() => navigate("/login")}> {/* Navigate to /login */}
         Login
       </Button>
