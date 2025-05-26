@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import CryptoTable from "./components/CryptoTable";
 import useTopCryptos from "./hooks/useTopCryptos";
 import { useEffect, useState } from "react";
+import SideMenu from "./components/SideMenu";
 
 type Crypto = {
   id: string;
@@ -60,7 +61,9 @@ function App() {
         </GridItem>
         <Show above="lg">
           <GridItem w="150px" pl="2" area={"aside"}>
-            aside
+          <SideMenu setFilter={function (filter: string): void {
+              throw new Error("Function not implemented.");
+            } } />
           </GridItem>
         </Show>
         <GridItem area={"main"}>
