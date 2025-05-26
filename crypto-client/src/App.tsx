@@ -5,6 +5,7 @@ import CryptoTable from "./components/CryptoTable";
 import useTopCryptos from "./hooks/useTopCryptos";
 import { useEffect, useState } from "react";
 import SideMenu from "./components/SideMenu";
+import Coin from "./pages/Coin"; // ✅ NEW IMPORT
 
 type Crypto = {
   id: string;
@@ -61,30 +62,44 @@ function App() {
         </GridItem>
         <Show above="lg">
           <GridItem w="150px" pl="2" area={"aside"}>
-          <SideMenu setFilter={function (filter: string): void {
-              throw new Error("Function not implemented.");
-            } } />
+            <SideMenu
+              setFilter={function (filter: string): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
           </GridItem>
         </Show>
         <GridItem area={"main"}>
-          <div>
-            <h1>Users</h1>
-            <ul>
-              {users.map((user) => (
-                <li key={user.id}>{user.name}</li>
-              ))}
-            </ul>
-          </div>
-          <br />
-          <div>
-            <h1>Cryptos</h1>
-            <ul>
-              {cryptos.map((crypto) => (
-                <li key={crypto.id}>{crypto.name}</li>
-              ))}
-            </ul>
-          </div>
-          <CryptoTable />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <div>
+                    <h1>Users</h1>
+                    <ul>
+                      {users.map((user) => (
+                        <li key={user.id}>{user.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <br />
+                  <div>
+                    <h1>Cryptos</h1>
+                    <ul>
+                      {cryptos.map((crypto) => (
+                        <li key={crypto.id}>
+                          <a href={`/coin/${crypto.id}`}>{crypto.name}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <CryptoTable />
+                </>
+              }
+            />
+            <Route path="/coin/:id" element={<Coin />} />
+          </Routes>
         </GridItem>
       </Grid>
     </Router>
