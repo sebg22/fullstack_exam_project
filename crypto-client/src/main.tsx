@@ -1,15 +1,21 @@
+// src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { RouterProvider } from "react-router-dom";
+// import "./main.css";
+
 import theme from "./theme";
+import router from "./routes";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      {/*Here's the script */}
+      {/* Hydrate color-mode on first paint */}
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <App />
+
+      {/* Drives all your pages per src/routes.tsx */}
+      <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>
 );
