@@ -2,6 +2,7 @@ import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import CryptoTable from "../components/CryptoTable";
 import { useEffect, useState } from "react";
+import SideMenu from "../components/SideMenu";
 
 export default function HomePage() {
   const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
@@ -29,7 +30,9 @@ export default function HomePage() {
 
       <Show above="lg">
         <GridItem area="aside" w="150px" pl="2">
-          aside
+          <SideMenu setFilter={function (filter: string): void {
+            throw new Error("Function not implemented.");
+          }} />
         </GridItem>
       </Show>
 
