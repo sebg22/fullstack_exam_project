@@ -7,14 +7,9 @@
   --fontXlargeHeader: 5rem;
 
   /* Colors UPDATE TO NEW COLORS*/
-  --primaryColor: #2a2929;
-  --secondaryColor: #041e8f;
-  --tertiaryColor: #ccd5ff;
   --backgroundColor: #f6f5ee;
   --buttonBlue: #2449e5;
-  --focusOutline: #f59a08;
-  --examRed: #ff0000;
-
+  
   /* Spaces/margin/padding */
   --spaceSmall: 0.5rem;
   --spaceMedium: 1rem;
@@ -29,12 +24,6 @@
 
   /* Border radius */
   --borderRadius: 0.5rem;
-
-  /* Standard border */
-  /* --border: 1px solid #2a2929; */
-
-  /* Border bottom */
-  /* --border-bottom: 2px solid #000; */
 
   /* Font weights */
   --fontWeightRegular: 400;
@@ -52,4 +41,22 @@
   --smallGap: 0.5rem;
   --mediumGap: 1rem;
   --largeGap: 2rem;
+}
+
+/* LIGHT MODE */
+html[data-theme="light"] {
+  --card-bg: var(--chakra-colors-white);
+  --input-bg: var(--chakra-colors-gray-100);
+  --social-bg: var(--chakra-colors-gray-50);
+  --divider-color: var(--chakra-colors-gray-300);
+  --text-color: var(--chakra-colors-gray-600);
+}
+
+/* DARK MODE */
+html[data-theme="dark"] {
+  --card-bg: var(--chakra-colors-gray-800);
+  --input-bg: var(--chakra-colors-gray-700);
+  --social-bg: var(--chakra-colors-gray-700);
+  --divider-color: var(--chakra-colors-gray-600);
+  --text-color: var(--chakra-colors-gray-400);
 }
