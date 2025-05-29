@@ -18,7 +18,7 @@ export default function Login() {
       mx="auto"
       mt="100px"
       p="6"
-      bg="var(--card-bg)"
+      bg="cardBg"
       boxShadow="xl"
       borderRadius="2xl"
     >
@@ -32,7 +32,7 @@ export default function Login() {
           placeholder="Enter your first name"
           variant="filled"
           size="lg"
-          bg="var(--input-bg)"
+          bg="inputBg"
           borderRadius="full"
         />
         {/* Last name input */}
@@ -40,7 +40,7 @@ export default function Login() {
           placeholder="Enter your last name"
           variant="filled"
           size="lg"
-          bg="var(--input-bg)"
+          bg="inputBg"
           borderRadius="full"
         />
         {/* Email input */}
@@ -48,7 +48,7 @@ export default function Login() {
           placeholder="Enter your e-mail address"
           variant="filled"
           size="lg"
-          bg="var(--input-bg)"
+          bg="inputBg"
           borderRadius="full"
         />
         {/* Confirm button */}

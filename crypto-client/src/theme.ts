@@ -29,11 +29,23 @@ const theme = extendTheme({
       },
       text: {
         default: "gray.600",
-        _dark: "gray.400",
+        _dark: "whiteAlpha.800",
       },
-      button: {
-        default: "blue.500",
-        _dark: "blue.300",
+      splitSectionButton: {
+        default: "black",
+        _dark: "whiteAlpha.800",
+      },
+      shadowColor: {
+        default: "blackAlpha.200",
+        _dark: "blackAlpha.600",
+      },
+      splitSection: {
+        default: "gray.900",
+        _dark: "gray.700",
+      },
+      splitSectionText: {
+        default: "white",
+        _dark: "gray.200",
       },
     },
   },
