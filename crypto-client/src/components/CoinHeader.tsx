@@ -1,5 +1,6 @@
-import { Box, Flex, Text, IconButton, Select, Image } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import { Box, Flex, Text, IconButton, Select, Image, Button } from "@chakra-ui/react";
+import { StarIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom"; 
 
 interface CoinHeaderProps {
   name: string;
@@ -8,8 +9,15 @@ interface CoinHeaderProps {
 }
 
 export default function CoinHeader({ name, symbol, image }: CoinHeaderProps) {
+  const navigate = useNavigate();
+
   return (
-    <Flex align="center" gap={4} mb={6}>
+    <Flex
+      align="center"
+      wrap="wrap"
+      gap={4}
+      mb={6}
+    >
       {/* Coin logo */}
       <Image
         src={image}
@@ -27,7 +35,7 @@ export default function CoinHeader({ name, symbol, image }: CoinHeaderProps) {
         </Text>
       </Box>
 
-      {/* Favorite star */}
+      {/* Star icon */}
       <IconButton
         aria-label="Favorite"
         icon={<StarIcon />}
@@ -35,11 +43,22 @@ export default function CoinHeader({ name, symbol, image }: CoinHeaderProps) {
         size="sm"
       />
 
-      {/* Currency dropdown */}
-      <Select size="sm" width="80px" defaultValue="USD">
-        <option value="USD">USD</option>
-        <option value="DKK">DKK</option>
-      </Select>
+      {/* Currency + Buy Button block */}
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={2}
+      >
+
+        <Button
+          colorScheme="blue"
+          rightIcon={<ArrowForwardIcon />}
+          size="sm"
+          width={{ base: "100%", md: "auto" }}
+          onClick={() => navigate("/login")}
+        >
+          Buy {name}
+        </Button>
+      </Flex>
     </Flex>
   );
 }
