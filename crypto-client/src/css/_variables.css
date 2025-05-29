@@ -53,3 +53,21 @@
   --mediumGap: 1rem;
   --largeGap: 2rem;
 }
+
+/* LIGHT MODE */
+html[data-theme="light"] {
+  --card-bg: var(--chakra-colors-white);
+  --input-bg: var(--chakra-colors-gray-100);
+  --social-bg: var(--chakra-colors-gray-50);
+  --divider-color: var(--chakra-colors-gray-300);
+  --text-color: var(--chakra-colors-gray-600);
+}
+
+/* DARK MODE */
+html[data-theme="dark"] {
+  --card-bg: var(--chakra-colors-gray-800);
+  --input-bg: var(--chakra-colors-gray-700);
+  --social-bg: var(--chakra-colors-gray-700);
+  --divider-color: var(--chakra-colors-gray-600);
+  --text-color: var(--chakra-colors-gray-400);
+}
