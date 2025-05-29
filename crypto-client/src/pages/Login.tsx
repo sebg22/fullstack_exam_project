@@ -13,13 +13,15 @@ import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaWallet } from "react-icons/fa";
 
 export default function Login() {
+
+
   return (
     <Box
       w={{ base: "90%", sm: "400px" }} // Responsive width
       mx="auto"
       my={{base: 8, md: 24}}
       p={{base: 4, md: 6}}
-      bg="var(--card-bg)"
+      bg="cardBg"
       boxShadow="xl"
       borderRadius="2xl"
     >
@@ -34,7 +36,7 @@ export default function Login() {
           placeholder="Enter your e-mail address"
           variant="filled"
           size={{ base: "md", md: "lg" }}
-          bg="var(--input-bg)"
+          bg="inputBg"
           borderRadius="full"
         />
 
@@ -45,11 +47,11 @@ export default function Login() {
 
         {/* ------ OR ------ */}
         <HStack spacing={2} align="center">
-          <Divider borderColor="var(--divider-color)" />
-          <Text fontSize={{ base: "xs", md: "sm" }} color="var(--text-color)" whiteSpace="nowrap">
+          <Divider borderColor="" />
+          <Text fontSize={{ base: "xs", md: "sm" }} color="text" whiteSpace="nowrap">
             OR
           </Text>
-          <Divider borderColor="var(--divider-color)" />
+          <Divider borderColor="divider" />
         </HStack>
 
         {/* Social signup buttons */}
@@ -60,7 +62,7 @@ export default function Login() {
             size={{ base: "sm", md: "md" }}
             borderRadius="full"
             justifyContent="flex-start"
-            bg="var(--social-bg)"
+            bg="socialBg"
           >
             Signup with Google
           </Button>
@@ -70,7 +72,7 @@ export default function Login() {
             size={{ base: "sm", md: "md" }}
             borderRadius="full"
             justifyContent="flex-start"
-            bg="var(--social-bg)"
+            bg="socialBg"
           >
             Signup with Apple
           </Button>
@@ -80,7 +82,7 @@ export default function Login() {
             size={{ base: "sm", md: "md" }}
             borderRadius="full"
             justifyContent="flex-start"
-            bg="var(--social-bg)"
+            bg="socialBg"
           >
             Signup with Wallet
           </Button>
