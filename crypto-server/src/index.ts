@@ -27,17 +27,16 @@ AppDataSource.initialize().then(() => {
     res.status(201).json(user);
   });
 
-  // Get all users
-  app.get("/cryptos", async (_, res) => {
+  // Get all cryptos
+  app.get("/cryptos", async (req, res) => {
     try {
-      const cryptos = await AppDataSource.getRepository(Crypto).find();
-      if (!cryptos) {
-        res.status(404).json({ message: "No cryptocurrencies found." });
-      } else {
-        res.json(cryptos);
-      }
+      const limit = parseInt(req.query.limit as string) || 10; // fallback til 10
+      const cryptos = await AppDataSource.getRepository(Crypto).find({
+        take: limit,
+        order: { market_cap: "DESC" },
+      });
+      res.json(cryptos);
     } catch (error) {
-      console.error("Error fetching cryptos:", error);
       res.status(500).json({ error: "Something went wrong" });
     }
   });

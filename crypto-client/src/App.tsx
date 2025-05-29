@@ -44,7 +44,7 @@ function App() {
   const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/cryptos")
+    fetch("https://service-fullstack-exam-project-server.onrender.com/cryptos")
       .then((res) => res.json())
       .then((data) => setCryptos(data))
       .catch((err) => console.error(err));
