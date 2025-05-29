@@ -19,17 +19,26 @@ export interface CryptoData {
   price_change_percentage_24h: number;
 }
 
-// Function to fetch the top 10 cryptocurrencies
+// Hent top 10 til forsiden
 export const getTopCryptos = async (): Promise<CryptoData[]> => {
   try {
     const response = await coingeckoApi.get("/cryptos", {
-      params: {
-        limit: 10,
-      },
+      params: { limit: 10 },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching cryptocurrencies:", error);
+    console.error("Error fetching top cryptocurrencies:", error);
+    return [];
+  }
+};
+
+// Hent alle til undersiden
+export const getAllCryptos = async (): Promise<CryptoData[]> => {
+  try {
+    const response = await coingeckoApi.get("/cryptos");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all cryptocurrencies:", error);
     return [];
   }
 };

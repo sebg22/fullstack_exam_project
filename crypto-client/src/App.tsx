@@ -2,17 +2,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import CryptoTable from "./components/CryptoTable";
-import useTopCryptos from "./hooks/useTopCryptos";
-import { useEffect, useState } from "react";
 
-type Crypto = {
-  id: string;
-  name: string;
-  symbol: string;
-  current_price?: number;
-  market_cap?: number;
-  image?: string;
-};
+// type Crypto = {
+//   id: string;
+//   name: string;
+//   symbol: string;
+//   current_price?: number;
+//   market_cap?: number;
+//   image?: string;
+// };
 
 function App() {
   // ###################For MediumCryptoCard#############################
@@ -31,27 +29,6 @@ function App() {
 
   // ####################################################################
 
-  // #########################connect database to frontend##################
-  const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/users")
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  const [cryptos, setCryptos] = useState<Crypto[]>([]);
-
-  useEffect(() => {
-    fetch("https://service-fullstack-exam-project-server.onrender.com/cryptos")
-      .then((res) => res.json())
-      .then((data) => setCryptos(data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  // ####################################################################
-
   return (
     <Router>
       <Grid templateAreas={{ base: `"header" "main"`, lg: `"header header" "aside main"` }}>
@@ -64,23 +41,8 @@ function App() {
           </GridItem>
         </Show>
         <GridItem area={"main"}>
-          <div>
-            <h1>Users</h1>
-            <ul>
-              {users.map((user) => (
-                <li key={user.id}>{user.name}</li>
-              ))}
-            </ul>
-          </div>
           <br />
-          <div>
-            <h1>Cryptos</h1>
-            <ul>
-              {cryptos.map((crypto) => (
-                <li key={crypto.id}>{crypto.name}</li>
-              ))}
-            </ul>
-          </div>
+          <h1>Cryptos</h1>
           <CryptoTable />
         </GridItem>
       </Grid>
