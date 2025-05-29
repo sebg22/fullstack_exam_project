@@ -5,7 +5,7 @@ import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";  
 import EditProfile from "./pages/EditProfile";  
 import Login from "./pages/Login";  
-import Coin from "./pages/Coin"; // 👈 Import the Coin page
+import Coin from "./pages/Coin";
 
 const router = createBrowserRouter([
   {

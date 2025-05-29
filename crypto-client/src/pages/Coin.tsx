@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Box, Spinner, Alert, AlertIcon } from "@chakra-ui/react";
+import { Box, Spinner, Alert, AlertIcon, Flex } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { getCoinDetails, CoinData } from "../services/coingecko";
 import CoinHeader from "../components/CoinHeader";
-import CoinDetails from "../components/CoinDetails";
+import AsideAboutCoin from "../components/AsideAboutCoin";
+import CoinPriceChart from "../components/CoinPriceChart";
+import CoinStats from "../components/CoinStats";
 
 export default function Coin() {
   const { id } = useParams<{ id: string }>();
@@ -22,9 +24,9 @@ export default function Coin() {
         setLoading(false);
       }
     };
-  
+
     fetchCoin();
-  }, [id]);  
+  }, [id]);
 
   if (loading) {
     return (
@@ -52,13 +54,65 @@ export default function Coin() {
   }
 
   return (
-    <Box p={6}>
-      <CoinHeader name={coin.name} symbol={coin.symbol} />
-      <CoinDetails
-        price={coin.price}
-        marketCap={coin.marketCap}
-        description={coin.description}
-      />
+    <Box>
+      {/* Header without border */}
+      <Box px={6} py={4}>
+        <CoinHeader
+          name={coin.name}
+          symbol={coin.symbol}
+          image={coin.image}
+        />
+      </Box>
+
+      {/* Main layout */}
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={{ base: 6, md: 8 }}
+        align="start"
+        px={6}
+        py={6}
+      >
+        {/* Sidebar */}
+        <Box
+          order={{ base: 2, md: 1 }}
+          pt={{ base: 6, md: 0 }}
+          pr={{ md: 8 }}
+        >
+          <AsideAboutCoin
+            name={coin.name}
+            description={coin.description}
+          />
+        </Box>
+
+        {/* Main content */}
+        <Box
+          flex="1"
+          order={{ base: 1, md: 2 }}
+          pb={{ base: 6, md: 0 }}
+          pl={{ md: 8 }}
+        >
+          <CoinPriceChart
+            price={coin.price}
+            change={coin.priceChangePercentage24h}
+          />
+
+          <Box>
+            <Box py={6}>
+              <CoinStats
+                marketCap={coin.marketCap}
+                fdv={coin.fdv}
+                circulatingSupply={coin.circulatingSupply}
+                totalSupply={coin.totalSupply}
+                maxSupply={coin.maxSupply}
+                ath={coin.ath}
+                marketCapRank={coin.marketCapRank}
+                volume24h={coin.volume24h}
+                priceChangePercentage1y={coin.priceChangePercentage1y}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </Flex>
     </Box>
   );
 }
