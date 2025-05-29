@@ -9,7 +9,6 @@ import {
   Text,
   Button,
   SimpleGrid,
-  useBreakpointValue,
   AspectRatio,
 } from '@chakra-ui/react'
 
