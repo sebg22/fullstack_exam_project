@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";  
 import EditProfile from "./pages/EditProfile";  
 import Login from "./pages/Login";  
+import CryptoCurrencies from "./pages/CryptoCurrencies";
 import Coin from "./pages/Coin";
 
 const router = createBrowserRouter([
@@ -12,10 +13,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <HomePage /> },              // GET “/”
-      { path: "editProfile", element: <EditProfile /> },   // GET “/edit-profile”
-      { path: "login", element: <Login /> },               // GET “/login”
-      { path: "coin/:id", element: <Coin /> },             // GET “/coin/:id”
+      { index: true, element: <HomePage /> },                         // GET “/”
+      { path: "editProfile", element: <EditProfile /> },              // GET “/edit-profile”
+      { path: "login", element: <Login /> },                          // GET “/login”
+      { path: "cryptoCurrencies", element: <CryptoCurrencies /> },    // GET “/crypto-currencies”
+      { path: "coin/:id", element: <Coin /> },                        // GET “/coin/:id”
     ],
   },
 ]);
