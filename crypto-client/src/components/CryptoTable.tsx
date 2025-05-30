@@ -2,11 +2,14 @@ import { Table, Thead, Tbody, Tr, Th, TableContainer, Text, Center, Spinner } fr
 // import useCryptos from "../hooks/useCrypto";
 import CryptoRow from "./CryptoRow";
 import CryptoSkeleton from "./CryptoRowSkeleton";
-import useTopCryptos from "../hooks/useTopCryptos";
 
-const CryptoTable = () => {
-  const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
+interface Props {
+  cryptos: CryptoData[];
+  loading: boolean;
+  error: string;
+}
 
+const CryptoTable = ({ cryptos, loading, error }: Props) => {
   if (loading) {
     return (
       <Center>

@@ -2,8 +2,11 @@ import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import CryptoTable from "../components/CryptoTable";
 import SideMenu from "../components/SideMenu";
+import useTopCryptos from "../hooks/useTopCryptos";
 
 export default function HomePage() {
+  const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
+
   return (
     <Grid
       templateAreas={{
@@ -21,7 +24,7 @@ export default function HomePage() {
       </Show>
 
       <GridItem area="main">
-        <CryptoTable />
+        <CryptoTable cryptos={cryptos} loading={loading} error={error} />
       </GridItem>
     </Grid>
   );
