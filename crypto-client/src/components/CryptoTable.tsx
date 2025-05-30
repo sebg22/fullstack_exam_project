@@ -1,20 +1,11 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  TableContainer,
-  Text,
-  Center,
-  Spinner,
-} from "@chakra-ui/react";
-import useCryptos from "../hooks/useCrypto";
+import { Table, Thead, Tbody, Tr, Th, TableContainer, Text, Center, Spinner } from "@chakra-ui/react";
+// import useCryptos from "../hooks/useCrypto";
 import CryptoRow from "./CryptoRow";
 import CryptoSkeleton from "./CryptoRowSkeleton";
+import useTopCryptos from "../hooks/useTopCryptos";
 
 const CryptoTable = () => {
-  const { cryptos, loading, error } = useCryptos(); // Get data using our custom hook
+  const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
 
   if (loading) {
     return (
@@ -44,13 +35,11 @@ const CryptoTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {loading ? ( 
-            // If data is still loading, display 10 skeleton rows as placeholders
-            Array.from({ length: 10 }).map((_, index) => <CryptoSkeleton key={index} />)
-          ) : (
-            // Once the data is fetched, map over the cryptos and render each row
-            cryptos.map((coin) => <CryptoRow key={coin.id} coin={coin} />)
-          )}
+          {loading
+            ? // If data is still loading, display 10 skeleton rows as placeholders
+              Array.from({ length: 10 }).map((_, index) => <CryptoSkeleton key={index} />)
+            : // Once the data is fetched, map over the cryptos and render each row
+              cryptos.map((coin) => <CryptoRow key={coin.id} coin={coin} />)}
         </Tbody>
       </Table>
     </TableContainer>

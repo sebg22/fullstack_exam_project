@@ -1,13 +1,9 @@
 import axios from "axios";
 
-const API_KEY = "CG-TaEdhsvdcW4G5HdmeJHgLM1B";
-const BASE_URL = "https://api.coingecko.com/api/v3";
+const BASE_URL = "https://service-fullstack-exam-project-server.onrender.com";
 
 const coingeckoApi = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    "x-cg-demo-api-key": API_KEY, // CoinGecko API Key
-  },
 });
 
 // Type for top cryptocurrencies
@@ -23,21 +19,27 @@ export interface CryptoData {
   price_change_percentage_24h: number;
 }
 
+// Hent top 10 til forsiden
 // Function to fetch top 10 coins
 export const getTopCryptos = async (): Promise<CryptoData[]> => {
   try {
-    const response = await coingeckoApi.get("/coins/markets", {
-      params: {
-        vs_currency: "usd",
-        order: "market_cap_desc",
-        per_page: 10,
-        page: 1,
-        sparkline: false,
-      },
+    const response = await coingeckoApi.get("/cryptos", {
+      params: { limit: 10 },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching cryptocurrencies:", error);
+    console.error("Error fetching top cryptocurrencies:", error);
+    return [];
+  }
+};
+
+// Hent alle til undersiden
+export const getAllCryptos = async (): Promise<CryptoData[]> => {
+  try {
+    const response = await coingeckoApi.get("/cryptos");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all cryptocurrencies:", error);
     return [];
   }
 };
