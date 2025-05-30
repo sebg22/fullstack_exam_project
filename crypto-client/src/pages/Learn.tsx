@@ -81,16 +81,16 @@ export default function Learn() {
               <Flex as="form" align="center">
                 <Input
                   placeholder="Enter your e-mail address"
-                  size="lg"
+                  size={{base: 'md', md: 'lg'}}
                   borderRadius="full"
                   flex="1"
                   mr={3}
                 />
                 <Button
-          color="splitSectionButton"  
-          size="lg"
-          borderRadius="full"
-        >
+                  colorScheme="blue" 
+                  size="lg"
+                  borderRadius="full"
+              >
           Subscribe
         </Button>
               </Flex>
