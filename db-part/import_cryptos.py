@@ -3,7 +3,7 @@ import psycopg2
 from datetime import datetime
 
 # Replace with your actual PostgreSQL connection details from Render
-DATABASE_URL = "postgresql://postgres_db_9uow_user:HOFRwXi05VF6mc90hQ88bgGLeYhheQt0@dpg-cvaslj5rie7s73998r2g-a.frankfurt-postgres.render.com/postgres_db_9uow"
+DATABASE_URL = "postgresql://postgres_db_lfd0_user:TfGhxX5Xtf0hAMtcLD4H12rm1yQUjv41@dpg-d0q5l4umcj7s73ep7dag-a.frankfurt-postgres.render.com/postgres_db_lfd0"
 
 try:
     # Connect to PostgreSQL

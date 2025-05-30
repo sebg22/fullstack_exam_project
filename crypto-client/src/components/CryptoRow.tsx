@@ -24,7 +24,10 @@ const CryptoRow = ({ coin }: Props) => {
       </Td>
       <Td>${coin.current_price.toLocaleString()}</Td>
       <Td></Td>
-      <Td color={coin.price_change_percentage_24h >= 0 ? "green.500" : "red.500"}>{coin.price_change_percentage_24h.toFixed(2)}%</Td>
+      <Td color={Number(coin.price_change_percentage_24h) >= 0 ? "green.500" : "red.500"}>
+        {coin.price_change_percentage_24h !== null && coin.price_change_percentage_24h !== undefined && !isNaN(Number(coin.price_change_percentage_24h)) ? Number(coin.price_change_percentage_24h).toFixed(2) : "N/A"}%
+      </Td>
+
       <Td>${coin.market_cap.toLocaleString()}</Td>
       <Td>${coin.total_volume.toLocaleString()}</Td>
       <Td>${coin.circulating_supply.toLocaleString()}</Td>

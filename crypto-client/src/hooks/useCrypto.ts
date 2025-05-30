@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
-import { getTopCryptos, CryptoData } from "../services/coingecko";
+import { getAllCryptos, CryptoData } from "../services/coingecko";
 
-const useCryptos = () => {
-  // State to store the list of cryptocurrencies
+const useAllCryptos = () => {
   const [cryptos, setCryptos] = useState<CryptoData[]>([]);
-  // State to manage loading status
   const [loading, setLoading] = useState(true);
-  // State to store errors (if any)
   const [error, setError] = useState("");
 
-  // Fetch data when the component loads
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getTopCryptos(); // Fetch crypto data from API
-        setCryptos(data); // Store the data in state
+        const data = await getAllCryptos();
+        setCryptos(data);
       } catch {
-        setError("Failed to load cryptocurrency data.");
+        setError("Failed to load all cryptocurrencies.");
       } finally {
-        setLoading(false); // Stop loading when done
+        setLoading(false);
       }
     };
     fetchData();
-  }, []); // Empty dependency array means this runs once when component mounts
+  }, []);
 
   return { cryptos, loading, error };
 };
 
-export default useCryptos;
+export default useAllCryptos;
