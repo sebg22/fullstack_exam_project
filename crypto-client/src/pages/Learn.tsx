@@ -41,7 +41,6 @@ export default function Learn() {
             </Text>
             <Button
               colorScheme="blue"
-              bg="button"
               size="lg"
               w="full"
               borderRadius="full"
