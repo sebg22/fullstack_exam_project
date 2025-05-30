@@ -8,7 +8,7 @@ const NavBar = () => {
 
   return (
     <HStack width="100%" padding="10px">
-      <Image src={logo} boxSize="60px" />
+      <Image src={logo} boxSize="60px" cursor="pointer" alt="Coinvault logo" onClick={() => navigate ("/")} />
       <ColorModeSwitch />
       <Spacer /> {/* Pushes the login button to the right */}
       <Button colorScheme="blue" onClick={() => navigate("/editProfile")}> {/* Navigate to /login */}
@@ -20,5 +20,4 @@ const NavBar = () => {
     </HStack>
   );
 };
-
 export default NavBar;

@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import EditProfile from "./pages/EditProfile";  
 import Login from "./pages/Login";  
 import Coin from "./pages/Coin";
+import Learn from "./pages/Learn";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { path: "editProfile", element: <EditProfile /> },   // GET “/edit-profile”
       { path: "login", element: <Login /> },               // GET “/login”
       { path: "coin/:id", element: <Coin /> },             // GET “/coin/:id”
+      { path: "learn", element: <Learn />},
     ],
   },
 ]);
