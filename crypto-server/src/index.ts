@@ -25,6 +25,8 @@ AppDataSource.initialize().then(() => {
       const cryptos = await AppDataSource.getRepository(Crypto).find({
         take: limit,
         order: { market_cap: "DESC" },
+        //Her definerer vi præcist de kolonner vi vil have retur fra databasen
+        select: ["id", "image", "name", "symbol", "current_price", "price_change_percentage_24h", "market_cap", "total_volume", "circulating_supply"],
       });
 
       res.json(cryptos);
