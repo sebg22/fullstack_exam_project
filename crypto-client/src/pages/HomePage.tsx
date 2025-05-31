@@ -1,5 +1,4 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
-import NavBar from "../components/NavBar";
 import CryptoTable from "../components/CryptoTable";
 import SideMenu from "../components/SideMenu";
 import useTopCryptos from "../hooks/useTopCryptos";
@@ -11,18 +10,8 @@ export default function HomePage() {
     <Grid
       templateAreas={{
         base: `"header" "main"`,
-        lg: `"header header" "aside main"`,
+        lg: `"header header" "main"`,
       }}>
-      <Show above="lg">
-        <GridItem area="aside" w="150px" pl="2">
-          <SideMenu
-            setFilter={function (filter: string): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
-        </GridItem>
-      </Show>
-
       <GridItem area="main">
         <CryptoTable cryptos={cryptos} loading={loading} error={error} />
       </GridItem>
