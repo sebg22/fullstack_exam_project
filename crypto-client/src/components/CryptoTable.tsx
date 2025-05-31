@@ -2,6 +2,7 @@ import { Table, Thead, Tbody, Tr, Th, TableContainer, Text, Center, Spinner } fr
 // import useCryptos from "../hooks/useCrypto";
 import CryptoRow from "./CryptoRow";
 import CryptoSkeleton from "./CryptoRowSkeleton";
+import { CryptoData } from "../services/coingecko";
 
 interface Props {
   cryptos: CryptoData[];
@@ -23,7 +24,7 @@ const CryptoTable = ({ cryptos, loading, error }: Props) => {
   }
 
   return (
-    <TableContainer>
+    <TableContainer whiteSpace="normal">
       <Table bg="white" borderRadius="md" boxShadow="md" color="black">
         <Thead>
           <Tr>
