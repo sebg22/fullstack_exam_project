@@ -16,7 +16,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> }, // GET “/”
       { path: "editProfile", element: <EditProfile /> }, // GET “/edit-profile”
       { path: "login", element: <Login /> }, // GET “/login”
-      { path: "cryptoCurrencies", element: <CryptoCurrencies /> }, // GET “/crypto-currencies”
+      { path: "cryptocurrencies", element: <CryptoCurrencies /> }, // GET “/crypto-currencies”
       { path: "coin/:id", element: <Coin /> }, // GET “/coin/:id”
     ],
   },
