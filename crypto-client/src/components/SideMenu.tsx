@@ -7,21 +7,18 @@ interface SideMenuProps {
 
 const SideMenu = ({ setFilter }: SideMenuProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showTopOptions, setShowTopOptions] = useState(false); 
+  const [showTopOptions, setShowTopOptions] = useState(false);
   const [showPriceOptions, setShowPriceOptions] = useState(false);
 
   return (
-    <GridItem w="150px" pl="2" area={"aside"}>
+    <GridItem w="150px" pl="2" pr="2" area={"aside"}>
       <Menu>
         <nav>
           <Box mt={10}>
             <h2 style={{ paddingBottom: "10px", fontWeight: "bold" }}>Cryptocurrencies</h2>
             <ul>
               {/* "Top" Category with Show More */}
-              <li
-                style={{ display: "inline-flex", listStyleType: "none", marginBottom: "4px", cursor: "pointer" }}
-                onClick={() => setShowTopOptions(!showTopOptions)}
-              >
+              <li style={{ display: "inline-flex", listStyleType: "none", marginBottom: "4px", cursor: "pointer" }} onClick={() => setShowTopOptions(!showTopOptions)}>
                 <Flex align="center" gap={2}>
                   🔝 Top Coins {showTopOptions ? "▲" : "▼"}
                 </Flex>
@@ -44,10 +41,7 @@ const SideMenu = ({ setFilter }: SideMenuProps) => {
 
               {/* Price Range with Show More */}
               <Divider />
-              <li
-                style={{ display: "inline-flex", listStyleType: "none", marginBottom: "4px", cursor: "pointer" }}
-                onClick={() => setShowPriceOptions(!showPriceOptions)}
-              >
+              <li style={{ display: "inline-flex", listStyleType: "none", marginBottom: "4px", cursor: "pointer" }} onClick={() => setShowPriceOptions(!showPriceOptions)}>
                 <Flex align="center" gap={2}>
                   💲 Price Range {showPriceOptions ? "▲" : "▼"}
                 </Flex>
