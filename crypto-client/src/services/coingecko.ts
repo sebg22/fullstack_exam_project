@@ -24,7 +24,7 @@ export interface CryptoData {
 // Function to fetch top 10 coins
 export const getTopCryptos = async (): Promise<CryptoData[]> => {
   try {
-    const response = await coingeckoApi.get("/cryptos", {
+    const response = await coingeckoApi.get("/all_cryptos", {
       params: { limit: 10 },
     });
     return response.data;
@@ -37,39 +37,13 @@ export const getTopCryptos = async (): Promise<CryptoData[]> => {
 // Hent alle til undersiden
 export const getAllCryptos = async (): Promise<CryptoData[]> => {
   try {
-    const response = await coingeckoApi.get("/cryptos");
+    const response = await coingeckoApi.get("/all_cryptos");
     return response.data;
   } catch (error) {
     console.error("Error fetching all cryptocurrencies:", error);
     return [];
   }
 };
-
-// Type for detailed coin data
-export interface CoinDetails {
-  id: string;
-  name: string;
-  symbol: string;
-  image: {
-    thumb: string;
-    small: string;
-    large: string;
-  };
-  description: { en: string };
-  market_data: {
-    current_price: { usd: number };
-    market_cap: { usd: number };
-    total_volume: { usd: number };
-    fully_diluted_valuation: { usd: number };
-    circulating_supply: number;
-    total_supply: number;
-    max_supply: number | null;
-    ath: { usd: number };
-    price_change_percentage_24h: number;
-    price_change_percentage_1y: number;
-  };
-  market_cap_rank: number;
-}
 
 // Main app type
 export interface CoinData {
@@ -91,28 +65,28 @@ export interface CoinData {
   priceChangePercentage1y: number;
 }
 
-// Fetch a single coin by ID
+// Fetch a single coin by ID from your backend
 export const getCoinDetails = async (id: string): Promise<CoinData> => {
   try {
-    const response = await coingeckoApi.get<CoinDetails>(`/coins/${id}`);
+    const response = await coingeckoApi.get(`/coins/${id}`);
 
     return {
       id: response.data.id,
       name: response.data.name,
       symbol: response.data.symbol,
-      description: response.data.description?.en || "Ingen beskrivelse tilgængelig.",
-      price: response.data.market_data.current_price.usd,
-      marketCap: response.data.market_data.market_cap.usd,
-      image: response.data.image.large,
-      priceChangePercentage24h: response.data.market_data.price_change_percentage_24h,
-      fdv: response.data.market_data.fully_diluted_valuation?.usd || 0,
-      circulatingSupply: response.data.market_data.circulating_supply,
-      totalSupply: response.data.market_data.total_supply || 0,
-      maxSupply: response.data.market_data.max_supply,
-      ath: response.data.market_data.ath.usd,
-      marketCapRank: response.data.market_cap_rank,
-      volume24h: response.data.market_data.total_volume.usd,
-      priceChangePercentage1y: response.data.market_data.price_change_percentage_1y || 0,
+      description: response.data.description || "Ingen beskrivelse tilgængelig.",
+      price: Number(response.data.current_price),
+      marketCap: Number(response.data.market_cap),
+      image: response.data.image,
+      priceChangePercentage24h: Number(response.data.price_change_percentage_24h),
+      fdv: Number(response.data.fdv),
+      circulatingSupply: Number(response.data.circulating_supply),
+      totalSupply: Number(response.data.total_supply),
+      maxSupply: response.data.max_supply === null ? null : Number(response.data.max_supply),
+      ath: Number(response.data.ath),
+      marketCapRank: Number(response.data.market_cap_rank),
+      volume24h: Number(response.data.total_volume),
+      priceChangePercentage1y: Number(response.data.price_change_percentage_1y),
     };
   } catch (error) {
     console.error("API fejl:", error);

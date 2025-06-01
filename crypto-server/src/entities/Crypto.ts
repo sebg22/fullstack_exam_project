@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column } from "typeorm";
 
-@Entity("cryptos")
+@Entity("all_cryptos")
 export class Crypto {
   @PrimaryColumn()
   id: string;
@@ -24,65 +24,35 @@ export class Crypto {
   market_cap_rank: number;
 
   @Column("bigint")
-  fully_diluted_valuation: number;
-
-  @Column("bigint")
   total_volume: number;
-
-  @Column("decimal")
-  high_24h: number;
-
-  @Column("decimal")
-  low_24h: number;
-
-  @Column("decimal")
-  price_change_24h: number;
-
-  @Column("decimal")
-  price_change_percentage_24h: number;
-
-  @Column("bigint")
-  market_cap_change_24h: number;
-
-  @Column("decimal")
-  market_cap_change_percentage_24h: number;
 
   @Column("bigint")
   circulating_supply: number;
 
-  @Column("bigint")
-  total_supply: number;
+  @Column("decimal")
+  price_change_percentage_24h: number;
+
+  @Column("text")
+  description: string;
+
+  @Column("bigint", { nullable: true }) // nullable now
+  total_supply: number | null;
 
   @Column("bigint", { nullable: true })
   max_supply: number | null;
 
-  @Column("decimal")
-  ath: number;
+  @Column("decimal", { nullable: true }) // nullable now
+  ath: number | null;
 
-  @Column("decimal")
-  ath_change_percentage: number;
+  @Column("decimal", { nullable: true }) // nullable now
+  price_change_percentage_1y: number | null;
 
-  @Column("timestamp")
-  ath_date: Date;
+  @Column("bigint", { nullable: true }) // nullable now
+  fdv: number | null;
 
-  @Column("decimal")
-  atl: number;
+  @Column("date", { nullable: true })
+  genesis_date: string | null;
 
-  @Column("decimal")
-  atl_change_percentage: number;
-
-  @Column("timestamp")
-  atl_date: Date;
-
-  @Column("timestamp")
-  last_updated: Date;
-
-  @Column("decimal", { nullable: true })
-  roi_times: number | null; // Split roi object into separate columns
-
-  @Column("varchar", { nullable: true })
-  roi_currency: string | null;
-
-  @Column("decimal", { nullable: true })
-  roi_percentage: number | null;
+  @Column("boolean")
+  is_stablecoin: boolean;
 }
