@@ -1,20 +1,22 @@
 import json
 import psycopg2
 
-# Replace with your actual PostgreSQL connection details from Render
 DATABASE_URL = "postgresql://postgres_db_lfd0_user:TfGhxX5Xtf0hAMtcLD4H12rm1yQUjv41@dpg-d0q5l4umcj7s73ep7dag-a.frankfurt-postgres.render.com/postgres_db_lfd0"
 
+def safe_get(entry, key, default=None):
+    val = entry.get(key)
+    if val is None:
+        return default
+    return val
+
 try:
-    # Connect to PostgreSQL
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
     print("✅ Connected to the database!")
 
-    # Load JSON data
     with open("final_crypto_data_mocked.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 
-    # Make sure your table matches this structure!
     insert_query = """
     INSERT INTO public.all_cryptos (
         id, symbol, name, image, current_price, market_cap, market_cap_rank,
@@ -38,12 +40,12 @@ try:
             entry.get("circulating_supply"),
             entry.get("price_change_percentage_24h"),
             entry.get("description"),
-            entry.get("total_supply"),
-            entry.get("max_supply"),
-            entry.get("ath"),
-            entry.get("price_change_percentage_1y"),
-            entry.get("fdv"),
-            entry.get("genesis_date"),
+            safe_get(entry, "total_supply", None),   # allow None
+            safe_get(entry, "max_supply", None),     # allow None
+            safe_get(entry, "ath", None),             # allow None
+            safe_get(entry, "price_change_percentage_1y", None),  # allow None
+            safe_get(entry, "fdv", None),             # allow None
+            safe_get(entry, "genesis_date", None),   # allow None
             entry.get("is_stablecoin"),
         ))
 

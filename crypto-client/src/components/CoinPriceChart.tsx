@@ -13,11 +13,7 @@ export default function CoinPriceChart({ price, change }: CoinPriceChartProps) {
     <Box>
       {/* Price and change on the same line */}
       <Flex align="center" gap={4} mb={2}>
-        <Text
-          fontSize="2xl"
-          fontWeight="bold"
-          color={isPositive ? "green.500" : "red.500"}
-        >
+        <Text fontSize="2xl" fontWeight="bold" color={isPositive ? "green.500" : "red.500"}>
           USD {price.toFixed(3)}
         </Text>
 

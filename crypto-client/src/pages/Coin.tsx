@@ -57,44 +57,19 @@ export default function Coin() {
     <Box>
       {/* Header without border */}
       <Box px={6} py={4}>
-        <CoinHeader
-          name={coin.name}
-          symbol={coin.symbol}
-          image={coin.image}
-        />
+        <CoinHeader name={coin.name} symbol={coin.symbol} image={coin.image} />
       </Box>
 
       {/* Main layout */}
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap={{ base: 6, md: 8 }}
-        align="start"
-        px={6}
-        py={6}
-      >
+      <Flex direction={{ base: "column", md: "row" }} gap={{ base: 6, md: 8 }} align="start" px={6} py={6}>
         {/* Sidebar */}
-        <Box
-          order={{ base: 2, md: 1 }}
-          pt={{ base: 6, md: 0 }}
-          pr={{ md: 8 }}
-        >
-          <AsideAboutCoin
-            name={coin.name}
-            description={coin.description}
-          />
+        <Box order={{ base: 2, md: 1 }} pt={{ base: 6, md: 0 }} pr={{ md: 8 }}>
+          <AsideAboutCoin name={coin.name} description={coin.description} />
         </Box>
 
         {/* Main content */}
-        <Box
-          flex="1"
-          order={{ base: 1, md: 2 }}
-          pb={{ base: 6, md: 0 }}
-          pl={{ md: 8 }}
-        >
-          <CoinPriceChart
-            price={coin.price}
-            change={coin.priceChangePercentage24h}
-          />
+        <Box flex="1" order={{ base: 1, md: 2 }} pb={{ base: 6, md: 0 }} pl={{ md: 8 }}>
+          <CoinPriceChart price={coin.price} change={coin.priceChangePercentage24h} />
 
           <Box>
             <Box py={6}>
