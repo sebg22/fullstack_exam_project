@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { formatCurrencyCompact } from "../utils/formatCurrency";
 
 interface CoinPriceChartProps {
   price: number;
@@ -14,7 +15,7 @@ export default function CoinPriceChart({ price, change }: CoinPriceChartProps) {
       {/* Price and change on the same line */}
       <Flex align="center" gap={4} mb={2}>
         <Text fontSize="2xl" fontWeight="bold" color={isPositive ? "green.500" : "red.500"}>
-          USD {price.toFixed(3)}
+          USD {formatCurrencyCompact(price)}
         </Text>
 
         <Text color={isPositive ? "green.500" : "red.500"}>
