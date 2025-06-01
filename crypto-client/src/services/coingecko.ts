@@ -45,32 +45,6 @@ export const getAllCryptos = async (): Promise<CryptoData[]> => {
   }
 };
 
-// Type for detailed coin data
-export interface CoinDetails {
-  id: string;
-  name: string;
-  symbol: string;
-  image: {
-    thumb: string;
-    small: string;
-    large: string;
-  };
-  description: { en: string };
-  market_data: {
-    current_price: { usd: number };
-    market_cap: { usd: number };
-    total_volume: { usd: number };
-    fully_diluted_valuation: { usd: number };
-    circulating_supply: number;
-    total_supply: number;
-    max_supply: number | null;
-    ath: { usd: number };
-    price_change_percentage_24h: number;
-    price_change_percentage_1y: number;
-  };
-  market_cap_rank: number;
-}
-
 // Main app type
 export interface CoinData {
   id: string;
