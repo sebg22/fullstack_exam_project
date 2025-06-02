@@ -56,3 +56,4 @@ function Login() {
     </Box>
   );
 }
+export default Login;

@@ -17,7 +17,7 @@ import coinCircles from '../assets/LearnPageCoinCircles.avif'
 import walletPicture from '../assets/LearnPageWallet.avif'
 import useTopCryptos from '../hooks/useTopCryptos'
 import MediumCryptoCard from '../components/MediumCryptoCard'
-
+import Footer from '../components/Footer'
 export default function Learn() {
   const { cryptos, loading } = useTopCryptos()
   return (
@@ -305,6 +305,7 @@ export default function Learn() {
           </Flex>
         </Container>
       </Box>
+      <Footer />
     </>
   )
 }
