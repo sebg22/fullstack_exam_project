@@ -43,7 +43,7 @@ app.use(
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
 
-    // Get  10 or all cryptos
+  // Get  10 or all cryptos
   app.get("/all_cryptos", async (req, res) => {
     try {
       // Henter limit-parameteren fra URL'en, så enten 10 eller undefined
@@ -166,5 +166,41 @@ AppDataSource.initialize().then(() => {
   });
 
   // Start server
+
+  //endpoint for specific coin by id
+  app.get("/coins/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+
+      const crypto = await AppDataSource.getRepository(Crypto).findOne({
+        where: { id },
+        select: [
+          "id",
+          "name",
+          "symbol",
+          "image",
+          "current_price",
+          "price_change_percentage_24h",
+          "description",
+          "market_cap",
+          "fdv",
+          "circulating_supply",
+          "total_supply",
+          "max_supply",
+          "ath",
+          "market_cap_rank",
+          "total_volume",
+          "price_change_percentage_1y",
+        ],
+      });
+
+      res.json(crypto);
+    } catch (error) {
+      console.error("Error fetching crypto by id:", error);
+      res.status(500).json({ error: "Something went wrong" });
+    }
+  });
+
+
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
