@@ -20,6 +20,12 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface UpdateProfileData {
+  name?: string;
+  lastName?: string;
+  email?: string;
+}
+
 export interface AuthUser {
   id: string;
   email: string;
@@ -34,6 +40,12 @@ export const signupUser = async (userData: SignupData): Promise<void> => {
 // Login
 export const loginUser = async (credentials: LoginCredentials): Promise<AuthUser> => {
   const response = await authApi.post("/login", credentials);
+  return response.data;
+};
+
+// Update user profile
+export const updateUserProfile = async (data: UpdateProfileData): Promise<AuthUser> => {
+  const response = await authApi.put("/profile", data);
   return response.data;
 };
 
