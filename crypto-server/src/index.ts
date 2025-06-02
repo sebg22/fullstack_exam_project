@@ -43,26 +43,21 @@ app.use(
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
 
-  // GET /cryptos
-  app.get("/cryptos", async (req, res) => {
+    // Get  10 or all cryptos
+  app.get("/all_cryptos", async (req, res) => {
     try {
+      // Henter limit-parameteren fra URL'en, så enten 10 eller undefined
       const limitParam = req.query.limit as string | undefined;
+      // Hvis limitParam findes (altså ikke er undefined eller tom), så parser vi det som tal. Hvis limitParam ikke findes, så bliver limit sat til undefined
       const limit = limitParam ? parseInt(limitParam) : undefined;
+
+      console.log("DETTE ER LIMIT", limit);
 
       const cryptos = await AppDataSource.getRepository(Crypto).find({
         take: limit,
         order: { market_cap: "DESC" },
-        select: [
-          "id",
-          "image",
-          "name",
-          "symbol",
-          "current_price",
-          "price_change_percentage_24h",
-          "market_cap",
-          "total_volume",
-          "circulating_supply",
-        ],
+        //Her definerer vi præcist de kolonner vi vil have retur fra databasen
+        select: ["id", "image", "name", "symbol", "current_price", "price_change_percentage_24h", "market_cap", "total_volume", "circulating_supply"],
       });
 
       res.json(cryptos);
