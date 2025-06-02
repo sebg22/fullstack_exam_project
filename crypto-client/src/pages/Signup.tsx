@@ -13,31 +13,47 @@ function Signup() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async () => {
-    setIsLoading(true);
-    try {
-      await signupUser({ name, lastName, email, password });
+  setIsLoading(true);
+  try {
+    await signupUser({ name, lastName, email, password });
 
-      toast({
-        title: "Success",
-        description: "Registered successfully!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+    toast({
+      title: "Success",
+      description: "Registered successfully!",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
 
-      navigate("/login");
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.response?.data?.error || "Signup failed. Try again.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    } finally {
-      setIsLoading(false);
+    navigate("/login");
+  } catch (error: any) {
+    const errorData = error.response?.data;
+
+    let description = "Signup failed. Try again.";
+
+    if (errorData?.errors) {
+      // Pick the first validation message
+      const firstError = Object.values(errorData.errors)[0];
+      if (typeof firstError === "string") {
+        description = firstError;
+      }
+    } else if (errorData?.error) {
+      // Fallback for single error message
+      description = errorData.error;
     }
-  };
+
+    toast({
+      title: "Error",
+      description,
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <Box maxW="sm" mx="auto" mt="50px" p="3" boxShadow="lg" borderRadius="md">
