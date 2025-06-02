@@ -9,7 +9,7 @@ function EditProfile() {
 
   const toast = useToast();
 
-  // 🔄 Fetch profile data on mount
+  // Fetch profile data
   useEffect(() => {
     axios.get("http://localhost:5000/me", { withCredentials: true })
       .then(res => {
@@ -33,12 +33,10 @@ function EditProfile() {
       });
   }, []);
 
-  // 📨 Submit profile update
-  const handleSave = () => {
-    axios.put("http://localhost:5000/profile",
-      { name, lastName, email },
-      { withCredentials: true }
-    )
+  // Submit profile update
+const handleSave = () => {
+  axios
+    .put("http://localhost:5000/profile", { name, lastName, email }, { withCredentials: true })
     .then(() => {
       toast({
         title: "Profile updated",
@@ -47,16 +45,31 @@ function EditProfile() {
         isClosable: true,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Update error", err);
+
+      const errorData = err.response?.data;
+
+      let description = "Failed to update profile.";
+
+      if (errorData?.errors) {
+        const firstError = Object.values(errorData.errors)[0];
+        if (typeof firstError === "string") {
+          description = firstError;
+        }
+      } else if (errorData?.error) {
+        description = errorData.error;
+      }
+
       toast({
-        title: "Failed to update profile",
+        title: "Error",
+        description,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
     });
-  };
+};
 
   return (
     <Box maxW="sm" mx="auto" mt="50px" p="4" boxShadow="lg" borderRadius="md">

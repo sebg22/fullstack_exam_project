@@ -24,15 +24,31 @@ function Login() {
       });
 
       navigate("/");
-    } catch (err) {
-      toast({
-        title: "Login failed",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+    } catch (error: any) {
+    const errorData = error.response?.data;
+
+    let description = "Login failed. Try again.";
+
+    if (errorData?.errors) {
+      // Pick the first validation message
+      const firstError = Object.values(errorData.errors)[0];
+      if (typeof firstError === "string") {
+        description = firstError;
+      }
+    } else if (errorData?.error) {
+      // Fallback for single error message
+      description = errorData.error;
     }
-  };
+
+    toast({
+      title: "Error",
+      description,
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
+};
 
   return (
     <Box maxW="sm" mx="auto" mt="50px" p="4" boxShadow="lg" borderRadius="md">
