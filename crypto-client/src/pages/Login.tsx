@@ -14,7 +14,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       const user = await loginUser({ email, password });
-      setUser(user);
+      setUser({ ...user, id: Number(user.id) });
 
       toast({
         title: "Login successful",

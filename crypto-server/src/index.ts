@@ -5,6 +5,8 @@ import { Crypto } from "./entities/Crypto";
 import { User } from "./entities/User";
 import session from "express-session";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config();
 
 declare module "express-session" {
   interface SessionData {
@@ -15,16 +17,19 @@ declare module "express-session" {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({
-  origin: "http://localhost:5173", // adjust if your frontend runs elsewhere
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
+
 
 app.use(express.json());
 
 app.use(
   session({
-    secret: "your-secret-key", // replace in production
+    secret: process.env.SESSION_SECRET || "default_session_secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -150,14 +155,6 @@ AppDataSource.initialize().then(() => {
       res.json({ userId: req.session.userId });
     } else {
       res.status(401).json({ error: "Not logged in." });
-    }
-  });
-  // GET /check-session
-  app.get("/check-session", (req, res) => {
-    if (req.session.userId) {
-      res.json({ loggedIn: true });
-    } else {
-      res.json({ loggedIn: false });
     }
   });
 

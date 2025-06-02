@@ -2,22 +2,48 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const signupUser = async (userData: {
+const authApi = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
+// Reusable types for auth
+export interface SignupData {
   name: string;
   lastName: string;
   email: string;
   password: string;
-}) => {
-  const response = await axios.post(`${BASE_URL}/signup`, userData);
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+}
+
+// Signup
+export const signupUser = async (userData: SignupData): Promise<void> => {
+  await authApi.post("/signup", userData);
+};
+
+// Login
+export const loginUser = async (credentials: LoginCredentials): Promise<AuthUser> => {
+  const response = await authApi.post("/login", credentials);
   return response.data;
 };
 
-export const loginUser = async (credentials: {
-  email: string;
-  password: string;
-}) => {
-  const response = await axios.post(`${BASE_URL}/login`, credentials, {
-    withCredentials: true, // ensures cookie/session is sent
-  });
-  return response.data; // contains { id, email, name }
+// Logout
+export const logoutUser = async (): Promise<void> => {
+  await authApi.post("/logout");
+};
+
+// Get current user session
+export const getCurrentUser = async (): Promise<AuthUser> => {
+  const response = await authApi.get("/me");
+  return response.data;
 };

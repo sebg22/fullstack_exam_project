@@ -1,60 +1,51 @@
-import { Box, Button, Input, Heading, useToast } from "@chakra-ui/react";
 import { useState } from "react";
+import { Box, Button, Input, Heading, useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { signupUser } from "../services/auth";
 
 function Signup() {
-  const [form, setForm] = useState({
-    name: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
-
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const toast = useToast();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSignup = async () => {
+    setIsLoading(true);
+    try {
+      await signupUser({ name, lastName, email, password });
+
+      toast({
+        title: "Success",
+        description: "Registered successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate("/login");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.error || "Signup failed. Try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-const [isLoading, setIsLoading] = useState(false);
-
-const handleSignup = async () => {
-  setIsLoading(true);
-  try {
-    const result = await signupUser(form);
-    toast({
-      title: "Success",
-      description: "Registered successfully!",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-
-    setForm({ name: "", lastName: "", email: "", password: "" });
-  } catch (error: any) {
-    const message =
-      error.response?.data?.error || "Signup failed. Try again.";
-
-    toast({
-      title: "Error",
-      description: message,
-      status: "error",
-      duration: 3000,
-      isClosable: true,
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
-
 
   return (
     <Box maxW="sm" mx="auto" mt="50px" p="3" boxShadow="lg" borderRadius="md">
       <Heading mb="4">Sign up to Coin Vault</Heading>
-      <Input name="name" placeholder="Name" mb="4" onChange={handleChange} />
-      <Input name="lastName" placeholder="Last name" mb="4" onChange={handleChange} />
-      <Input name="email" placeholder="E-mail" mb="4" onChange={handleChange} />
-      <Input name="password" placeholder="Password" mb="4" type="password" onChange={handleChange} />
+      <Input placeholder="Name" mb="4" value={name} onChange={(e) => setName(e.target.value)} />
+      <Input placeholder="Last name" mb="4" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+      <Input placeholder="E-mail" mb="4" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Input placeholder="Password" mb="4" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <Button onClick={handleSignup} isLoading={isLoading} colorScheme="blue" width="100%">
         Sign up
       </Button>
