@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import EditProfile from "./pages/EditProfile";
 import Login from "./pages/Login";
 import Coin from "./pages/Coin";
+import Signup from "./pages/Signup";
 import Learn from "./pages/Learn";
 import CryptoCurrencies from "./pages/CryptoCurrencies";
 
@@ -14,11 +15,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <HomePage /> }, // GET “/”
-      { path: "editProfile", element: <EditProfile /> }, // GET “/edit-profile”
-      { path: "login", element: <Login /> }, // GET “/login”
+      { index: true, element: <HomePage /> },              // GET “/”
+      { path: "editProfile", element: <EditProfile /> },   // GET “/edit-profile”
+      { path: "login", element: <Login /> },               // GET “/login”
       { path: "cryptocurrencies", element: <CryptoCurrencies /> }, // GET “/crypto-currencies”
-      { path: "coin/:id", element: <Coin /> }, // GET “/coin/:id”
+      { path: "signup", element: <Signup /> },               // GET “/login”
+      { path: "coin/:id", element: <Coin /> },             // GET “/coin/:id”
       { path: "learn", element: <Learn />},
     ],
   },
