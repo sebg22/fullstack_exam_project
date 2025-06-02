@@ -1,60 +1,109 @@
 // src/components/Footer.tsx
-
 import React from "react";
 import {
   Box,
-  Flex,
+  Grid,
+  GridItem,
   Stack,
   Text,
   Link,
   IconButton,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FaFacebookF, FaTwitter, FaDiscord } from "react-icons/fa";
+import { FaFacebookF, FaDiscord } from "react-icons/fa";
 import CoinvaultLogo from "./CoinvaultLogo";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer: React.FC = () => {
-  // Background and text colors (adjust as needed)
+  // Background/text colors for light vs dark
   const bg = useColorModeValue("gray.50", "gray.900");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
 
   return (
     <Box as="footer" w="100%" bg={bg} color={textColor}>
-      {/* ──────────────────────────────────────────────── */}
-      {/* Top section: Address | Logo+Links | Contact */}
-      <Flex
+      <Grid
+        // 1-column on mobile, 3-columns on md+
+        templateColumns={{ base: "1fr", md: "1fr auto 1fr" }}
+        // templateAreas define “slots” for each item at each breakpoint
+        templateAreas={{
+          base: `
+            "logo"
+            "address"
+            "contact"
+            "icons"
+            "copyright"
+          `,
+          md: `
+            "address center contact"
+            "copyright copyright copyright"
+          `,
+        }}
+        // spacing between grid items
+        gap={{ base: 6, md: 8 }}
+        // center everything horizontally up to maxW
         maxW="1200px"
         mx="auto"
-        py={{ base: 8, md: 12 }}
         px={{ base: 4, md: 8 }}
-        direction={{ base: "column", md: "row" }}
-        justify="space-between"
-        align={{ base: "flex-start", md: "flex-start" }}
-        gap={{ base: 8, md: 0 }}
       >
-        {/* ── Left column: Address ── */}
-        <Stack spacing={2} flex="1">
-          <Text fontWeight="bold">Address:</Text>
-          <Text fontSize="sm" color={subTextColor} lineHeight="1.4">
-            1234 Crypto Lane,
-            <br />
-            Blocktown, Web3 9000
-          </Text>
-        </Stack>
+        {/* ──────────────────────────────────────────────── */}
+        {/* LOGO (mobile-only since on md+ it lives in the “center” area) */}
+        <GridItem
+          area="logo"
+          display={{ base: "block", md: "none" }}
+          textAlign="center">
+          <CoinvaultLogo boxSize="150px" mx="auto" />
+        </GridItem>
 
-        {/* ── Center column: Logo + Links ── */}
-        <Stack
-          spacing={4}
-          textAlign="center"
-          align="center"
-          flex="1"
+        {/* ──────────────────────────────────────────────── */}
+        {/* ADDRESS (centered on mobile, left-aligned on md+) */}
+        <GridItem
+          area="address"
+          mt={{ base: -8, md: 0 }}
+          textAlign={{ base: "center", md: "left" }}
+          alignSelf={{ base: "auto", md: "center" }}
         >
-          {/* Logo (responsive size) */}
-          <CoinvaultLogo boxSize={{ base: "80px", md: "150px" }} />
+          <Stack
+            spacing={2}
+            align={{ base: "center", md: "flex-start" }}
+          >
+            <Text fontWeight="bold" fontSize={{base: "md", md: "lg" }}>Address:</Text>
+            <Text fontSize={{base: "md", md: "lg" }} color={subTextColor} lineHeight="1.4">
+              1234 Crypto Lane,
+              <br />
+              Blocktown, Web3 9000
+            </Text>
+          </Stack>
+        </GridItem>
 
-          {/* Social Icons */}
-          <Stack direction="row" spacing={4}>
+        {/* ──────────────────────────────────────────────── */}
+        {/* CONTACT (centered on mobile, right-aligned on md+) */}
+        <GridItem
+          area="contact"
+          textAlign={{ base: "center", md: "right" }}
+          alignSelf={{ base: "auto", md: "center" }}
+        >
+          <Stack
+            spacing={2}
+            align={{ base: "center", md: "flex-end" }}
+          >
+            <Text fontWeight="bold" fontSize={{base: "md", md: "lg" }}>Contact:</Text>
+            <Text fontSize={{base: "md", md: "lg" }} color={subTextColor} lineHeight="1.4">
+              support@coinvault.fake
+              <br />
+              +00 123 456 789
+            </Text>
+          </Stack>
+        </GridItem>
+
+        {/* ──────────────────────────────────────────────── */}
+        {/* ICONS (mobile-only; on md+ they live in the “center” area) */}
+        <GridItem
+          area="icons"
+          display={{ base: "block", md: "none" }}
+          textAlign="center"
+        >
+          <Stack direction="row" justify="center" spacing={6}>
             <Link href="https://facebook.com" isExternal>
               <IconButton
                 aria-label="Facebook"
@@ -66,8 +115,8 @@ const Footer: React.FC = () => {
             </Link>
             <Link href="https://x.com" isExternal>
               <IconButton
-                aria-label="X / Twitter"
-                icon={<FaTwitter />}
+                aria-label="Twitter"
+                icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
                 _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
@@ -83,31 +132,73 @@ const Footer: React.FC = () => {
               />
             </Link>
           </Stack>
-        </Stack>
+        </GridItem>
 
-        {/* ── Right column: Contact ── */}
-        <Stack spacing={2} flex="1" textAlign={{ base: "left", md: "right" }}>
-          <Text fontWeight="bold">Contact:</Text>
-          <Text fontSize="sm" color={subTextColor} lineHeight="1.4">
-            support@coinvault.fake
-            <br />
-            +00 123 456 789
-          </Text>
-        </Stack>
-      </Flex>
-
-      {/* ──────────────────────────────────────────────── */}
-      {/* Bottom section: Copyright */}
-      <Box borderTop="1px solid" borderColor={useColorModeValue("gray.200", "gray.700")}>
-        <Text
-          textAlign="center"
-          py={{ base: 4, md: 6 }}
-          fontSize="sm"
-          color={subTextColor}
+        {/* ──────────────────────────────────────────────── */}
+        {/*** CENTER AREA on md+: logo & icons stacked  ***/}
+        <GridItem
+          area="center"
+          display={{ base: "none", md: "flex" }}
+          flexDir="column"
+          alignItems="center"
+          justifyContent="center"
+          rowGap={6}
         >
-          © {new Date().getFullYear()} CoinVault
-        </Text>
-      </Box>
+          {/* Logo for md+ */}
+          <CoinvaultLogo boxSize="150px"  />
+          
+
+          {/* Social icons for md+ */}
+          <Stack direction="row" spacing={6}>
+            <Link href="https://facebook.com" isExternal>
+              <IconButton
+                aria-label="Facebook"
+                icon={<FaFacebookF />}
+                variant="ghost"
+                size="lg"
+                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              />
+            </Link>
+            <Link href="https://x.com" isExternal>
+              <IconButton
+                aria-label="X / Twitter"
+                icon={<FaXTwitter />}
+                variant="ghost"
+                size="lg"
+                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              />
+            </Link>
+            <Link href="https://discord.com" isExternal>
+              <IconButton
+                aria-label="Discord"
+                icon={<FaDiscord />}
+                variant="ghost"
+                size="lg"
+                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              />
+            </Link>
+          </Stack>
+        </GridItem>
+
+        {/* ──────────────────────────────────────────────── */}
+        {/* COPYRIGHT (spans all 3 columns on md, appears last in mobile) */}
+        <GridItem
+          area="copyright"
+          colSpan={{ base: 1, md: 3 }}
+          textAlign="center"
+        >
+          <Box
+            borderTop="1px solid"
+            borderColor={useColorModeValue("gray.200", "gray.700")}
+            pt={4}
+            mt={{ base: 6, md: 8 }}
+          >
+            <Text fontSize="sm" color={subTextColor}>
+              © {new Date().getFullYear()} CoinVault
+            </Text>
+          </Box>
+        </GridItem>
+      </Grid>
     </Box>
   );
 };
