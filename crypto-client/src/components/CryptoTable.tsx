@@ -25,7 +25,7 @@ const CryptoTable = ({ cryptos, loading, error }: Props) => {
 
   return (
     <TableContainer whiteSpace="normal">
-      <Table bg="white" borderRadius="md" boxShadow="md" color="black">
+      <Table bg="cardBg" borderRadius="md" boxShadow="md" color="black">
         <Thead>
           <Tr>
             <Th>Coin</Th>
