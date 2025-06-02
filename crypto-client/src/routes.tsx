@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Coin from "./pages/Coin";
 import Signup from "./pages/Signup";
 import CryptoCurrencies from "./pages/CryptoCurrencies";
+import Learn from "./pages/Learn";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "cryptocurrencies", element: <CryptoCurrencies /> }, // GET “/crypto-currencies”
       { path: "signup", element: <Signup /> },               // GET “/login”
       { path: "coin/:id", element: <Coin /> },             // GET “/coin/:id”
+      { path: "learn", element: <Learn /> },             // GET “/learn”
 
     ],
   },
