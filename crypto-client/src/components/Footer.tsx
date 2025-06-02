@@ -46,7 +46,6 @@ const Footer: React.FC = () => {
         mx="auto"
         px={{ base: 4, md: 8 }}
       >
-        {/* ──────────────────────────────────────────────── */}
         {/* LOGO (mobile-only since on md+ it lives in the “center” area) */}
         <GridItem
           area="logo"
@@ -55,7 +54,6 @@ const Footer: React.FC = () => {
           <CoinvaultLogo boxSize="150px" mx="auto" />
         </GridItem>
 
-        {/* ──────────────────────────────────────────────── */}
         {/* ADDRESS (centered on mobile, left-aligned on md+) */}
         <GridItem
           area="address"
@@ -76,7 +74,6 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* ──────────────────────────────────────────────── */}
         {/* CONTACT (centered on mobile, right-aligned on md+) */}
         <GridItem
           area="contact"
@@ -96,7 +93,6 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* ──────────────────────────────────────────────── */}
         {/* ICONS (mobile-only; on md+ they live in the “center” area) */}
         <GridItem
           area="icons"
@@ -134,7 +130,6 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* ──────────────────────────────────────────────── */}
         {/*** CENTER AREA on md+: logo & icons stacked  ***/}
         <GridItem
           area="center"
@@ -180,7 +175,6 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* ──────────────────────────────────────────────── */}
         {/* COPYRIGHT (spans all 3 columns on md, appears last in mobile) */}
         <GridItem
           area="copyright"
