@@ -2,6 +2,8 @@ import { Box, Button, Input, Heading, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function EditProfile() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -11,18 +13,19 @@ function EditProfile() {
 
   // Fetch profile data
   useEffect(() => {
-    axios.get("http://localhost:5000/me", { withCredentials: true })
-      .then(res => {
+    axios
+      .get(`${API_URL}/me`, { withCredentials: true })
+      .then((res) => {
         const userId = res.data.userId;
-        return axios.get(`http://localhost:5000/user/${userId}`, { withCredentials: true });
+        return axios.get(`${API_URL}/user/${userId}`, { withCredentials: true });
       })
-      .then(res => {
+      .then((res) => {
         const { name, last_name, email } = res.data;
         setName(name);
         setLastName(last_name);
         setEmail(email);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to load profile", err);
         toast({
           title: "Error loading profile",
@@ -34,42 +37,45 @@ function EditProfile() {
   }, []);
 
   // Submit profile update
-const handleSave = () => {
-  axios
-    .put("http://localhost:5000/profile", { name, lastName, email }, { withCredentials: true })
-    .then(() => {
-      toast({
-        title: "Profile updated",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    })
-    .catch((err) => {
-      console.error("Update error", err);
+  const handleSave = () => {
+    axios
+      .put(
+        `${API_URL}/profile`,
+        { name, lastName, email },
+        { withCredentials: true }
+      )
+      .then(() => {
+        toast({
+          title: "Profile updated",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        console.error("Update error", err);
 
-      const errorData = err.response?.data;
+        const errorData = err.response?.data;
+        let description = "Failed to update profile.";
 
-      let description = "Failed to update profile.";
-
-      if (errorData?.errors) {
-        const firstError = Object.values(errorData.errors)[0];
-        if (typeof firstError === "string") {
-          description = firstError;
+        if (errorData?.errors) {
+          const firstError = Object.values(errorData.errors)[0];
+          if (typeof firstError === "string") {
+            description = firstError;
+          }
+        } else if (errorData?.error) {
+          description = errorData.error;
         }
-      } else if (errorData?.error) {
-        description = errorData.error;
-      }
 
-      toast({
-        title: "Error",
-        description,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
+        toast({
+          title: "Error",
+          description,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       });
-    });
-};
+  };
 
   return (
     <Box maxW="sm" mx="auto" mt="50px" p="4" boxShadow="lg" borderRadius="md">

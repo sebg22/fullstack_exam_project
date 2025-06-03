@@ -17,6 +17,15 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: "user" })
+  role: string;
+
+  @Column({ default: false })
+  is_deleted: boolean;
+
+  @Column({ default: false })
+  is_blocked: boolean;
+
   @CreateDateColumn()
   user_created_at: Date;
 
