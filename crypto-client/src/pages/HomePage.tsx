@@ -2,6 +2,7 @@ import { Grid, GridItem, Text, Link } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
 import useTopCryptos from "../hooks/useTopCryptos";
 import { Link as RouterLink } from "react-router-dom";
+import HomePageCTA from "../components/HomePageCTA";
 
 export default function HomePage() {
   const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
@@ -18,6 +19,7 @@ export default function HomePage() {
     </GridItem>
       <GridItem area="main">
         <CryptoTable cryptos={cryptos} loading={loading} error={error} />
+        <HomePageCTA />
       </GridItem>
     </Grid>
   );
