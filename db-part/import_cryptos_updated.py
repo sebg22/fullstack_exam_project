@@ -82,8 +82,8 @@ try:
         id, symbol, name, image, current_price, market_cap, market_cap_rank,
         total_volume, circulating_supply, price_change_percentage_24h,
         description, total_supply, max_supply, ath, price_change_percentage_1y,
-        fdv, genesis_date, is_stablecoin
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        fdv, genesis_date, is_stablecoin, chart_data
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     ON CONFLICT (id) DO NOTHING;
     """
 
@@ -107,7 +107,9 @@ try:
             safe_get(entry, "fdv", None),
             safe_get(entry, "genesis_date", None),
             entry.get("is_stablecoin"),
+            json.dumps(entry.get("chart_data", [])),
         ))
+
 
     conn.commit()
     cursor.close()

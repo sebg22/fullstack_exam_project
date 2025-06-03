@@ -69,7 +69,7 @@ export default function Coin() {
 
         {/* Main content */}
         <Box flex="1" order={{ base: 1, md: 2 }} pb={{ base: 6, md: 0 }} pl={{ md: 8 }}>
-          <CoinPriceChart price={coin.price} change={coin.priceChangePercentage24h} />
+          <CoinPriceChart price={coin.price} change={coin.priceChangePercentage24h} chartData={coin.chartData} />
 
           <Box>
             <Box py={6}>

@@ -20,6 +20,12 @@ export interface CryptoData {
   price_change_percentage_24h: number;
 }
 
+export interface ChartPoint {
+  time: string;
+  price: number;
+}
+
+
 // Hent top 10 til forsiden
 // Function to fetch top 10 coins
 export const getTopCryptos = async (): Promise<CryptoData[]> => {
@@ -47,6 +53,7 @@ export const getAllCryptos = async (): Promise<CryptoData[]> => {
 
 // Main app type
 export interface CoinData {
+  chartData: ChartPoint[];
   id: string;
   name: string;
   symbol: string;
@@ -87,6 +94,7 @@ export const getCoinDetails = async (id: string): Promise<CoinData> => {
       marketCapRank: Number(response.data.market_cap_rank),
       volume24h: Number(response.data.total_volume),
       priceChangePercentage1y: Number(response.data.price_change_percentage_1y),
+      chartData: response.data.chart_data || [],
     };
   } catch (error) {
     console.error("API fejl:", error);
