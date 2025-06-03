@@ -14,14 +14,11 @@ import { FaFacebookF, FaDiscord } from "react-icons/fa";
 import CoinvaultLogo from "./CoinVaultLogo";
 import { FaXTwitter } from "react-icons/fa6";
 
+
 const Footer: React.FC = () => {
   // Background/text colors for light vs dark
-  const bg = useColorModeValue("gray.50", "gray.900");
-  const textColor = useColorModeValue("gray.700", "gray.200");
-  const subTextColor = useColorModeValue("gray.600", "gray.400");
-
   return (
-    <Box as="footer" w="100%" bg={bg} color={textColor}>
+    <Box as="footer" w="100%" bg="bg" color="footerTextColor" py={8}>
       <Grid
         // 1-column on mobile, 3-columns on md+
         templateColumns={{ base: "1fr", md: "1fr auto 1fr" }}
@@ -66,7 +63,7 @@ const Footer: React.FC = () => {
             align={{ base: "center", md: "flex-start" }}
           >
             <Text fontWeight="bold" fontSize={{base: "md", md: "lg" }}>Address:</Text>
-            <Text fontSize={{base: "md", md: "lg" }} color={subTextColor} lineHeight="1.4">
+            <Text fontSize={{base: "md", md: "lg" }} color="footerSubTextColor" lineHeight="1.4">
               1234 Crypto Lane,
               <br />
               Blocktown, Web3 9000
@@ -85,7 +82,7 @@ const Footer: React.FC = () => {
             align={{ base: "center", md: "flex-end" }}
           >
             <Text fontWeight="bold" fontSize={{base: "md", md: "lg" }}>Contact:</Text>
-            <Text fontSize={{base: "md", md: "lg" }} color={subTextColor} lineHeight="1.4">
+            <Text fontSize={{base: "md", md: "lg" }} color="footerSubTextColor" lineHeight="1.4">
               support@coinvault.fake
               <br />
               +45 123 456 78
@@ -106,7 +103,7 @@ const Footer: React.FC = () => {
                 icon={<FaFacebookF />}
                 variant="ghost"
                 size="lg"
-                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+                _hover="footerHoverColor"
               />
             </Link>
             <Link href="https://x.com" isExternal>
@@ -115,7 +112,7 @@ const Footer: React.FC = () => {
                 icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
-                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+                _hover="footerHoverColor"
               />
             </Link>
             <Link href="https://discord.com" isExternal>
@@ -124,7 +121,7 @@ const Footer: React.FC = () => {
                 icon={<FaDiscord />}
                 variant="ghost"
                 size="lg"
-                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+                _hover="footerHoverColor"
               />
             </Link>
           </Stack>
@@ -151,7 +148,7 @@ const Footer: React.FC = () => {
                 icon={<FaFacebookF />}
                 variant="ghost"
                 size="lg"
-                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+                _hover="footerHoverColor"
               />
             </Link>
             <Link href="https://x.com" isExternal>
@@ -160,7 +157,7 @@ const Footer: React.FC = () => {
                 icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
-                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+                _hover="footerHoverColor"
               />
             </Link>
             <Link href="https://discord.com" isExternal>
@@ -169,7 +166,7 @@ const Footer: React.FC = () => {
                 icon={<FaDiscord />}
                 variant="ghost"
                 size="lg"
-                _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+                _hover="footerHoverColor"
               />
             </Link>
           </Stack>
@@ -183,11 +180,11 @@ const Footer: React.FC = () => {
         >
           <Box
             borderTop="1px solid"
-            borderColor={useColorModeValue("gray.200", "gray.700")}
+            borderColor="divider"
             pt={4}
             mt={{ base: 6, md: 8 }}
           >
-            <Text fontSize="sm" color={subTextColor}>
+            <Text fontSize="sm" color="footerSubTextColor">
               © {new Date().getFullYear()} CoinVault
             </Text>
           </Box>
