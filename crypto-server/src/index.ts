@@ -181,9 +181,23 @@ AppDataSource.initialize().then(() => {
         return;
       }
 
-      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (user.is_deleted) {
+        res.status(403).json({ error: "Account is deleted." });
+        return;
+      }
 
-      if (!passwordMatch) {
+      if (user.is_blocked) {
+        res.status(403).json({ error: "Account is blocked." });
+        return;
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+          
+      console.log("Stored hash:", user.password);
+      console.log("Entered password:", password);
+      console.log("Match result:", match);
+          
+      if (!match) {
         res.status(401).json({ error: "Invalid credentials." });
         return;
       }
@@ -300,6 +314,7 @@ AppDataSource.initialize().then(() => {
         name: user.name,
         last_name: user.last_name,
         email: user.email,
+        role: user.role,
       });
     } catch (err) {
       console.error("Error fetching user:", err);
@@ -339,6 +354,87 @@ AppDataSource.initialize().then(() => {
       console.error("Error fetching crypto by id:", error);
       res.status(500).json({ error: "Something went wrong" });
     }
+  });
+
+  // GET /admin/users - only accessible by admin
+  app.get("/admin/users", async (req: CustomRequest, res: Response) => {
+    const userRepo = AppDataSource.getRepository(User);
+
+    const currentUser = await userRepo.findOneBy({ id: String(req.session.userId) });
+
+    if (!currentUser || currentUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const users = await userRepo.find();
+    res.json(users);
+  });
+
+    // BLOCK user
+  app.patch("/admin/block/:id", async (req: CustomRequest, res: Response) => {
+    const userId = req.session.userId;
+    const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    if (!targetUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    targetUser.is_blocked = true;
+    await AppDataSource.getRepository(User).save(targetUser);
+
+    res.json({ message: "User blocked" });
+  });
+
+  // UNBLOCK user
+  app.patch("/admin/unblock/:id", async (req: CustomRequest, res: Response) => {
+    const userId = req.session.userId;
+    const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    if (!targetUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    targetUser.is_blocked = false;
+    await AppDataSource.getRepository(User).save(targetUser);
+
+    res.json({ message: "User unblocked" });
+  });
+
+  // SOFT DELETE user
+  app.patch("/admin/delete/:id", async (req: CustomRequest, res: Response) => {
+    const userId = req.session.userId;
+    const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    if (!targetUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    targetUser.is_deleted = true;
+    await AppDataSource.getRepository(User).save(targetUser);
+
+    res.json({ message: "User soft deleted" });
   });
 
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
