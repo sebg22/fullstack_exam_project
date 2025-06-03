@@ -24,6 +24,9 @@ const NavBar = () => {
         </>
       ) : (
         <>
+          <Button colorScheme="blue" mr="1rem" onClick={() => navigate("/learn")}>
+            Learn
+          </Button>
           <Button colorScheme="blue" onClick={() => navigate("/signup")}>
             Sign Up
           </Button>
