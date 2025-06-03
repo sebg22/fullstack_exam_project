@@ -93,3 +93,48 @@ export const getCoinDetails = async (id: string): Promise<CoinData> => {
     throw error;
   }
 };
+
+export type FilterParams = {
+  top?: string;
+  price_range?: string;
+  gainers?: string;
+  losers?: string;
+  stablecoins?: string;
+  new?: string;
+  old?: string;
+  page?: string;
+  pageSize?: string;
+};
+
+export const getFilteredCryptos = async (
+  filters: FilterParams
+): Promise<{
+  data: CryptoData[];
+  totalPages: number;
+}> => {
+  try {
+    const adjustedFilters = { ...filters };
+
+    if (filters.top) {
+      adjustedFilters.page = "1";
+      adjustedFilters.pageSize = filters.top;
+      delete adjustedFilters.top;
+    }
+
+    const params = new URLSearchParams(adjustedFilters).toString();
+    console.log("Fetching with:", params);
+
+    const res = await coingeckoApi.get(`/all_cryptos/filtered?${params}`);
+
+    return {
+      data: res.data.data,
+      totalPages: res.data.totalPages,
+    };
+  } catch (err) {
+    console.error("Error fetching filtered cryptos:", err);
+    return {
+      data: [],
+      totalPages: 1,
+    };
+  }
+};

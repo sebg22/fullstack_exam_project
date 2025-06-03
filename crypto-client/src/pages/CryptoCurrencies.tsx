@@ -1,10 +1,20 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
 import SideMenu from "../components/SideMenu";
-import useCrypto from "../hooks/useCrypto";
+import { useFilteredCryptos } from "../hooks/useFilteredCryptos";
+import { useState } from "react";
+import { FilterParams } from "../services/coingecko";
 
 export default function CryptoCurrencies() {
-  const { cryptos, loading, error } = useCrypto(); // Get data using our custom hook
+  // Initial filters with page and pageSize: Top 10
+  const [filters, setFilters] = useState<FilterParams>({
+    page: "1",
+    pageSize: "20", // default to Top 10
+    top: "10",
+  });
+
+  // Use your filtered hook that fetches based on the filters
+  const { data: cryptos, loading, error } = useFilteredCryptos(filters);
 
   return (
     <Grid
@@ -15,9 +25,13 @@ export default function CryptoCurrencies() {
       <Show above="lg">
         <GridItem area="aside" w="100%" pl="2" pr="4">
           <SideMenu
-            setFilter={function (filter: string): void {
-              throw new Error("Function not implemented.");
-            }}
+            activeFilter={filters} // so the menu knows which filter is active
+            setFilter={(newFilters: FilterParams) =>
+              setFilters({
+                ...newFilters,
+                page: "1", // always reset to page 1 on new filter
+              })
+            }
           />
         </GridItem>
       </Show>
