@@ -193,10 +193,6 @@ AppDataSource.initialize().then(() => {
 
       const match = await bcrypt.compare(password, user.password);
           
-      console.log("Stored hash:", user.password);
-      console.log("Entered password:", password);
-      console.log("Match result:", match);
-          
       if (!match) {
         res.status(401).json({ error: "Invalid credentials." });
         return;
