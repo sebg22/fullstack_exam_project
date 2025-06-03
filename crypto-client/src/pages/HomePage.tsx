@@ -2,7 +2,7 @@ import { Grid, GridItem, Text, Link } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
 import useTopCryptos from "../hooks/useTopCryptos";
 import { Link as RouterLink } from "react-router-dom";
-import HomePageCTA from "../components/HomePageCTA";
+import HomePageNewsletter from "../components/HomePageNewsletter";
 
 export default function HomePage() {
   const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
@@ -13,14 +13,15 @@ export default function HomePage() {
         base: `"header" "main"`,
         lg: `"header header" "main"`,
       }}>
-        <GridItem area="header" mb={4}>
-      <Text fontSize="xx-large" color="text">Today's top 10 cryptocurrencies</Text>
-      <Text fontSize="small">The global crypto market cap is $2.96T. <Link as={RouterLink} to="/learn">Read More</Link></Text>  
-    </GridItem>
+      <GridItem area="header" mb={4}>
+        <Text fontSize="xx-large" color="text">Today's top 10 cryptocurrencies</Text>
+        <Text fontSize="small">The global crypto market cap is $2.96T. <Link as={RouterLink} to="/learn">Read More</Link></Text>  
+      </GridItem>
       <GridItem area="main">
         <CryptoTable cryptos={cryptos} loading={loading} error={error} />
-        <HomePageCTA />
+        <HomePageNewsletter />
       </GridItem>
     </Grid>
   );
 }
+
