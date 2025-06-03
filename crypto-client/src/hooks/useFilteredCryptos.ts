@@ -1,21 +1,37 @@
 import { useEffect, useState } from "react";
 import { CryptoData, getFilteredCryptos } from "../services/coingecko";
 
-export const useFilteredCryptos = (filters: Record<string, any>) => {
+type Filters = Record<string, any>;
+
+export const useFilteredCryptos = (filters?: Filters, pageSize = 10) => {
   const [data, setData] = useState<CryptoData[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  // Reset data & page when filters change
+  useEffect(() => {
+    setData([]);
+    setPage(1);
+    setHasMore(true);
+  }, [JSON.stringify(filters)]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      setError(""); // reset error
+      setError("");
       try {
-        const result = await getFilteredCryptos(filters);
-        setData(result.data);
-        setTotalPages(result.totalPages);
-      } catch (err) {
+        // Include filters + pagination
+        const params = { ...filters, page: String(page), pageSize: String(pageSize) };
+        const result = await getFilteredCryptos(params);
+        console.log("API result:", result);
+
+        setData((prev) => (page === 1 ? result.data : [...prev, ...result.data]));
+
+        // If fewer items than requested, no more pages
+        setHasMore(result.data.length === pageSize);
+      } catch {
         setError("Failed to fetch cryptocurrencies");
       } finally {
         setLoading(false);
@@ -23,7 +39,14 @@ export const useFilteredCryptos = (filters: Record<string, any>) => {
     };
 
     fetchData();
-  }, [filters]);
+  }, [filters, page, pageSize]);
 
-  return { data, totalPages, loading, error };
+  // Function to load next page
+  const loadMore = () => {
+    if (hasMore && !loading) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  return { data, loading, error, hasMore, loadMore };
 };

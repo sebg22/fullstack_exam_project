@@ -20,31 +20,6 @@ export interface CryptoData {
   price_change_percentage_24h: number;
 }
 
-// Hent top 10 til forsiden
-// Function to fetch top 10 coins
-export const getTopCryptos = async (): Promise<CryptoData[]> => {
-  try {
-    const response = await coingeckoApi.get("/all_cryptos", {
-      params: { limit: 10 },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching top cryptocurrencies:", error);
-    return [];
-  }
-};
-
-// Hent alle til undersiden
-export const getAllCryptos = async (): Promise<CryptoData[]> => {
-  try {
-    const response = await coingeckoApi.get("/all_cryptos");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching all cryptocurrencies:", error);
-    return [];
-  }
-};
-
 // Main app type
 export interface CoinData {
   id: string;
@@ -110,15 +85,15 @@ export const getFilteredCryptos = async (
   filters: FilterParams
 ): Promise<{
   data: CryptoData[];
-  totalPages: number;
 }> => {
   try {
-    const adjustedFilters = { ...filters };
+    const adjustedFilters: Record<string, string> = {};
 
-    if (filters.top) {
-      adjustedFilters.page = "1";
-      adjustedFilters.pageSize = filters.top;
-      delete adjustedFilters.top;
+    for (const key in filters) {
+      const val = filters[key as keyof FilterParams];
+      if (val !== undefined) {
+        adjustedFilters[key] = String(val);
+      }
     }
 
     const params = new URLSearchParams(adjustedFilters).toString();
@@ -128,13 +103,11 @@ export const getFilteredCryptos = async (
 
     return {
       data: res.data.data,
-      totalPages: res.data.totalPages,
     };
   } catch (err) {
     console.error("Error fetching filtered cryptos:", err);
     return {
       data: [],
-      totalPages: 1,
     };
   }
 };

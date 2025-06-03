@@ -1,20 +1,16 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Button, Grid, GridItem, Show } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
 import SideMenu from "../components/SideMenu";
 import { useFilteredCryptos } from "../hooks/useFilteredCryptos";
-import { useState } from "react";
 import { FilterParams } from "../services/coingecko";
 
 export default function CryptoCurrencies() {
-  // Initial filters with page and pageSize: Top 10
-  const [filters, setFilters] = useState<FilterParams>({
-    page: "1",
-    pageSize: "20", // default to Top 10
-    top: "10",
-  });
+  // Set the initial default filter here:
+  const [filters, setFilters] = useState<FilterParams>({ top: "10" });
 
-  // Use your filtered hook that fetches based on the filters
-  const { data: cryptos, loading, error } = useFilteredCryptos(filters);
+  // 2. Use your hook with this state
+  const { data: cryptos, loading, error, hasMore, loadMore } = useFilteredCryptos(filters, 10);
 
   return (
     <Grid
@@ -24,20 +20,36 @@ export default function CryptoCurrencies() {
       }}>
       <Show above="lg">
         <GridItem area="aside" w="100%" pl="2" pr="4">
-          <SideMenu
-            activeFilter={filters} // so the menu knows which filter is active
-            setFilter={(newFilters: FilterParams) =>
-              setFilters({
-                ...newFilters,
-                page: "1", // always reset to page 1 on new filter
-              })
-            }
-          />
+          {/* 3. Pass filters and setter to SideMenu */}
+          <SideMenu activeFilter={filters} setFilter={setFilters} />
         </GridItem>
       </Show>
 
       <GridItem area="main">
         <CryptoTable cryptos={cryptos} loading={loading} error={error} />
+
+        {!loading && (
+          <>
+            {hasMore ? (
+              <Box textAlign="center">
+                <Button
+                  onClick={() => {
+                    loadMore();
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                  }}
+                  mt={4}>
+                  Show More
+                </Button>
+              </Box>
+            ) : (
+              cryptos.length > 0 && (
+                <Box mt={4} textAlign="center" color="gray.500">
+                  No more coins to show.
+                </Box>
+              )
+            )}
+          </>
+        )}
       </GridItem>
     </Grid>
   );

@@ -1,10 +1,9 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
-import SideMenu from "../components/SideMenu";
-import useTopCryptos from "../hooks/useTopCryptos";
+import { useFilteredCryptos } from "../hooks/useFilteredCryptos";
 
 export default function HomePage() {
-  const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
+  const { data: cryptos, loading, error } = useFilteredCryptos(); // Get data using our custom hook
 
   return (
     <Grid

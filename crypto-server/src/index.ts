@@ -12,31 +12,7 @@ app.use(express.json());
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
 
-  // Get  10 or all cryptos
-  app.get("/all_cryptos", async (req, res) => {
-    try {
-      // Henter limit-parameteren fra URL'en, så enten 10 eller undefined
-      const limitParam = req.query.limit as string | undefined;
-      // Hvis limitParam findes (altså ikke er undefined eller tom), så parser vi det som tal. Hvis limitParam ikke findes, så bliver limit sat til undefined
-      const limit = limitParam ? parseInt(limitParam) : undefined;
-
-      console.log("DETTE ER LIMIT", limit);
-
-      const cryptos = await AppDataSource.getRepository(Crypto).find({
-        take: limit,
-        order: { market_cap: "DESC" },
-        //Her definerer vi præcist de kolonner vi vil have retur fra databasen
-        select: ["id", "image", "name", "symbol", "current_price", "price_change_percentage_24h", "market_cap", "total_volume", "circulating_supply"],
-      });
-
-      res.json(cryptos);
-    } catch (error) {
-      console.error("Error fetching cryptos:", error);
-      res.status(500).json({ error: "Something went wrong" });
-    }
-  });
-
-  //endpoint for specific coin by id
+  // Endpoint for specific coin by id
   app.get("/coins/:id", async (req, res) => {
     try {
       const id = req.params.id;
@@ -74,26 +50,26 @@ AppDataSource.initialize().then(() => {
   app.get("/all_cryptos/filtered", async (req, res) => {
     try {
       const {
-        top,
+        top = "10", // Default: top 10 coins by market cap
         price_range,
         gainers,
         losers,
         stablecoins,
         new: isNew,
-        old: isOld, // ✅ use this name in the if-statement below
-        page = "1",
-        pageSize = "50",
+        old: isOld,
+        page = "1", // Default to page 1
+        pageSize = "10", // Default 10 items per page
       } = req.query;
 
       const repo = AppDataSource.getRepository(Crypto);
       const qb = repo.createQueryBuilder("crypto");
 
-      // 🔝 Top Coins
+      // Filter: top N by market cap rank
       if (top) {
         qb.andWhere("crypto.market_cap_rank <= :top", { top: parseInt(top as string) });
       }
 
-      // 💲 Price Range
+      // Price range filters
       if (price_range === "under_1") {
         qb.andWhere("crypto.current_price < 1");
       } else if (price_range === "1_100") {
@@ -102,19 +78,19 @@ AppDataSource.initialize().then(() => {
         qb.andWhere("crypto.current_price > 100");
       }
 
-      // 📈 Gainers / 📉 Losers
+      // Gainers / losers
       if (gainers === "true") {
         qb.andWhere("crypto.price_change_percentage_24h > 0");
       } else if (losers === "true") {
         qb.andWhere("crypto.price_change_percentage_24h < 0");
       }
 
-      // 🏦 Stablecoins
+      // Stablecoins
       if (stablecoins === "true") {
         qb.andWhere("crypto.is_stablecoin = true");
       }
 
-      // 🆕 New (last 6 months)
+      // New coins (launched within last 6 months)
       if (isNew === "true") {
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
@@ -123,7 +99,7 @@ AppDataSource.initialize().then(() => {
         });
       }
 
-      // 🏛️ Old (over 5 years)
+      // Old coins (launched more than 5 years ago)
       if (isOld === "true") {
         const fiveYearsAgo = new Date();
         fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
@@ -132,23 +108,26 @@ AppDataSource.initialize().then(() => {
         });
       }
 
-      // 📄 Pagination
-      const take = parseInt(pageSize as string) || 50;
-      const skip = (parseInt(page as string) - 1) * take;
+      // Parse pagination params and validate
+      const takeRaw = parseInt(pageSize as string);
+      const pageRaw = parseInt(page as string);
 
-      const [cryptos, total] = await qb
+      const take = !isNaN(takeRaw) && takeRaw > 0 && takeRaw <= 100 ? takeRaw : 10;
+      const currentPage = !isNaN(pageRaw) && pageRaw > 0 ? pageRaw : 1;
+      const skip = (currentPage - 1) * take;
+
+      // Execute query with pagination and sorting by market cap desc
+      const cryptos = await qb
         .select(["crypto.id", "crypto.image", "crypto.name", "crypto.symbol", "crypto.current_price", "crypto.price_change_percentage_24h", "crypto.market_cap", "crypto.total_volume", "crypto.circulating_supply"])
         .orderBy("crypto.market_cap", "DESC")
         .skip(skip)
         .take(take)
-        .getManyAndCount();
+        .getMany();
 
       res.json({
         data: cryptos,
-        total,
-        page: parseInt(page as string),
         pageSize: take,
-        totalPages: Math.ceil(total / take),
+        page: currentPage,
       });
     } catch (error) {
       console.error("Error with filtered cryptos:", error);
