@@ -1,37 +1,40 @@
 import { useEffect, useState } from "react";
 import { CryptoData, getFilteredCryptos } from "../services/coingecko";
+import { Filters } from "./useCryptoFilters"; // import type from step 1
 
-type Filters = Record<string, any>;
-
-export const useFilteredCryptos = (filters?: Filters, pageSize = 10) => {
+export const usePaginatedCryptos = (filters: Filters, pageSize = 10) => {
   const [data, setData] = useState<CryptoData[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>("");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [hasMore, setHasMore] = useState(true);
 
-  // Reset data & page when filters change
+  // Reset pagination when filters change (deep comparison using JSON.stringify)
   useEffect(() => {
-    setData([]);
+    console.log("Filters changed!!!", filters);
     setPage(1);
+    setData([]);
     setHasMore(true);
   }, [JSON.stringify(filters)]);
 
+  // Fetch data when filters, page, or pageSize change (deep comparison for filters)
   useEffect(() => {
+    console.log("Fetching data with page", page, "and filters", filters);
     const fetchData = async () => {
       setLoading(true);
       setError("");
       try {
-        // Include filters + pagination
         const params = { ...filters, page: String(page), pageSize: String(pageSize) };
         const result = await getFilteredCryptos(params);
-        console.log("API result:", result);
 
-        setData((prev) => (page === 1 ? result.data : [...prev, ...result.data]));
+        if (page === 1) {
+          setData(result.data);
+        } else {
+          setData((prev) => [...prev, ...result.data]);
+        }
 
-        // If fewer items than requested, no more pages
         setHasMore(result.data.length === pageSize);
-      } catch {
+      } catch (err) {
         setError("Failed to fetch cryptocurrencies");
       } finally {
         setLoading(false);
@@ -39,11 +42,10 @@ export const useFilteredCryptos = (filters?: Filters, pageSize = 10) => {
     };
 
     fetchData();
-  }, [filters, page, pageSize]);
+  }, [JSON.stringify(filters), page, pageSize]);
 
-  // Function to load next page
   const loadMore = () => {
-    if (hasMore && !loading) {
+    if (!loading && hasMore) {
       setPage((prev) => prev + 1);
     }
   };

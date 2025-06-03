@@ -50,23 +50,26 @@ AppDataSource.initialize().then(() => {
   app.get("/all_cryptos/filtered", async (req, res) => {
     try {
       const {
-        top = "10", // Default: top 10 coins by market cap
+        top, // <-- no default here
         price_range,
         gainers,
         losers,
         stablecoins,
         new: isNew,
         old: isOld,
-        page = "1", // Default to page 1
-        pageSize = "10", // Default 10 items per page
+        page = "1",
+        pageSize = "10",
       } = req.query;
 
       const repo = AppDataSource.getRepository(Crypto);
       const qb = repo.createQueryBuilder("crypto");
 
-      // Filter: top N by market cap rank
-      if (top) {
-        qb.andWhere("crypto.market_cap_rank <= :top", { top: parseInt(top as string) });
+      // Only apply top filter if provided and > 0
+      if (top !== undefined) {
+        const topNum = parseInt(top as string);
+        if (!isNaN(topNum) && topNum > 0) {
+          qb.andWhere("crypto.market_cap_rank <= :top", { top: topNum });
+        }
       }
 
       // Price range filters
@@ -90,7 +93,7 @@ AppDataSource.initialize().then(() => {
         qb.andWhere("crypto.is_stablecoin = true");
       }
 
-      // New coins (launched within last 6 months)
+      // New coins (last 6 months)
       if (isNew === "true") {
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
@@ -99,7 +102,7 @@ AppDataSource.initialize().then(() => {
         });
       }
 
-      // Old coins (launched more than 5 years ago)
+      // Old coins (more than 5 years old)
       if (isOld === "true") {
         const fiveYearsAgo = new Date();
         fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
@@ -108,7 +111,7 @@ AppDataSource.initialize().then(() => {
         });
       }
 
-      // Parse pagination params and validate
+      // Pagination params
       const takeRaw = parseInt(pageSize as string);
       const pageRaw = parseInt(page as string);
 
@@ -116,7 +119,7 @@ AppDataSource.initialize().then(() => {
       const currentPage = !isNaN(pageRaw) && pageRaw > 0 ? pageRaw : 1;
       const skip = (currentPage - 1) * take;
 
-      // Execute query with pagination and sorting by market cap desc
+      // Query with pagination & sorting
       const cryptos = await qb
         .select(["crypto.id", "crypto.image", "crypto.name", "crypto.symbol", "crypto.current_price", "crypto.price_change_percentage_24h", "crypto.market_cap", "crypto.total_volume", "crypto.circulating_supply"])
         .orderBy("crypto.market_cap", "DESC")

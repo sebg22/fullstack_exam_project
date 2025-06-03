@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { Box, Button, Grid, GridItem, Show } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
 import SideMenu from "../components/SideMenu";
-import { useFilteredCryptos } from "../hooks/useFilteredCryptos";
-import { FilterParams } from "../services/coingecko";
+import { useCryptoFilters } from "../hooks/useCryptoFilters";
+import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
 
 export default function CryptoCurrencies() {
-  // Set the initial default filter here:
-  const [filters, setFilters] = useState<FilterParams>({ top: "10" });
+  const { filters, setFilters } = useCryptoFilters({ top: "10" });
 
-  // 2. Use your hook with this state
-  const { data: cryptos, loading, error, hasMore, loadMore } = useFilteredCryptos(filters, 10);
+  const { data: cryptos, loading, error, hasMore, loadMore } = usePaginatedCryptos(filters, 10);
 
   return (
     <Grid
@@ -20,7 +17,6 @@ export default function CryptoCurrencies() {
       }}>
       <Show above="lg">
         <GridItem area="aside" w="100%" pl="2" pr="4">
-          {/* 3. Pass filters and setter to SideMenu */}
           <SideMenu activeFilter={filters} setFilter={setFilters} />
         </GridItem>
       </Show>
@@ -32,12 +28,7 @@ export default function CryptoCurrencies() {
           <>
             {hasMore ? (
               <Box textAlign="center">
-                <Button
-                  onClick={() => {
-                    loadMore();
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-                  }}
-                  mt={4}>
+                <Button onClick={loadMore} mt={4}>
                   Show More
                 </Button>
               </Box>

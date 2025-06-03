@@ -1,9 +1,11 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
-import { useFilteredCryptos } from "../hooks/useFilteredCryptos";
+import { useCryptoFilters } from "../hooks/useCryptoFilters";
+import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
 
 export default function HomePage() {
-  const { data: cryptos, loading, error } = useFilteredCryptos(); // Get data using our custom hook
+  const { filters } = useCryptoFilters({ top: "10" }); // Default filters
+  const { data: cryptos, loading, error } = usePaginatedCryptos(filters, 10); // Only page 1
 
   return (
     <Grid
