@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import { AppDataSource } from "./ormconfig";
 import { Crypto } from "./entities/Crypto";
@@ -14,6 +14,12 @@ declare module "express-session" {
   }
 }
 
+interface CustomRequest extends Request {
+  session: session.Session & {
+    userId?: string | number;
+  };
+}
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -23,7 +29,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 app.use(express.json());
 
@@ -43,7 +48,7 @@ app.use(
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
 
-  // Get  10 or all cryptos
+  // Get 10 or all cryptos
   app.get("/all_cryptos", async (req, res) => {
     try {
       // Henter limit-parameteren fra URL'en, så enten 10 eller undefined
@@ -57,7 +62,17 @@ AppDataSource.initialize().then(() => {
         take: limit,
         order: { market_cap: "DESC" },
         //Her definerer vi præcist de kolonner vi vil have retur fra databasen
-        select: ["id", "image", "name", "symbol", "current_price", "price_change_percentage_24h", "market_cap", "total_volume", "circulating_supply"],
+        select: [
+          "id",
+          "image",
+          "name",
+          "symbol",
+          "current_price",
+          "price_change_percentage_24h",
+          "market_cap",
+          "total_volume",
+          "circulating_supply",
+        ],
       });
 
       res.json(cryptos);
@@ -68,12 +83,39 @@ AppDataSource.initialize().then(() => {
   });
 
   // POST /signup
-  app.post("/signup", async (req, res) => {
+  app.post("/signup", async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, lastName, email, password } = req.body;
 
       if (!name || !lastName || !email || !password) {
         res.status(400).json({ error: "All fields are required." });
+        return;
+      }
+
+      // Regexes
+      const nameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,20}$/;
+      const lastNameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,50}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passwordRegex = /^.{6,}$/;
+
+      // input validation
+      const errors: Record<string, string> = {};
+
+      if (!nameRegex.test(name)) {
+        errors.name = "First name must only contain letters and be between 2 and 20 characters.";
+      }
+      if (!lastNameRegex.test(lastName)) {
+        errors.lastName = "Last name must only contain letters and be between 2 and 20 characters.";
+      }
+      if (!emailRegex.test(email)) {
+        errors.email = "Invalid email format.";
+      }
+      if (!passwordRegex.test(password)) {
+        errors.password = "Password must be at least 8 characters and contain letters and numbers.";
+      }
+
+      if (Object.keys(errors).length > 0) {
+        res.status(400).json({ errors });
         return;
       }
 
@@ -104,12 +146,30 @@ AppDataSource.initialize().then(() => {
   });
 
   // POST /login
-  app.post("/login", async (req, res) => {
+  app.post("/login", async (req: CustomRequest, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
 
       if (!email || !password) {
         res.status(400).json({ error: "Email and password are required." });
+        return;
+      }
+
+      // Regexes
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passwordRegex = /^.{6,}$/;
+
+      // input validation
+      const errors: Record<string, string> = {};
+      if (!emailRegex.test(email)) {
+        errors.email = "Invalid email format.";
+      }
+      if (!passwordRegex.test(password)) {
+        errors.password = "Password must be at least 8 characters and contain letters and numbers.";
+      }
+
+      if (Object.keys(errors).length > 0) {
+        res.status(400).json({ errors });
         return;
       }
 
@@ -121,9 +181,19 @@ AppDataSource.initialize().then(() => {
         return;
       }
 
-      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (user.is_deleted) {
+        res.status(403).json({ error: "Account is deleted." });
+        return;
+      }
 
-      if (!passwordMatch) {
+      if (user.is_blocked) {
+        res.status(403).json({ error: "Account is blocked." });
+        return;
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+          
+      if (!match) {
         res.status(401).json({ error: "Invalid credentials." });
         return;
       }
@@ -153,7 +223,6 @@ AppDataSource.initialize().then(() => {
     }
   });
 
-
   // POST /logout
   app.post("/logout", (req, res) => {
     req.session.destroy((err) => {
@@ -165,7 +234,89 @@ AppDataSource.initialize().then(() => {
     });
   });
 
-  // Start server
+  // PUT /profile
+  app.put("/profile", async (req: CustomRequest, res: Response): Promise<void> => {
+    const userId = req.session.userId;
+
+    if (!userId) {
+      res.status(401).json({ error: "Not authenticated." });
+      return;
+    }
+
+    const { name, lastName, email } = req.body;
+
+      // Regexes
+      const nameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,20}$/;
+      const lastNameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,50}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // input validation
+      const errors: Record<string, string> = {};
+
+      if (!nameRegex.test(name)) {
+        errors.name = "First name must only contain letters and be between 2 and 20 characters.";
+      }
+      if (!lastNameRegex.test(lastName)) {
+        errors.lastName = "Last name must only contain letters and be between 2 and 20 characters.";
+      }
+      if (!emailRegex.test(email)) {
+        errors.email = "Invalid email format.";
+      }
+
+      if (Object.keys(errors).length > 0) {
+        res.status(400).json({ errors });
+        return;
+      }
+
+    if (!name && !lastName && !email) {
+      res.status(400).json({ error: "No fields to update." });
+      return;
+    }
+
+    try {
+      const userRepo = AppDataSource.getRepository(User);
+      const user = await userRepo.findOneBy({ id: String(userId) });
+
+      if (!user) {
+        res.status(404).json({ error: "User not found." });
+        return;
+      }
+
+      if (name) user.name = name;
+      if (lastName) user.last_name = lastName;
+      if (email) user.email = email;
+
+      await userRepo.save(user);
+
+      res.json({ id: user.id, email: user.email, name: user.name });
+    } catch (err) {
+      console.error("Profile update error:", err);
+      res.status(500).json({ error: "Failed to update profile." });
+    }
+  });
+
+  // GET /user/:id - returns full profile info
+  app.get("/user/:id", async (req: CustomRequest, res: Response): Promise<void> => {
+    try {
+      const user = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    
+      if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
+    
+      res.json({
+        id: user.id,
+        name: user.name,
+        last_name: user.last_name,
+        email: user.email,
+        role: user.role,
+      });
+    } catch (err) {
+      console.error("Error fetching user:", err);
+      res.status(500).json({ error: "Something went wrong" });
+    }
+  });
 
   //endpoint for specific coin by id
   app.get("/coins/:id", async (req, res) => {
@@ -201,6 +352,86 @@ AppDataSource.initialize().then(() => {
     }
   });
 
+  // GET /admin/users - only accessible by admin
+  app.get("/admin/users", async (req: CustomRequest, res: Response) => {
+    const userRepo = AppDataSource.getRepository(User);
+
+    const currentUser = await userRepo.findOneBy({ id: String(req.session.userId) });
+
+    if (!currentUser || currentUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const users = await userRepo.find();
+    res.json(users);
+  });
+
+    // BLOCK user
+  app.patch("/admin/block/:id", async (req: CustomRequest, res: Response) => {
+    const userId = req.session.userId;
+    const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    if (!targetUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    targetUser.is_blocked = true;
+    await AppDataSource.getRepository(User).save(targetUser);
+
+    res.json({ message: "User blocked" });
+  });
+
+  // UNBLOCK user
+  app.patch("/admin/unblock/:id", async (req: CustomRequest, res: Response) => {
+    const userId = req.session.userId;
+    const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    if (!targetUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    targetUser.is_blocked = false;
+    await AppDataSource.getRepository(User).save(targetUser);
+
+    res.json({ message: "User unblocked" });
+  });
+
+  // SOFT DELETE user
+  app.patch("/admin/delete/:id", async (req: CustomRequest, res: Response) => {
+    const userId = req.session.userId;
+    const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      res.status(403).json({ error: "Access denied" });
+      return;
+    }
+
+    const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
+    if (!targetUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    targetUser.is_deleted = true;
+    await AppDataSource.getRepository(User).save(targetUser);
+
+    res.json({ message: "User soft deleted" });
+  });
 
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
