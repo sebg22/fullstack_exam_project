@@ -15,6 +15,22 @@ const theme = extendTheme({
         default: "white",
         _dark: "gray.800",
       },
+      bg: {
+        default: "gray.50",
+        _dark: "gray.900",
+      },
+      footerTextColor: {
+        default: "gray.700",
+        _dark: "gray.200",
+      },
+      footerSubTextColor: {
+        default: "gray.600",
+        _dark: "gray.400",
+      },
+      footerHoverColor: {
+        default: "gray.200",
+        _dark: "gray.700",
+      },
       inputBg: {
         default: "gray.100",
         _dark: "gray.700",
