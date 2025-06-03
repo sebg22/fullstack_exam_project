@@ -55,4 +55,7 @@ export class Crypto {
 
   @Column("boolean")
   is_stablecoin: boolean;
+
+  @Column("jsonb", { nullable: true })
+  chart_data: { time: string; price: number }[] | null;
 }

@@ -342,6 +342,7 @@ AppDataSource.initialize().then(() => {
           "market_cap_rank",
           "total_volume",
           "price_change_percentage_1y",
+          "chart_data",
         ],
       });
 
