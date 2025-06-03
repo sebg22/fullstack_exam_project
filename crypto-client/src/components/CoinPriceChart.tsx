@@ -1,11 +1,10 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { formatCurrencyCompact } from "../utils/formatCurrency";
+import { ChartPoint } from "../services/coingecko";
 
-interface ChartPoint {
-  time: string;
-  price: number;
-}
+
+
 
 interface CoinPriceChartProps {
   price: number;
