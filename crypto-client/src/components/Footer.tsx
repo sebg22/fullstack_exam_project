@@ -8,7 +8,6 @@ import {
   Text,
   Link,
   IconButton,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaFacebookF, FaDiscord } from "react-icons/fa";
 import CoinvaultLogo from "./CoinVaultLogo";
