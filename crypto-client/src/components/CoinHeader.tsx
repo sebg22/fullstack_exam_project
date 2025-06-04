@@ -6,7 +6,9 @@ interface CoinHeaderProps {
   name: string;
   symbol: string;
   image: string;
+  // to check if the coin is favorited
   isFavorited: boolean;
+  // function to toggle favorite status
   onFavoriteToggle: () => void;
 }
 
