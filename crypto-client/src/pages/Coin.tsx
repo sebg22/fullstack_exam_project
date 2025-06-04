@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Spinner, Alert, AlertIcon, Flex } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { getCoinDetails, CoinData } from "../services/coingecko";
+import { getCoinDetails, CoinData, getFavorites, addFavorite, removeFavorite } from "../services/coingecko";
 import CoinHeader from "../components/CoinHeader";
 import AsideAboutCoin from "../components/AsideAboutCoin";
 import CoinPriceChart from "../components/CoinPriceChart";
@@ -12,6 +12,7 @@ export default function Coin() {
   const [coin, setCoin] = useState<CoinData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
     const fetchCoin = async () => {
@@ -25,8 +26,37 @@ export default function Coin() {
       }
     };
 
-    fetchCoin();
+    const checkFavorite = async () => {
+      try {
+        const favorites = await getFavorites();
+        const found = favorites.some(f => f.id === id);
+        setIsFavorited(found);
+      } catch (err) {
+        console.error("Error checking favorites:", err);
+      }
+    };
+
+    if (id) {
+      fetchCoin();
+      checkFavorite();
+    }
   }, [id]);
+
+  const toggleFavorite = async () => {
+    if (!id) return;
+
+    try {
+      if (isFavorited) {
+        await removeFavorite(id);
+        setIsFavorited(false);
+      } else {
+        await addFavorite(id);
+        setIsFavorited(true);
+      }
+    } catch (err) {
+      console.error("Error toggling favorite:", err);
+    }
+  };
 
   if (loading) {
     return (
@@ -57,7 +87,13 @@ export default function Coin() {
     <Box>
       {/* Header without border */}
       <Box px={6} py={4}>
-        <CoinHeader name={coin.name} symbol={coin.symbol} image={coin.image} />
+        <CoinHeader
+          name={coin.name}
+          symbol={coin.symbol}
+          image={coin.image}
+          isFavorited={isFavorited}
+          onFavoriteToggle={toggleFavorite}
+        />
       </Box>
 
       {/* Main layout */}
