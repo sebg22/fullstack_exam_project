@@ -6,7 +6,6 @@ import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
 
 export default function CryptoCurrencies() {
   const { filters, setFilters } = useCryptoFilters({ top: "10" });
-
   const { data: cryptos, loading, error, hasMore, loadMore } = usePaginatedCryptos(filters, 10);
 
   return (
