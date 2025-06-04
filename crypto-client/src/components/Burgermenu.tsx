@@ -1,6 +1,6 @@
 // Burgermenu.tsx
 import React from "react";
-import {IconButton, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, VStack, Button, Box, Spacer} from "@chakra-ui/react";
+import {IconButton, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, VStack, Button, Box, Spacer, Link} from "@chakra-ui/react";
 import { HamburgerIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -11,6 +11,7 @@ const Burgermenu: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const isActive = (path: string) => location.pathname === path;
   return (
     <>
       {/* ─── Hamburger Icon (only on mobile) ─── */}
@@ -138,6 +139,17 @@ const Burgermenu: React.FC = () => {
                   Favourites
                 </Button>
               )}
+              {/* {user?.role === "admin" && (
+                        <Link
+                          fontWeight={isActive("/admin") ? "bold" : "normal"}
+                          textDecoration={isActive("/admin") ? "underline" : "none"}
+                          onClick={() => navigate("/admin")}
+                          _hover={{ textDecoration: "underline" }}
+                          cursor="pointer"
+                        >
+                          Admin
+                        </Link>
+                )} */}
             </VStack>
 
             {/* Push the logout/sign‐in buttons to the bottom */}

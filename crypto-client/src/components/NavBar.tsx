@@ -1,11 +1,10 @@
 import { Flex, HStack, Button, Spacer, Box, Link } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import CoinvaultLogo from "./CoinVaultLogo";
 import ColorModeSwitch from "./ColorModeSwitch";
 import ProfileIcon from "./ProfileIcon";
 import Burgermenu from "./Burgermenu";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
@@ -14,17 +13,14 @@ const NavBar: React.FC = () => {
 
   // Laver det den side, der er aktiv, fed og understreget
   const isActive = (path: string) => location.pathname === path;
-
   return (
     <Flex as="nav" width="100%" px="1rem" align="center" bgColor="bgColor" boxShadow="md" zIndex={10}>
-      {/** ─── Logo (always visible) ─── **/}
       <Box cursor="pointer" onClick={() => {
           navigate("/");
         }}>
         <CoinvaultLogo boxSize="7rem"/>
       </Box>
 
-      {/** ─── Desktop Links (only on md+) ─── **/}
       <HStack spacing={8} ml="2rem" display={{ base: "none", md: "flex" }} align="center"
       >
         <Link
@@ -59,7 +55,6 @@ const NavBar: React.FC = () => {
           Learn
         </Link>
         
-        {/** ─── ONLY SHOW “Favourites” IF USER IS LOGGED IN ─── **/}
         {user && (
           <Link
             fontWeight={isActive("/favourites") ? "bold" : "normal"}
@@ -72,8 +67,7 @@ const NavBar: React.FC = () => {
           </Link>
         )}
 
-        {/** ─── ONLY SHOW “Admin” IF USER EXISTS AND HAS role === 'admin' ─── **/}
-        {user?.role === "admin" && (
+        {/* {user?.role === "admin" && (
           <Link
             fontWeight={isActive("/admin") ? "bold" : "normal"}
             textDecoration={isActive("/admin") ? "underline" : "none"}
@@ -83,18 +77,16 @@ const NavBar: React.FC = () => {
           >
             Admin
           </Link>
-        )}
+        )} */}
         <ColorModeSwitch />
       </HStack>
 
-      {/** ─── Mobile view: show ColorModeSwitch + Burger menu ─── **/}
       <HStack spacing={2} display={{ base: "flex", md: "none" }} align="center">
         <ColorModeSwitch />
       </HStack>
       
       <Spacer />
 
-      {/** ─── Right‐hand side controls on Desktop (md+) ─── **/}
       <HStack spacing={4} display={{ base: "none", md: "flex" }} align="center">
         {user ? (
           <>
@@ -128,7 +120,6 @@ const NavBar: React.FC = () => {
         )}
       </HStack>
 
-      {/** ─── Mobile view: show ColorModeSwitch + Burger menu ─── **/}
       <HStack spacing={2} display={{ base: "flex", md: "none" }} align="center">
         <Burgermenu />
       </HStack>
