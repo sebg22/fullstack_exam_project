@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Spinner, Alert, AlertIcon, Flex } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { getCoinDetails, CoinData, getFavorites, addFavorite, removeFavorite } from "../services/coingecko";
+import { getCoinDetails, CoinData} from "../services/coingecko";
 import CoinHeader from "../components/CoinHeader";
 import AsideAboutCoin from "../components/AsideAboutCoin";
 import CoinPriceChart from "../components/CoinPriceChart";
