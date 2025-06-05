@@ -120,6 +120,8 @@ export const getFilteredCryptos = async (
     return {
       data: [],
     };
+  }
+};
 
 export const addFavorite = async (coinId: string): Promise<void> => {
   try {

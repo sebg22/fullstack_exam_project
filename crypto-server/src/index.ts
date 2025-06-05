@@ -408,6 +408,8 @@ AppDataSource.initialize().then(() => {
     } catch (error) {
       console.error("Error with filtered cryptos:", error);
       res.status(500).json({ error: "Something went wrong" });
+    }
+  });
 
   // GET /admin/users - only accessible by admin
   app.get("/admin/users", async (req: CustomRequest, res: Response) => {
