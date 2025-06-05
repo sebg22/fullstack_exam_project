@@ -1,5 +1,5 @@
 import { Tr, Td, Image, Text, HStack, Button } from "@chakra-ui/react";
-import { CryptoData, addFavorite, removeFavorite, getFavorites } from "../services/coingecko";
+import { CryptoData } from "../services/coingecko";
 import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { formatNumberCompact } from "../utils/formatNumber";
 import { useNavigate } from "react-router-dom";
