@@ -15,18 +15,60 @@ const CryptoTable = ({ cryptos, loading, error }: Props) => {
   }
 
   return (
-    <TableContainer whiteSpace="normal" padding={5}>
+    <TableContainer whiteSpace="normal" padding={{ md: 5 }}>
       <Table bg="cardBg" borderRadius="md" boxShadow="md" color="black">
         <Thead>
           <Tr>
-            <Th pl={{base: 20, md: 20}}>Coin</Th>
-            <Th>Price</Th>
-            <Th display={{base: "none", md: "table-cell"}}>Chart</Th>
-            <Th>Change</Th>
-            <Th display={{base: "none", md: "table-cell"}}>Market Cap</Th>
-            <Th display={{base: "none", md: "table-cell"}}>Volume (24h)</Th>
-            <Th display={{base: "none", md: "table-cell"}}>Supply</Th>
-            <Th>Trade</Th>
+            <Th pl={{ base: 20, md: 20 }} pr={0}>
+              Coin
+            </Th>
+            <Th p={{ base: 2, xl: 6 }}>Price</Th>
+            <Th
+              display="none"
+              sx={{
+                "@media screen and (min-width: 960px)": {
+                  display: "table-cell",
+                },
+              }}>
+              Chart
+            </Th>
+            <Th p={{ base: 2, xl: 6 }}>Change</Th>
+            <Th
+              display="none"
+              sx={{
+                "@media screen and (min-width: 960px)": {
+                  display: "table-cell",
+                },
+              }}>
+              Market Cap
+            </Th>
+            <Th
+              display="none"
+              sx={{
+                "@media screen and (min-width: 960px)": {
+                  display: "table-cell",
+                },
+              }}>
+              Volume (24h)
+            </Th>
+            <Th
+              display="none"
+              sx={{
+                "@media screen and (min-width: 960px)": {
+                  display: "table-cell",
+                },
+              }}>
+              Supply
+            </Th>
+            <Th
+              display="none"
+              sx={{
+                "@media screen and (min-width: 960px)": {
+                  display: "table-cell",
+                },
+              }}>
+              Trade
+            </Th>
           </Tr>
         </Thead>
         <Tbody>

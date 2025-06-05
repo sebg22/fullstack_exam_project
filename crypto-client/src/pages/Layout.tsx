@@ -5,8 +5,8 @@ import { Box } from "@chakra-ui/react";
 const Layout = () => (
   <>
     <NavBar />
-    <Box padding={5}>
-      <Outlet />    {/* ← your HomePage or EditProfile will render here */}
+    <Box pt={5} padding={{ md: 5 }}>
+      <Outlet /> {/* ← your HomePage or EditProfile will render here */}
     </Box>
   </>
 );
