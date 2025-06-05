@@ -4,7 +4,7 @@ import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { formatNumberCompact } from "../utils/formatNumber";
 import { useNavigate } from "react-router-dom";
 import useIsCoinFavorited from "../hooks/useIsCoinFavorited";
-import useIsLoggedIn from "../hooks/useIsLoggedIn";
+import { useAuth } from "../contexts/AuthContext"; // replaced useIsLoggedIn import
 
 interface Props {
   coin: CryptoData;
@@ -15,7 +15,8 @@ const CryptoRow = ({ coin }: Props) => {
 
   const { isFavorited, toggleFavorite } = useIsCoinFavorited(coin.id);
 
-  const isLoggedIn = useIsLoggedIn();
+  const { user } = useAuth(); // use AuthContext to get the user
+  const isLoggedIn = !!user;  // convert to boolean
 
   // this function runs when the user clicks the star icon
   const handleFavoriteClick = async (e: React.MouseEvent) => {
@@ -32,6 +33,7 @@ const CryptoRow = ({ coin }: Props) => {
     // this will also update the isFavorited state in the hook
     toggleFavorite();
   };
+
   return (
     <Tr onClick={() => navigate(`/coin/${coin.id}`)} cursor="pointer" _hover={{ bg: "footerHoverColor" }}>
       <Td p={4}>
