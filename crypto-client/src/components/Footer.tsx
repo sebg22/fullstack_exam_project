@@ -38,9 +38,8 @@ const Footer: React.FC = () => {
         // spacing between grid items
         gap={{ base: 6, md: 8 }}
         // center everything horizontally up to maxW
-        maxW="1200px"
-        mx="auto"
-        px={{ base: 4, md: 8 }}
+        w="100%"
+        px={{ base: 4, md: 4 }}
       >
         {/* LOGO (mobile-only since on md+ it lives in the “center” area) */}
         <GridItem
@@ -89,7 +88,7 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* ICONS (mobile-only; on md+ they live in the “center” area) */}
+        {/* SOCIAL ICONS (mobile-only, centered) */}
         <GridItem
           area="icons"
           display={{ base: "block", md: "none" }}
@@ -102,7 +101,7 @@ const Footer: React.FC = () => {
                 icon={<FaFacebookF />}
                 variant="ghost"
                 size="lg"
-                _hover="footerHoverColor"
+                _hover= {{bg: "footerHoverColor "}}
               />
             </Link>
             <Link href="https://x.com" isExternal>
@@ -111,7 +110,7 @@ const Footer: React.FC = () => {
                 icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
-                _hover="footerHoverColor"
+                _hover={{bg: "footerHoverColor "}}
               />
             </Link>
             <Link href="https://discord.com" isExternal>
@@ -120,13 +119,13 @@ const Footer: React.FC = () => {
                 icon={<FaDiscord />}
                 variant="ghost"
                 size="lg"
-                _hover="footerHoverColor"
+                _hover={{bg: "footerHoverColor "}}
               />
             </Link>
           </Stack>
         </GridItem>
 
-        {/*** CENTER AREA on md+: logo & icons stacked  ***/}
+
         <GridItem
           area="center"
           display={{ base: "none", md: "flex" }}
@@ -147,7 +146,7 @@ const Footer: React.FC = () => {
                 icon={<FaFacebookF />}
                 variant="ghost"
                 size="lg"
-                _hover="footerHoverColor"
+                _hover={{bg: "footerHoverColor "}}
               />
             </Link>
             <Link href="https://x.com" isExternal>
@@ -156,7 +155,7 @@ const Footer: React.FC = () => {
                 icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
-                _hover="footerHoverColor"
+                _hover={{bg: "footerHoverColor "}}
               />
             </Link>
             <Link href="https://discord.com" isExternal>
@@ -165,7 +164,7 @@ const Footer: React.FC = () => {
                 icon={<FaDiscord />}
                 variant="ghost"
                 size="lg"
-                _hover="footerHoverColor"
+                _hover={{bg: "footerHoverColor "}}
               />
             </Link>
           </Stack>
