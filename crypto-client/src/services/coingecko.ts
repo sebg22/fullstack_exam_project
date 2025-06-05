@@ -23,36 +23,11 @@ export interface CryptoData {
   price_change_percentage_24h: number;
 }
 
+//Check om dette interface bliver brugt korrekt
 export interface ChartPoint {
   time: string;
   price: number;
 }
-
-
-// Hent top 10 til forsiden
-// Function to fetch top 10 coins
-export const getTopCryptos = async (): Promise<CryptoData[]> => {
-  try {
-    const response = await coingeckoApi.get("/all_cryptos", {
-      params: { limit: 10 },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching top cryptocurrencies:", error);
-    return [];
-  }
-};
-
-// Hent alle til undersiden
-export const getAllCryptos = async (): Promise<CryptoData[]> => {
-  try {
-    const response = await coingeckoApi.get("/all_cryptos");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching all cryptocurrencies:", error);
-    return [];
-  }
-};
 
 // Main app type
 export interface CoinData {
@@ -104,6 +79,47 @@ export const getCoinDetails = async (id: string): Promise<CoinData> => {
     throw error;
   }
 };
+
+export type FilterParams = {
+  top?: string;
+  price_range?: string;
+  gainers?: string;
+  losers?: string;
+  stablecoins?: string;
+  new?: string;
+  old?: string;
+  page?: string;
+  pageSize?: string;
+};
+
+export const getFilteredCryptos = async (
+  filters: FilterParams
+): Promise<{
+  data: CryptoData[];
+}> => {
+  try {
+    const adjustedFilters: Record<string, string> = {};
+
+    for (const key in filters) {
+      const val = filters[key as keyof FilterParams];
+      if (val !== undefined) {
+        adjustedFilters[key] = String(val);
+      }
+    }
+
+    const params = new URLSearchParams(adjustedFilters).toString();
+    console.log("Fetching with:", params);
+
+    const res = await coingeckoApi.get(`/all_cryptos/filtered?${params}`);
+
+    return {
+      data: res.data.data,
+    };
+  } catch (err) {
+    console.error("Error fetching filtered cryptos:", err);
+    return {
+      data: [],
+    };
 
 export const addFavorite = async (coinId: string): Promise<void> => {
   try {

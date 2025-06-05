@@ -48,40 +48,6 @@ app.use(
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
 
-  // Get 10 or all cryptos
-  app.get("/all_cryptos", async (req, res) => {
-    try {
-      // Henter limit-parameteren fra URL'en, så enten 10 eller undefined
-      const limitParam = req.query.limit as string | undefined;
-      // Hvis limitParam findes (altså ikke er undefined eller tom), så parser vi det som tal. Hvis limitParam ikke findes, så bliver limit sat til undefined
-      const limit = limitParam ? parseInt(limitParam) : undefined;
-
-      console.log("DETTE ER LIMIT", limit);
-
-      const cryptos = await AppDataSource.getRepository(Crypto).find({
-        take: limit,
-        order: { market_cap: "DESC" },
-        //Her definerer vi præcist de kolonner vi vil have retur fra databasen
-        select: [
-          "id",
-          "image",
-          "name",
-          "symbol",
-          "current_price",
-          "price_change_percentage_24h",
-          "market_cap",
-          "total_volume",
-          "circulating_supply",
-        ],
-      });
-
-      res.json(cryptos);
-    } catch (error) {
-      console.error("Error fetching cryptos:", error);
-      res.status(500).json({ error: "Something went wrong" });
-    }
-  });
-
   // POST /signup
   app.post("/signup", async (req: Request, res: Response): Promise<void> => {
     try {
@@ -352,6 +318,96 @@ AppDataSource.initialize().then(() => {
       res.status(500).json({ error: "Something went wrong" });
     }
   });
+
+  // 🔍 ADVANCED: Filtered list for /cryptocurrencies page
+  app.get("/all_cryptos/filtered", async (req, res) => {
+    try {
+      const {
+        top, // <-- no default here
+        price_range,
+        gainers,
+        losers,
+        stablecoins,
+        new: isNew,
+        old: isOld,
+        page = "1",
+        pageSize = "10",
+      } = req.query;
+
+      const repo = AppDataSource.getRepository(Crypto);
+      const qb = repo.createQueryBuilder("crypto");
+
+      // Only apply top filter if provided and > 0
+      if (top !== undefined) {
+        const topNum = parseInt(top as string);
+        if (!isNaN(topNum) && topNum > 0) {
+          qb.andWhere("crypto.market_cap_rank <= :top", { top: topNum });
+        }
+      }
+
+      // Price range filters
+      if (price_range === "under_1") {
+        qb.andWhere("crypto.current_price < 1");
+      } else if (price_range === "1_100") {
+        qb.andWhere("crypto.current_price BETWEEN 1 AND 100");
+      } else if (price_range === "above_100") {
+        qb.andWhere("crypto.current_price > 100");
+      }
+
+      // Gainers / losers
+      if (gainers === "true") {
+        qb.andWhere("crypto.price_change_percentage_24h > 0");
+      } else if (losers === "true") {
+        qb.andWhere("crypto.price_change_percentage_24h < 0");
+      }
+
+      // Stablecoins
+      if (stablecoins === "true") {
+        qb.andWhere("crypto.is_stablecoin = true");
+      }
+
+      // New coins (last 6 months)
+      if (isNew === "true") {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        qb.andWhere("crypto.genesis_date IS NOT NULL AND crypto.genesis_date > :newDate", {
+          newDate: sixMonthsAgo.toISOString().split("T")[0],
+        });
+      }
+
+      // Old coins (more than 5 years old)
+      if (isOld === "true") {
+        const fiveYearsAgo = new Date();
+        fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+        qb.andWhere("crypto.genesis_date IS NOT NULL AND crypto.genesis_date < :oldDate", {
+          oldDate: fiveYearsAgo.toISOString().split("T")[0],
+        });
+      }
+
+      // Pagination params
+      const takeRaw = parseInt(pageSize as string);
+      const pageRaw = parseInt(page as string);
+
+      const take = !isNaN(takeRaw) && takeRaw > 0 && takeRaw <= 100 ? takeRaw : 10;
+      const currentPage = !isNaN(pageRaw) && pageRaw > 0 ? pageRaw : 1;
+      const skip = (currentPage - 1) * take;
+
+      // Query with pagination & sorting
+      const cryptos = await qb
+        .select(["crypto.id", "crypto.image", "crypto.name", "crypto.symbol", "crypto.current_price", "crypto.price_change_percentage_24h", "crypto.market_cap", "crypto.total_volume", "crypto.circulating_supply"])
+        .orderBy("crypto.market_cap", "DESC")
+        .skip(skip)
+        .take(take)
+        .getMany();
+
+      res.json({
+        data: cryptos,
+        pageSize: take,
+        page: currentPage,
+      });
+    } catch (error) {
+      console.error("Error with filtered cryptos:", error);
+      res.status(500).json({ error: "Something went wrong" });
 
   // GET /admin/users - only accessible by admin
   app.get("/admin/users", async (req: CustomRequest, res: Response) => {

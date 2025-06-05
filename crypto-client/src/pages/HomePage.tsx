@@ -1,13 +1,15 @@
+import { useCryptoFilters } from "../hooks/useCryptoFilters";
+import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
 import { Grid, GridItem, Text, Link } from "@chakra-ui/react";
 import CryptoTable from "../components/CryptoTable";
-import useTopCryptos from "../hooks/useTopCryptos";
 import { Link as RouterLink } from "react-router-dom";
 import HomePageNewsletter from "../components/HomePageNewsletter";
 import CoinvaultLogo from "../components/CoinVaultLogo";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
-  const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
+  const { filters } = useCryptoFilters({ top: "10" }); // Default filters
+  const { data: cryptos, loading, error } = usePaginatedCryptos(filters, 10); // Only page 1
 
   return (
     <Grid 

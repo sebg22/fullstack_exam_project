@@ -1,24 +1,45 @@
 import { Box, Collapse, Divider, Flex, GridItem, Menu } from "@chakra-ui/react";
 import { useState } from "react";
+import { FilterParams } from "../services/coingecko";
 
 interface SideMenuProps {
-  setFilter: (filter: string) => void;
+  setFilter: (filter: FilterParams) => void;
+  activeFilter: FilterParams;
 }
 
-const SideMenu = ({ setFilter }: SideMenuProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showTopOptions, setShowTopOptions] = useState(false);
+const SideMenu = ({ setFilter, activeFilter }: SideMenuProps) => {
+  const [showTopOptions, setShowTopOptions] = useState(true);
   const [showPriceOptions, setShowPriceOptions] = useState(false);
 
+  const isTopActive = ["10", "50", "100"].includes(activeFilter.top || "");
+  const isPriceRangeActive = ["under_1", "1_100", "above_100"].includes(activeFilter.price_range || "");
+
+  const getStyle = (key: keyof FilterParams, value: string) => ({
+    fontWeight: activeFilter[key] === value ? "bold" : "normal",
+    color: activeFilter[key] === value ? "#3182ce" : "inherit",
+    display: "inline-flex",
+    marginBottom: "4px",
+    cursor: "pointer",
+    paddingLeft: "15px",
+  });
+
   return (
-    <GridItem w="150px" pl="2" pr="2" area={"aside"}>
+    <GridItem w="160px" pl="2" pr="2" area={"aside"}>
       <Menu>
         <nav>
           <Box mt={10}>
             <h2 style={{ paddingBottom: "10px", fontWeight: "bold" }}>Cryptocurrencies</h2>
             <ul>
               {/* "Top" Category with Show More */}
-              <li style={{ display: "inline-flex", listStyleType: "none", marginBottom: "4px", cursor: "pointer" }} onClick={() => setShowTopOptions(!showTopOptions)}>
+              <li
+                style={{
+                  display: "inline-flex",
+                  listStyleType: "none",
+                  marginBottom: "4px",
+                  cursor: "pointer",
+                  borderBottom: isTopActive ? "2px solid #3182ce" : "none", //Underline
+                }}
+                onClick={() => setShowTopOptions(!showTopOptions)}>
                 <Flex align="center" gap={2}>
                   🔝 Top Coins {showTopOptions ? "▲" : "▼"}
                 </Flex>
@@ -27,13 +48,13 @@ const SideMenu = ({ setFilter }: SideMenuProps) => {
               {/* Expandable "Top" Filters */}
               <Collapse in={showTopOptions} animateOpacity>
                 <ul>
-                  <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer", paddingLeft: "15px" }} onClick={() => setFilter("top10")}>
+                  <li style={getStyle("top", "10")} onClick={() => setFilter({ top: "10" })}>
                     Top 10 Coins
                   </li>
-                  <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer", paddingLeft: "15px" }} onClick={() => setFilter("top50")}>
+                  <li style={getStyle("top", "50")} onClick={() => setFilter({ top: "50" })}>
                     Top 50 Coins
                   </li>
-                  <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer", paddingLeft: "15px" }} onClick={() => setFilter("top100")}>
+                  <li style={getStyle("top", "100")} onClick={() => setFilter({ top: "100" })}>
                     Top 100 Coins
                   </li>
                 </ul>
@@ -41,7 +62,15 @@ const SideMenu = ({ setFilter }: SideMenuProps) => {
 
               {/* Price Range with Show More */}
               <Divider />
-              <li style={{ display: "inline-flex", listStyleType: "none", marginBottom: "4px", cursor: "pointer" }} onClick={() => setShowPriceOptions(!showPriceOptions)}>
+              <li
+                style={{
+                  display: "inline-flex",
+                  listStyleType: "none",
+                  marginBottom: "4px",
+                  cursor: "pointer",
+                  borderBottom: isPriceRangeActive ? "2px solid #3182ce" : "none", //Underline
+                }}
+                onClick={() => setShowPriceOptions(!showPriceOptions)}>
                 <Flex align="center" gap={2}>
                   💲 Price Range {showPriceOptions ? "▲" : "▼"}
                 </Flex>
@@ -50,13 +79,13 @@ const SideMenu = ({ setFilter }: SideMenuProps) => {
               {/* Expandable Price Range Filters */}
               <Collapse in={showPriceOptions} animateOpacity>
                 <ul>
-                  <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer", paddingLeft: "15px" }} onClick={() => setFilter("under1")}>
+                  <li style={getStyle("price_range", "under_1")} onClick={() => setFilter({ price_range: "under_1" })}>
                     Under $1
                   </li>
-                  <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer", paddingLeft: "15px" }} onClick={() => setFilter("1to100")}>
+                  <li style={getStyle("price_range", "1_100")} onClick={() => setFilter({ price_range: "1_100" })}>
                     $1 - $100
                   </li>
-                  <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer", paddingLeft: "15px" }} onClick={() => setFilter("above100")}>
+                  <li style={getStyle("price_range", "above_100")} onClick={() => setFilter({ price_range: "above_100" })}>
                     Above $100
                   </li>
                 </ul>
@@ -64,31 +93,25 @@ const SideMenu = ({ setFilter }: SideMenuProps) => {
 
               {/* 24h Price Change */}
               <Divider />
-              <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer" }} onClick={() => setFilter("gainers")}>
+              <li style={getStyle("gainers", "true")} onClick={() => setFilter({ gainers: "true" })}>
                 📈 Only Gainers (24h)
               </li>
-              <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer" }} onClick={() => setFilter("losers")}>
+              <li style={getStyle("losers", "true")} onClick={() => setFilter({ losers: "true" })}>
                 📉 Only Losers (24h)
               </li>
 
               {/* Stablecoins Filter */}
               <Divider />
-              <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer" }} onClick={() => setFilter("stablecoins")}>
+              <li style={getStyle("stablecoins", "true")} onClick={() => setFilter({ stablecoins: "true" })}>
                 🏦 Show Only Stablecoins
-              </li>
-
-              {/* All-Time High (ATH) Distance */}
-              <Divider />
-              <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer" }} onClick={() => setFilter("ath")}>
-                🚀 Remove Coins 80% Below ATH
               </li>
 
               {/* Coin Age Filter */}
               <Divider />
-              <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer" }} onClick={() => setFilter("newCoins")}>
+              <li style={getStyle("new", "true")} onClick={() => setFilter({ new: "true" })}>
                 🆕 Show New Coins (Last 6 Months)
               </li>
-              <li style={{ display: "inline-flex", marginBottom: "4px", cursor: "pointer" }} onClick={() => setFilter("oldCoins")}>
+              <li style={getStyle("old", "true")} onClick={() => setFilter({ old: "true" })}>
                 🏛️ Show Old Coins (Over 5 Years)
               </li>
             </ul>
