@@ -96,6 +96,7 @@ const SideMenu = ({ setFilter, activeFilter }: SideMenuProps) => {
               <li style={getStyle("gainers", "true")} onClick={() => setFilter({ gainers: "true" })}>
                 📈 Only Gainers (24h)
               </li>
+              <Divider />
               <li style={getStyle("losers", "true")} onClick={() => setFilter({ losers: "true" })}>
                 📉 Only Losers (24h)
               </li>
@@ -111,6 +112,7 @@ const SideMenu = ({ setFilter, activeFilter }: SideMenuProps) => {
               <li style={getStyle("new", "true")} onClick={() => setFilter({ new: "true" })}>
                 🆕 Show New Coins (Last 6 Months)
               </li>
+              <Divider />
               <li style={getStyle("old", "true")} onClick={() => setFilter({ old: "true" })}>
                 🏛️ Show Old Coins (Over 5 Years)
               </li>

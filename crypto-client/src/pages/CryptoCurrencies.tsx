@@ -3,6 +3,7 @@ import CryptoTable from "../components/CryptoTable";
 import SideMenu from "../components/SideMenu";
 import { useCryptoFilters } from "../hooks/useCryptoFilters";
 import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
+import SideMenu_mobile from "../components/SideMenu_mobile";
 
 export default function CryptoCurrencies() {
   const { filters, setFilters } = useCryptoFilters({ top: "10" });
@@ -11,9 +12,14 @@ export default function CryptoCurrencies() {
   return (
     <Grid
       templateAreas={{
-        base: `"header" "main"`,
+        base: `"header" "aside" "main"`,
         lg: `"header header" "aside main"`,
       }}>
+      <Show below="lg">
+        <GridItem area="aside" w="100%" pl="2" pr="4">
+          <SideMenu_mobile activeFilter={filters} setFilter={setFilters} />
+        </GridItem>
+      </Show>
       <Show above="lg">
         <GridItem area="aside" w="100%" pl="2" pr="4">
           <SideMenu activeFilter={filters} setFilter={setFilters} />
