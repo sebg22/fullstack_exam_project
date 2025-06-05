@@ -3,7 +3,6 @@ import { CryptoData } from "../services/coingecko";
 import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { formatNumberCompact } from "../utils/formatNumber";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import useIsCoinFavorited from "../hooks/useIsCoinFavorited";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
@@ -24,7 +23,7 @@ const handleFavoriteClick = async (e: React.MouseEvent) => {
   e.stopPropagation();
 
   // if the use is not logged in, redirect them to the login page when they click on the star icon
-    if (!isLoggedIn) {
+  if (!isLoggedIn) {
     navigate("/login");
     return;
   }

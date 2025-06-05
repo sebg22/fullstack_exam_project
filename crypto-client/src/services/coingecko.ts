@@ -5,7 +5,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 
 // withCredentials: true is required to include cookies (session ID)
 // this ensures the server can recognize which user is making the request
-const coingeckoApi = axios.create({
+export const coingeckoApi = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });

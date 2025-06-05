@@ -1,6 +1,6 @@
 // src/hooks/useIsLoggedIn.ts
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { coingeckoApi } from "../services/coingecko";
 
 export default function useIsLoggedIn() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
@@ -8,7 +8,7 @@ export default function useIsLoggedIn() {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        await axios.get("/me", { withCredentials: true });
+        await coingeckoApi.get("/me");
         setIsLoggedIn(true);
       } catch {
         setIsLoggedIn(false);

@@ -9,36 +9,18 @@ import CoinStats from "../components/CoinStats";
 import useIsCoinFavorited from "../hooks/useIsCoinFavorited";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import { useNavigate } from "react-router-dom";
+import useCoinDetails from "../hooks/useCoinDetails";
 
 export default function Coin() {
   const { id } = useParams<{ id: string }>();
-  const [coin, setCoin] = useState<CoinData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  // fetch the coin data with custom hook
+  const { coin, loading, error } = useCoinDetails(id);
   // use custom hook to check if the coin is favorited
   const { isFavorited, toggleFavorite } = useIsCoinFavorited(id!);
   // use custom hook to check if the user is logged in
   // this will be used to redirect the user to the login page if they are not logged in when they click on the star icon
   const isLoggedIn = useIsLoggedIn();
   const navigate = useNavigate();
-
-    
-  useEffect(() => {
-    const fetchCoin = async () => {
-      try {
-        const data = await getCoinDetails(id!);
-        setCoin(data);
-      } catch (err) {
-        setError("Failed to fetch coin data from API.");
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    if (id) {
-      fetchCoin();
-    }
-  }, [id]);
 
   if (loading) {
     return (
