@@ -1,9 +1,5 @@
-// src/components/ProfileIcon.tsx
 import React from "react";
 import { Icon, IconProps } from "@chakra-ui/react";
-
-// We’re using Chakra’s <Icon> so that “fill=currentColor” is automatic.
-// We only need to declare the two shapes inside <Icon>…</Icon>.
 
 const ProfileIcon: React.FC<IconProps> = (props) => {
     return (

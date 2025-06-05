@@ -11,10 +11,10 @@ const Burgermenu: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const isActive = (path: string) => location.pathname === path;
+
   return (
     <>
-      {/* ─── Hamburger Icon (only on mobile) ─── */}
+      {/*  Hamburger Icon (kun på mobile)  */}
       <IconButton
         aria-label="Open burger menu"
         icon={<HamburgerIcon />}
@@ -23,13 +23,10 @@ const Burgermenu: React.FC = () => {
         ml="1rem"
       />
 
-      {/* ─── Drawer that slides in from the right ─── */}
       <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-
-         
+          <DrawerCloseButton />       
           <DrawerHeader
             borderBottom="1px"
             display="flex"
@@ -38,7 +35,6 @@ const Burgermenu: React.FC = () => {
             px="1rem"
             pr="3rem"        
           >
-            {/* Left‐side: Logo */}
             <Box
               cursor="pointer"
               onClick={() => {
@@ -49,13 +45,9 @@ const Burgermenu: React.FC = () => {
               <CoinvaultLogo boxSize="6rem" />
             </Box>
 
-            
             <Spacer />
 
-            {/* 
-              Enten ProfileIcon (hvis logged ind) 
-              Eller “Sign Up” knap (hvis ikke). 
-            */}
+            {/* Enten ProfileIcon (hvis logged ind) Ellers så “Sign Up” knap (hvis ikke). */}
             {user ? (
               <ProfileIcon
                 boxSize={7}
@@ -124,7 +116,7 @@ const Burgermenu: React.FC = () => {
                 Learn
               </Button>
 
-              {/* Favourites (only if logged in) */}
+              {/* Favourites (kun hvis logget ind.) */}
               {user && (
                 <Button
                   variant="ghost"
@@ -132,27 +124,16 @@ const Burgermenu: React.FC = () => {
                   justifyContent="flex-start"
                   rightIcon={<ChevronRightIcon boxSize={4} />}
                   onClick={() => {
-                    navigate("/favourites");
+                    navigate("/favorites");
                     onClose();
                   }}
                 >
-                  Favourites
+                  favorites
                 </Button>
               )}
-              {/* {user?.role === "admin" && (
-                        <Link
-                          fontWeight={isActive("/admin") ? "bold" : "normal"}
-                          textDecoration={isActive("/admin") ? "underline" : "none"}
-                          onClick={() => navigate("/admin")}
-                          _hover={{ textDecoration: "underline" }}
-                          cursor="pointer"
-                        >
-                          Admin
-                        </Link>
-                )} */}
             </VStack>
 
-            {/* Push the logout/sign‐in buttons to the bottom */}
+            {/* skubber logout/sign‐in knapperne til bunden */}
             <Box flex="1" />
 
             <VStack spacing={4} width="100%" mb="2rem">
@@ -169,16 +150,6 @@ const Burgermenu: React.FC = () => {
                 </Button>
               ) : (
                 <>
-                  <Button
-                    width="100%"
-                    colorScheme="blue"
-                    onClick={() => {
-                      navigate("/signup");
-                      onClose();
-                    }}
-                  >
-                    Sign Up
-                  </Button>
                   <Button
                     width="100%"
                     colorScheme="blue"

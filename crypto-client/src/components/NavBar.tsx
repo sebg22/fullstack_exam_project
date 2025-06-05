@@ -11,17 +11,33 @@ const NavBar: React.FC = () => {
   const location = useLocation();
   const { user, logout } = useAuth();
 
-  // Laver det den side, der er aktiv, fed og understreget
   const isActive = (path: string) => location.pathname === path;
+
   return (
-    <Flex as="nav" width="100%" px="1rem" align="center" bgColor="bgColor" boxShadow="md" zIndex={10}>
-      <Box cursor="pointer" onClick={() => {
+    <Flex
+      as="nav"
+      width="100%"
+      px={4}             
+      align="center"
+      bgColor="bgColor"
+      boxShadow="md"
+      zIndex={10}
+    >
+      <Box
+        cursor="pointer"
+        onClick={() => {
           navigate("/");
-        }}>
-        <CoinvaultLogo boxSize="7rem"/>
+        }}
+      >
+        <CoinvaultLogo boxSize="7rem" />
       </Box>
 
-      <HStack spacing={8} ml="2rem" display={{ base: "none", md: "flex" }} align="center"
+      {/* Desktop links */}
+      <HStack
+        spacing={8}
+        ml="2rem"
+        display={{ base: "none", md: "flex" }}
+        align="center"
       >
         <Link
           fontWeight={isActive("/") ? "bold" : "normal"}
@@ -35,9 +51,7 @@ const NavBar: React.FC = () => {
 
         <Link
           fontWeight={isActive("/cryptocurrencies") ? "bold" : "normal"}
-          textDecoration={
-            isActive("/cryptocurrencies") ? "underline" : "none"
-          }
+          textDecoration={isActive("/cryptocurrencies") ? "underline" : "none"}
           onClick={() => navigate("/cryptocurrencies")}
           _hover={{ textDecoration: "underline" }}
           cursor="pointer"
@@ -54,39 +68,30 @@ const NavBar: React.FC = () => {
         >
           Learn
         </Link>
-        
+
         {user && (
           <Link
-            fontWeight={isActive("/favourites") ? "bold" : "normal"}
-            textDecoration={isActive("/favourites") ? "underline" : "none"}
-            onClick={() => navigate("/favourites")}
+            fontWeight={isActive("/favorites") ? "bold" : "normal"}
+            textDecoration={isActive("/favorites") ? "underline" : "none"}
+            onClick={() => navigate("/favorites")}
             _hover={{ textDecoration: "underline" }}
             cursor="pointer"
           >
-            Favourites
+            Favorites
           </Link>
         )}
-
-        {/* {user?.role === "admin" && (
-          <Link
-            fontWeight={isActive("/admin") ? "bold" : "normal"}
-            textDecoration={isActive("/admin") ? "underline" : "none"}
-            onClick={() => navigate("/admin")}
-            _hover={{ textDecoration: "underline" }}
-            cursor="pointer"
-          >
-            Admin
-          </Link>
-        )} */}
+      {/* Color switch for desktop */}
         <ColorModeSwitch />
       </HStack>
 
+      {/* Mobile color switch */}
       <HStack spacing={2} display={{ base: "flex", md: "none" }} align="center">
         <ColorModeSwitch />
       </HStack>
-      
+
       <Spacer />
 
+      {/* Profile/Logout or SignUp/Login */}
       <HStack spacing={4} display={{ base: "none", md: "flex" }} align="center">
         {user ? (
           <>
@@ -120,10 +125,12 @@ const NavBar: React.FC = () => {
         )}
       </HStack>
 
+      {/* Burger menu */}
       <HStack spacing={2} display={{ base: "flex", md: "none" }} align="center">
         <Burgermenu />
       </HStack>
     </Flex>
   );
 };
+
 export default NavBar;

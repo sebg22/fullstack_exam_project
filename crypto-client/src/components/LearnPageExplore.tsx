@@ -14,9 +14,7 @@ export default function LearnPageExplore() {
 
   return (
     <Container maxW="7xl" px={{ base: 4, md: 8 }} py={{ base: 6, md: 12 }}>
-      {/* Hero + Grid */}
       <Flex direction={{ base: "column", md: "row" }} align="flex-start" gap={{ base: 8, md: 12 }}>
-        {/* Left: copy + CTA */}
         <Box flex="1">
           <Heading as="h1" fontSize={{ base: "2xl", md: "3xl" }} mb={4} color="text">
             Explore crypto like Bitcoin, Ethereum, and Dogecoin
@@ -29,7 +27,6 @@ export default function LearnPageExplore() {
           </Button>
         </Box>
 
-        {/* Right: icon grid */}
         <Box flex="2" w="90%">
           {loading ? (
             <Spinner size="xl" />
@@ -52,7 +49,7 @@ export default function LearnPageExplore() {
               Start your portfolio today and discover crypto
             </Heading>
             <Text mb={6} color="text">
-              We’re committed to creating more economic freedom through accessible, safe, and secure financial tools for everyone.
+              We&apos;re committed to creating more economic freedom through accessible, safe, and secure financial tools for everyone.
             </Text>
             <Flex as="form" align="center">
               <Input placeholder="Enter your e-mail address" size={{ base: "md", md: "lg" }} borderRadius="full" flex="1" mr={3} />

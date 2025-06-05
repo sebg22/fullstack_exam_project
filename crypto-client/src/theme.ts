@@ -1,6 +1,15 @@
 // 1. import `extendTheme` function
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
 
+const breakpoints = {
+  sm: "30em", // 480px
+  md: "48em", // 768px
+  md2: "60em", // 900px
+  lg: "62em", // 992px
+  xl: "80em", // 1280px
+};
+
+
 // 2. Add your color mode config
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -9,6 +18,7 @@ const config: ThemeConfig = {
 // 3. extend the theme
 const theme = extendTheme({
   config,
+  breakpoints,
   semanticTokens: {
     colors: {
       cardBg: {

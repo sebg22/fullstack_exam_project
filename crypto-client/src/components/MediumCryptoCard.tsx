@@ -16,7 +16,6 @@ const MediumCryptoCard = ({ cryptos }: Props) => {
       : changeNum.toFixed(2);
 
   return (
-    // Don’t wrap in a SimpleGrid here—just render the Card directly.
     <Box width="90%">
       <Card p={1} shadow="md" borderWidth="2px" borderRadius="25px">
         <CardHeader>
