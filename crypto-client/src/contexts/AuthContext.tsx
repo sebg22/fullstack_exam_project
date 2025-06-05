@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthUser {
@@ -11,14 +10,14 @@ interface AuthContextType {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
   logout: () => void;
-  loading: boolean; // ⬅️ new
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true); // ⬅️ new
+  const [loading, setLoading] = useState(true);
 
   // Check session on mount
   useEffect(() => {
@@ -34,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch {
         // silently fail
       } finally {
-        setLoading(false); // ⬅️ done loading
+        setLoading(false); 
       }
     };
     checkSession();
