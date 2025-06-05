@@ -73,15 +73,6 @@ const CryptoRow = ({ coin }: Props) => {
         <Text fontSize="sm" color="gray.400">–</Text>
       )}
     </Td>   
-      <Td
-        p={{ base: 2, xl: 6 }}
-        color="text"
-        display="none"
-        sx={{
-          "@media screen and (min-width: 960px)": {
-            display: "table-cell",
-          },
-        }}></Td>
       <Td p={{ base: 2, xl: 6 }} color={Number(coin.price_change_percentage_24h) >= 0 ? "green.500" : "red.500"}>
         {coin.price_change_percentage_24h !== null && coin.price_change_percentage_24h !== undefined && !isNaN(Number(coin.price_change_percentage_24h)) ? Number(coin.price_change_percentage_24h).toFixed(2) : "N/A"}%
       </Td>
