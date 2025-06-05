@@ -1,11 +1,14 @@
 import { Box, Heading, Text, Flex, Spinner } from "@chakra-ui/react";
 import useFavorites from "../hooks/useFavorites";
+import CryptoRow from "../components/CryptoRow";
+import Footer from "../components/Footer";
 import CryptoTable from "../components/CryptoTable";
 
 function FavoritesPage() {
   const { favorites, loading } = useFavorites();
 
   return (
+    <>
     <Box maxW="6xl" mx="auto" mt="50px" p="4">
       <Heading mb="6">Your Favorite Coins</Heading>
 
@@ -19,6 +22,8 @@ function FavoritesPage() {
         <CryptoTable cryptos={favorites} loading={false} error="" />
       )}
     </Box>
+      <Footer />
+    </>
   );
 }
 
