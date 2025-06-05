@@ -5,8 +5,8 @@ import { useCryptoFilters } from "../hooks/useCryptoFilters";
 import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
 
 export default function LearnPageExplore() {
-  const { filters } = useCryptoFilters({ top: "10" }); // Default filters
-  const { data: cryptos, loading, error } = usePaginatedCryptos(filters, 10); // Only page 1
+  const { filters } = useCryptoFilters({ top: "6" }); // Default filters
+  const { data: cryptos, loading, error } = usePaginatedCryptos(filters, 6); // Only page 1
 
   if (error) {
     return <Text color="tomato">{error}</Text>;
@@ -35,7 +35,7 @@ export default function LearnPageExplore() {
             <Spinner size="xl" />
           ) : (
             <SimpleGrid columns={{ base: 2, md: 3 }} spacing={3} justifyItems="center">
-              {cryptos.slice(0, 6).map((c) => (
+              {cryptos.map((c) => (
                 <MediumCryptoCard key={c.id} cryptos={c} />
               ))}
             </SimpleGrid>
