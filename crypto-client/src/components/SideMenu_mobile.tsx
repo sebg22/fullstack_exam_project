@@ -1,5 +1,4 @@
-import { Box, Collapse, Divider, Flex, GridItem, Menu, Select } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Divider, Flex, Menu, Select } from "@chakra-ui/react";
 import { FilterParams } from "../services/coingecko";
 
 interface SideMenuProps {
@@ -8,12 +7,6 @@ interface SideMenuProps {
 }
 
 const SideMenu_mobile = ({ setFilter, activeFilter }: SideMenuProps) => {
-  const [showTopOptions, setShowTopOptions] = useState(true);
-  const [showPriceOptions, setShowPriceOptions] = useState(false);
-
-  const isTopActive = ["10", "50", "100"].includes(activeFilter.top || "");
-  const isPriceRangeActive = ["under_1", "1_100", "above_100"].includes(activeFilter.price_range || "");
-
   const getStyle = (key: keyof FilterParams, value: string) => ({
     fontWeight: activeFilter[key] === value ? "bold" : "normal",
     color: activeFilter[key] === value ? "#3182ce" : "inherit",
