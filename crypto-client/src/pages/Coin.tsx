@@ -6,57 +6,39 @@ import CoinHeader from "../components/CoinHeader";
 import AsideAboutCoin from "../components/AsideAboutCoin";
 import CoinPriceChart from "../components/CoinPriceChart";
 import CoinStats from "../components/CoinStats";
+import useIsCoinFavorited from "../hooks/useIsCoinFavorited";
+import useIsLoggedIn from "../hooks/useIsLoggedIn";
+import { useNavigate } from "react-router-dom";
 
 export default function Coin() {
   const { id } = useParams<{ id: string }>();
   const [coin, setCoin] = useState<CoinData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [isFavorited, setIsFavorited] = useState(false);
+  // use custom hook to check if the coin is favorited
+  const { isFavorited, toggleFavorite } = useIsCoinFavorited(id!);
+  // use custom hook to check if the user is logged in
+  // this will be used to redirect the user to the login page if they are not logged in when they click on the star icon
+  const isLoggedIn = useIsLoggedIn();
+  const navigate = useNavigate();
 
+    
   useEffect(() => {
     const fetchCoin = async () => {
       try {
         const data = await getCoinDetails(id!);
         setCoin(data);
       } catch (err) {
-        setError("Failed to fetch coin data from CoinGecko.");
+        setError("Failed to fetch coin data from API.");
       } finally {
         setLoading(false);
       }
     };
-
-    const checkFavorite = async () => {
-      try {
-        const favorites = await getFavorites();
-        const found = favorites.some(f => f.id === id);
-        setIsFavorited(found);
-      } catch (err) {
-        console.error("Error checking favorites:", err);
-      }
-    };
-
+  
     if (id) {
       fetchCoin();
-      checkFavorite();
     }
   }, [id]);
-
-  const toggleFavorite = async () => {
-    if (!id) return;
-
-    try {
-      if (isFavorited) {
-        await removeFavorite(id);
-        setIsFavorited(false);
-      } else {
-        await addFavorite(id);
-        setIsFavorited(true);
-      }
-    } catch (err) {
-      console.error("Error toggling favorite:", err);
-    }
-  };
 
   if (loading) {
     return (
@@ -92,8 +74,14 @@ export default function Coin() {
           symbol={coin.symbol}
           image={coin.image}
           isFavorited={isFavorited}
-          onFavoriteToggle={toggleFavorite}
-        />
+          onFavoriteToggle={() => {
+            if (!isLoggedIn) {
+              navigate("/login");
+              return;
+            }
+            toggleFavorite();
+          }}
+        />  
       </Box>
 
       {/* Main layout */}

@@ -9,38 +9,13 @@ import {
   Tbody,
   Tr,
   Th,
-  useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CryptoData, getFavorites } from "../services/coingecko";
+import useFavorites from "../hooks/useFavorites";
 import CryptoRow from "../components/CryptoRow";
 
+// uses the useFavorites hook to fetch the user's favorite coins
 function FavoritesPage() {
-  const [favorites, setFavorites] = useState<CryptoData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const toast = useToast();
-  const navigate = useNavigate();
-
-  // fetch favorite coins when page loads
-  useEffect(() => {
-    getFavorites()
-      .then((data) => {
-        setFavorites(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("failed to fetch favorites", err);
-        toast({
-          title: "Error",
-          description: "Could not load favorites.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        navigate("/login");
-      });
-  }, []);
+  const { favorites, loading } = useFavorites();
 
   if (loading) {
     return (

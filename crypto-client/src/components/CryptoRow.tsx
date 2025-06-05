@@ -4,44 +4,35 @@ import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { formatNumberCompact } from "../utils/formatNumber";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import useIsCoinFavorited from "../hooks/useIsCoinFavorited";
+import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
 interface Props {
   coin: CryptoData;
 }
 
 const CryptoRow = ({ coin }: Props) => {
-  const navigate = useNavigate();
-    const [isFavorited, setIsFavorited] = useState(false);
+const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkFavorites = async () => {
-      try {
-        const favorites = await getFavorites();
-        const match = favorites.some((fav) => fav.id === coin.id);
-        setIsFavorited(match);
-      } catch (err) {
-        console.error("could not fetch favorites");
-      }
-    };
+const { isFavorited, toggleFavorite } = useIsCoinFavorited(coin.id);
 
-    checkFavorites();
-  }, [coin.id]);
+const isLoggedIn = useIsLoggedIn();
 
-  const handleFavoriteClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+// this function runs when the user clicks the star icon
+const handleFavoriteClick = async (e: React.MouseEvent) => {
+  // stop the click from opening the coin page
+  e.stopPropagation();
 
-    try {
-      if (isFavorited) {
-        await removeFavorite(coin.id);
-        setIsFavorited(false);
-      } else {
-        await addFavorite(coin.id);
-        setIsFavorited(true);
-      }
-    } catch (err) {
-      console.error("error updating favorite status");
-    }
-  };
+  // if the use is not logged in, redirect them to the login page when they click on the star icon
+    if (!isLoggedIn) {
+    navigate("/login");
+    return;
+  }
+
+  // toggle the favorite state
+  // this will also update the isFavorited state in the hook
+  toggleFavorite();
+};
   return (
     <Tr onClick={() => navigate(`/coin/${coin.id}`)} cursor="pointer" _hover={{ bg: "gray.100" }}>
       <Td p={{ base: 2, xl: 6 }}>
