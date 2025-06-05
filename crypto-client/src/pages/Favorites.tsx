@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import useFavorites from "../hooks/useFavorites";
 import CryptoRow from "../components/CryptoRow";
+import Footer from "../components/Footer";
 
 // uses the useFavorites hook to fetch the user's favorite coins
 function FavoritesPage() {
@@ -26,6 +27,7 @@ function FavoritesPage() {
   }
 
   return (
+    <>
     <Box maxW="6xl" mx="auto" mt="50px" p="4">
       <Heading mb="6">Your Favorite Coins</Heading>
 
@@ -53,6 +55,8 @@ function FavoritesPage() {
         </Table>
       )}
     </Box>
+      <Footer />
+    </>
   );
 }
 
