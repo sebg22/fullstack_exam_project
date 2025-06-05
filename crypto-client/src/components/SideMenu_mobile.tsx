@@ -1,4 +1,4 @@
-import { Box, Collapse, Divider, Flex, GridItem, Menu } from "@chakra-ui/react";
+import { Box, Collapse, Divider, Flex, GridItem, Menu, Select } from "@chakra-ui/react";
 import { useState } from "react";
 import { FilterParams } from "../services/coingecko";
 
@@ -30,63 +30,29 @@ const SideMenu_mobile = ({ setFilter, activeFilter }: SideMenuProps) => {
               <h2 style={{ paddingBottom: "10px", fontWeight: "bold" }}>Cryptocurrencies</h2>
               <ul>
                 <Flex bg={"blackAlpha.100"} flexWrap={"wrap"} justifyContent={"space-evenly"}>
-                  {/* "Top" Category with Show More */}
-                  <li
-                    style={{
-                      listStyleType: "none",
-                      cursor: "pointer",
-                      height: "25px",
-                      borderBottom: isTopActive ? "2px solid #3182ce" : "none", //Underline
-                    }}
-                    onClick={() => setShowTopOptions(!showTopOptions)}>
-                    <Flex align="center" gap={2}>
-                      🔝 Top {showTopOptions ? "▲" : "▼"}
-                    </Flex>
-                  </li>
+                  <Select placeholder="🔝 Show top" w="150px">
+                    <option style={getStyle("top", "10")} onClick={() => setFilter({ top: "10" })}>
+                      Top 10
+                    </option>
+                    <option style={getStyle("top", "50")} onClick={() => setFilter({ top: "50" })}>
+                      Top 50
+                    </option>
+                    <option style={getStyle("top", "100")} onClick={() => setFilter({ top: "100" })}>
+                      Top 100
+                    </option>
+                  </Select>
 
-                  {/* Expandable "Top" Filters */}
-                  <Collapse in={showTopOptions} animateOpacity>
-                    <Box as="ul" width={"200px"} p={"5px"}>
-                      <li style={getStyle("top", "10")} onClick={() => setFilter({ top: "10" })}>
-                        Top 10
-                      </li>
-                      <li style={getStyle("top", "50")} onClick={() => setFilter({ top: "50" })}>
-                        Top 50
-                      </li>
-                      <li style={getStyle("top", "100")} onClick={() => setFilter({ top: "100" })}>
-                        Top 100
-                      </li>
-                    </Box>
-                  </Collapse>
-
-                  {/* Price Range with Show More */}
-                  <Divider orientation="vertical" height="25px" />
-                  <li
-                    style={{
-                      listStyleType: "none",
-                      cursor: "pointer",
-                      borderBottom: isPriceRangeActive ? "2px solid #3182ce" : "none", //Underline
-                    }}
-                    onClick={() => setShowPriceOptions(!showPriceOptions)}>
-                    <Flex align="center" gap={2}>
-                      💲 Price {showPriceOptions ? "▲" : "▼"}
-                    </Flex>
-                  </li>
-
-                  {/* Expandable Price Range Filters */}
-                  <Collapse in={showPriceOptions} animateOpacity>
-                    <ul>
-                      <li style={getStyle("price_range", "under_1")} onClick={() => setFilter({ price_range: "under_1" })}>
-                        Under $1
-                      </li>
-                      <li style={getStyle("price_range", "1_100")} onClick={() => setFilter({ price_range: "1_100" })}>
-                        $1 - $100
-                      </li>
-                      <li style={getStyle("price_range", "above_100")} onClick={() => setFilter({ price_range: "above_100" })}>
-                        Above $100
-                      </li>
-                    </ul>
-                  </Collapse>
+                  <Select placeholder="💲 Price" w="150px">
+                    <option style={getStyle("price_range", "under_1")} onClick={() => setFilter({ price_range: "under_1" })}>
+                      Under $1
+                    </option>
+                    <option style={getStyle("price_range", "1_100")} onClick={() => setFilter({ price_range: "1_100" })}>
+                      $1 - $100
+                    </option>
+                    <option style={getStyle("price_range", "above_100")} onClick={() => setFilter({ price_range: "above_100" })}>
+                      Above $100
+                    </option>
+                  </Select>
 
                   {/* 24h Price Change */}
                   <Divider orientation="vertical" height="25px" />
