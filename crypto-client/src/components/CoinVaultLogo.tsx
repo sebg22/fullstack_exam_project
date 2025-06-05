@@ -1,4 +1,3 @@
-// components/CoinvaultLogo.tsx
 import React from "react";
 import { Icon, IconProps } from "@chakra-ui/react";
 
