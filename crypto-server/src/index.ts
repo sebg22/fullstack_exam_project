@@ -394,7 +394,7 @@ AppDataSource.initialize().then(() => {
 
       // Query with pagination & sorting
       const cryptos = await qb
-        .select(["crypto.id", "crypto.image", "crypto.name", "crypto.symbol", "crypto.current_price", "crypto.price_change_percentage_24h", "crypto.market_cap", "crypto.total_volume", "crypto.circulating_supply"])
+        .select(["crypto.id", "crypto.image", "crypto.name", "crypto.symbol", "crypto.current_price", "crypto.price_change_percentage_24h", "crypto.market_cap", "crypto.total_volume", "crypto.circulating_supply", "crypto.chart_data"])
         .orderBy("crypto.market_cap", "DESC")
         .skip(skip)
         .take(take)
@@ -568,6 +568,7 @@ app.get("/favorites", async (req: CustomRequest, res: Response) => {
       total_volume: coin.total_volume,
       circulating_supply: coin.circulating_supply,
       price_change_percentage_24h: coin.price_change_percentage_24h,
+      chart_data: coin.chart_data,
     }));
 
     res.json(simplifiedFavorites);
