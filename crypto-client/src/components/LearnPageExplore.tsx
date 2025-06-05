@@ -3,10 +3,12 @@ import MediumCryptoCard from "./MediumCryptoCard";
 import coinCircles from "../assets/LearnPageCoinCircles.avif";
 import { useCryptoFilters } from "../hooks/useCryptoFilters";
 import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
+import { useNavigate } from "react-router-dom";
 
 export default function LearnPageExplore() {
   const { filters } = useCryptoFilters({ top: "6" }); // Default filters
   const { data: cryptos, loading, error } = usePaginatedCryptos(filters, 6); // Only page 1
+  const navigate = useNavigate();
 
   if (error) {
     return <Text color="tomato">{error}</Text>;
@@ -22,7 +24,7 @@ export default function LearnPageExplore() {
           <Text fontSize={{ base: "md", md: "lg" }} color="text">
             Simply and securely buy, sell, and manage hundreds of cryptocurrencies.
           </Text>
-          <Button colorScheme="blue" size="lg" w="full" borderRadius="full" mt="4">
+          <Button colorScheme="blue" size="lg" w="full" borderRadius="full" mt="4" onClick={() => navigate("/cryptocurrencies")}>
             See more assets
           </Button>
         </Box>
