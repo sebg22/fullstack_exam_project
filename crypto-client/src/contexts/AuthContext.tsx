@@ -11,12 +11,14 @@ interface AuthContextType {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
   logout: () => void;
+  loading: boolean; // ⬅️ new
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true); // ⬅️ new
 
   // Check session on mount
   useEffect(() => {
@@ -29,8 +31,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           const data = await res.json();
           setUser(data); // expects { id, email, name }
         }
-      } catch (err) {
-        console.error("Session check failed", err);
+      } catch {
+        // silently fail
+      } finally {
+        setLoading(false); // ⬅️ done loading
       }
     };
     checkSession();
@@ -45,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
