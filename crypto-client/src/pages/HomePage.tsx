@@ -3,6 +3,8 @@ import CryptoTable from "../components/CryptoTable";
 import useTopCryptos from "../hooks/useTopCryptos";
 import { Link as RouterLink } from "react-router-dom";
 import HomePageNewsletter from "../components/HomePageNewsletter";
+import CoinvaultLogo from "../components/CoinVaultLogo";
+import Footer from "../components/Footer";
 
 export default function HomePage() {
   const { cryptos, loading, error } = useTopCryptos(); // Get data using our custom hook
@@ -20,6 +22,7 @@ export default function HomePage() {
       <GridItem area="main">
         <CryptoTable cryptos={cryptos} loading={loading} error={error} />
         <HomePageNewsletter />
+        <Footer />
       </GridItem>
     </Grid>
   );

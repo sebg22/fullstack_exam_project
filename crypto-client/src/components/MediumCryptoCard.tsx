@@ -1,21 +1,34 @@
-import { Card, CardHeader, Heading, Text, SimpleGrid } from "@chakra-ui/react";
-import useTopCryptos from "../hooks/useTopCryptos";
+import { Card, CardHeader, Heading, Text, Box, Image } from "@chakra-ui/react";
 import { CryptoData } from "../services/coingecko";
+
 interface Props {
-  crypto: CryptoData;
+  cryptos: CryptoData;
 }
 
-const MediumCryptoCard = ({ crypto }: Props) => {
+const MediumCryptoCard = ({ cryptos }: Props) => {
+  const priceNum = Number(cryptos.current_price);
+  const changeNum = Number(cryptos.price_change_percentage_24h);
+
+  const formattedPrice = Number.isNaN(priceNum) ? "N/A" : priceNum.toFixed(2);
+  const formattedChange =
+    changeNum === null || Number.isNaN(changeNum)
+      ? "N/A"
+      : changeNum.toFixed(2);
+
   return (
-    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-      <Card key={crypto.id} p={1} shadow="md" borderWidth="2px" borderRadius="25px" width="90%">
+    // Don’t wrap in a SimpleGrid here—just render the Card directly.
+    <Box width="90%">
+      <Card p={1} shadow="md" borderWidth="2px" borderRadius="25px">
         <CardHeader>
-          <Heading size="md">{crypto.symbol.toUpperCase()}</Heading>
-          <Text>${crypto.current_price.toFixed(2)}</Text>
-          <Text color={crypto.price_change_percentage_24h >= 0 ? "green.500" : "red.500"}>24h Change: {crypto.price_change_percentage_24h.toFixed(2)}%</Text>
+          <Image src={cryptos.image} boxSize="28px" />
+          <Heading size="md" display={{base: "none", md: "block" }}> {cryptos.name.toUpperCase()}</Heading>
+          <Text>${formattedPrice}</Text>
+          <Text color={changeNum >= 0 ? "green.500" : "red.500"}>
+            24h Change: {formattedChange}%
+          </Text>
         </CardHeader>
       </Card>
-    </SimpleGrid>
+    </Box>
   );
 };
 
