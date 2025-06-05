@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import MediumCryptoCard from './MediumCryptoCard'
 import coinCircles from '../assets/LearnPageCoinCircles.avif'
-import useTopCryptos from '../hooks/useTopCryptos'
+//import useTopCryptos from '../hooks/useTopCryptos'
 
 
 export default function LearnPageExplore() {
