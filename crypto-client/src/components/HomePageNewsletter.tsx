@@ -19,7 +19,6 @@ export default function HomePageNewsletter() {
       bg="bg"
       borderRadius="md"
       direction={{ base: "column", md: "row" }}
-      m={{ base: 4, md: 8 }}
     >
       <VStack
         align="flex-start"
