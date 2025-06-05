@@ -25,16 +25,16 @@ const CryptoTable = ({ cryptos, loading, error }: Props) => {
 
   return (
     <TableContainer whiteSpace="normal" padding={5}>
-      <Table bg="white" borderRadius="md" boxShadow="md" color="black">
+      <Table bg="cardBg" borderRadius="md" boxShadow="md" color="black">
         <Thead>
           <Tr>
-            <Th>Coin</Th>
+            <Th pl={{base: 20, md: 20}}>Coin</Th>
             <Th>Price</Th>
-            <Th>Chart</Th>
+            <Th display={{base: "none", md: "table-cell"}}>Chart</Th>
             <Th>Change</Th>
-            <Th>Market Cap</Th>
-            <Th>Volume (24h)</Th>
-            <Th>Supply</Th>
+            <Th display={{base: "none", md: "table-cell"}}>Market Cap</Th>
+            <Th display={{base: "none", md: "table-cell"}}>Volume (24h)</Th>
+            <Th display={{base: "none", md: "table-cell"}}>Supply</Th>
             <Th>Trade</Th>
           </Tr>
         </Thead>
