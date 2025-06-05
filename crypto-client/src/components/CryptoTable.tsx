@@ -1,4 +1,4 @@
-import { Table, Thead, Tbody, Tr, Th, TableContainer, Text, Center, Spinner } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, TableContainer, Text, Center, Spinner, Td } from "@chakra-ui/react";
 import CryptoRow from "./CryptoRow";
 import CryptoSkeleton from "./CryptoRowSkeleton";
 import { CryptoData } from "../services/coingecko";
@@ -10,14 +10,6 @@ interface Props {
 }
 
 const CryptoTable = ({ cryptos, loading, error }: Props) => {
-  if (loading) {
-    return (
-      <Center>
-        <Spinner size="xl" />
-      </Center>
-    );
-  }
-
   if (error) {
     return <Text color="tomato">{error}</Text>;
   }
@@ -38,10 +30,22 @@ const CryptoTable = ({ cryptos, loading, error }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {cryptos.length > 0
-            ? cryptos.map((coin) => <CryptoRow key={coin.id} coin={coin} />)
-            : // Show some skeleton rows or a message when no data is present
-              Array.from({ length: 10 }).map((_, index) => <CryptoSkeleton key={index} />)}
+          {loading ? (
+            // Show skeleton rows while loading
+            Array.from({ length: 10 }).map((_, index) => <CryptoSkeleton key={index} />)
+          ) : cryptos.length > 0 ? (
+            // Show actual data when loaded
+            cryptos.map((coin) => <CryptoRow key={coin.id} coin={coin} />)
+          ) : (
+            // Show a fallback message if there’s no data
+            <Tr>
+              <Td colSpan={8}>
+                <Center py={10}>
+                  <Text>No cryptocurrencies found.</Text>
+                </Center>
+              </Td>
+            </Tr>
+          )}
         </Tbody>
       </Table>
     </TableContainer>
