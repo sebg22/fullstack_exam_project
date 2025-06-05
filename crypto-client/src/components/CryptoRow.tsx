@@ -1,4 +1,5 @@
 import { Tr, Td, Image, Text, HStack, Button } from "@chakra-ui/react";
+import { LineChart, Line, YAxis } from "recharts";
 import { CryptoData } from "../services/coingecko";
 import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { formatNumberCompact } from "../utils/formatNumber";
@@ -50,6 +51,28 @@ const CryptoRow = ({ coin }: Props) => {
       <Td p={{ base: 2, xl: 6 }} color="text">
         ${coin.current_price.toLocaleString()}
       </Td>
+      {/* Mini Chart */}
+    <Td p={6} display={{ base: "none", md: "table-cell" }} width="120px">
+      {coin.chart_data && coin.chart_data.length > 0 ? (
+        <LineChart
+          width={100}
+          height={40}
+          data={coin.chart_data.map((point) => ({ price: point.price }))}
+        >
+          <YAxis hide domain= {['dataMin', 'dataMax']} />
+          <Line
+            type="monotone"
+            dataKey="price"
+            stroke={coin.price_change_percentage_24h >= 0 ? "#16c784" : "#ea3943"}
+            strokeWidth={2}
+            dot={false}
+            isAnimationActive={false}
+          />
+        </LineChart>
+      ) : (
+        <Text fontSize="sm" color="gray.400">–</Text>
+      )}
+    </Td>   
       <Td
         p={{ base: 2, xl: 6 }}
         color="text"
