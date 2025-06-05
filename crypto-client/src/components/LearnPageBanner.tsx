@@ -10,7 +10,6 @@ export default function LearnPageBanner() {
                     align="center"
                     justify="space-between"
                   >
-                    {/* Text & CTA */}
                     <Box
                       flex="1"
                       textAlign={{ base: 'center', md: 'left' }}
@@ -32,8 +31,7 @@ export default function LearnPageBanner() {
                         Create account
                       </Button>
                     </Box>
-        
-                    {/* Mobile stats (stacked with horizontal dividers) */}
+                    {/* Mobile stats */}
                     <VStack
                       flex="1"
                       display={{ base: 'flex', md: 'none' }}
@@ -67,8 +65,8 @@ export default function LearnPageBanner() {
                         </Text>
                       </VStack>
                     </VStack>
-        
-                    {/* Desktop stats (horizontal with vertical dividers) */}
+
+                    {/* Desktop stats */}
                     <HStack
                       flex="1"
                       display={{ base: 'none', md: 'flex' }}

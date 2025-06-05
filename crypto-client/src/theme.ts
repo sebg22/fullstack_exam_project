@@ -63,6 +63,14 @@ const theme = extendTheme({
         default: "white",
         _dark: "gray.200",
       },
+      logoColor: {
+        default: "gray.600",
+        _dark: "whiteAlpha.600",
+      },
+      iconColor: {
+        default: "gray.600",
+        _dark: "whiteAlpha.600",
+      },
     },
   },
 });

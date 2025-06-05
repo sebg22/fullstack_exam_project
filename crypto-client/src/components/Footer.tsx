@@ -1,4 +1,3 @@
-// src/components/Footer.tsx
 import React from "react";
 import {
   Box,
@@ -15,13 +14,11 @@ import { FaXTwitter } from "react-icons/fa6";
 
 
 const Footer: React.FC = () => {
-  // Background/text colors for light vs dark
   return (
     <Box as="footer" w="100%" bg="bg" color="footerTextColor" py={8}>
       <Grid
         // 1-column on mobile, 3-columns on md+
         templateColumns={{ base: "1fr", md: "1fr auto 1fr" }}
-        // templateAreas define “slots” for each item at each breakpoint
         templateAreas={{
           base: `
             "logo"
@@ -35,13 +32,10 @@ const Footer: React.FC = () => {
             "copyright copyright copyright"
           `,
         }}
-        // spacing between grid items
         gap={{ base: 6, md: 8 }}
-        // center everything horizontally up to maxW
         w="100%"
         px={{ base: 4, md: 4 }}
       >
-        {/* LOGO (mobile-only since on md+ it lives in the “center” area) */}
         <GridItem
           area="logo"
           display={{ base: "block", md: "none" }}
@@ -49,7 +43,6 @@ const Footer: React.FC = () => {
           <CoinvaultLogo boxSize="150px" mx="auto" />
         </GridItem>
 
-        {/* ADDRESS (centered on mobile, left-aligned on md+) */}
         <GridItem
           area="address"
           mt={{ base: -8, md: 0 }}
@@ -69,7 +62,6 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* CONTACT (centered on mobile, right-aligned on md+) */}
         <GridItem
           area="contact"
           textAlign={{ base: "center", md: "right" }}
@@ -88,7 +80,6 @@ const Footer: React.FC = () => {
           </Stack>
         </GridItem>
 
-        {/* SOCIAL ICONS (mobile-only, centered) */}
         <GridItem
           area="icons"
           display={{ base: "block", md: "none" }}
@@ -134,11 +125,11 @@ const Footer: React.FC = () => {
           justifyContent="center"
           rowGap={6}
         >
-          {/* Logo for md+ */}
+          {/* Logo for size md+ */}
           <CoinvaultLogo boxSize="150px"  />
           
 
-          {/* Social icons for md+ */}
+          {/* Social icons for size md+ */}
           <Stack direction="row" spacing={6}>
             <Link href="https://facebook.com" isExternal>
               <IconButton
