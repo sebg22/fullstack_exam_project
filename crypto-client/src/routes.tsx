@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import CryptoCurrencies from "./pages/CryptoCurrencies";
 import Learn from "./pages/Learn";
 import AdminPage from "./pages/AdminPage";
+import FavoritesPage from "./pages/Favorites";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,8 @@ const router = createBrowserRouter([
       { path: "coin/:id", element: <Coin /> },                      // GET “/coin/:id”
       { path: "admin", element: <AdminPage /> },                    // GET “/admin”
       { path: "learn", element: <Learn /> },                        // GET “/learn”
+      { path: "favorites", element: <FavoritesPage /> },            // GET “/favorites”
+      
     ],
   },
 ]);

@@ -3,8 +3,11 @@ import axios from "axios";
 // const BASE_URL = "https://service-fullstack-exam-project-server.onrender.com";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const coingeckoApi = axios.create({
+// withCredentials: true is required to include cookies (session ID)
+// this ensures the server can recognize which user is making the request
+export const coingeckoApi = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
 });
 
 // Type for top cryptocurrencies
@@ -99,5 +102,33 @@ export const getCoinDetails = async (id: string): Promise<CoinData> => {
   } catch (error) {
     console.error("API fejl:", error);
     throw error;
+  }
+};
+
+export const addFavorite = async (coinId: string): Promise<void> => {
+  try {
+    await coingeckoApi.post(`/favorites/${coinId}`);
+  } catch (error) {
+    console.error("Error adding favorite:", error);
+    throw error;
+  }
+};
+
+export const removeFavorite = async (coinId: string): Promise<void> => {
+  try {
+    await coingeckoApi.delete(`/favorites/${coinId}`);
+  } catch (error) {
+    console.error("Error removing favorite:", error);
+    throw error;
+  }
+};
+
+export const getFavorites = async (): Promise<CryptoData[]> => {
+  try {
+    const response = await coingeckoApi.get("/favorites");
+    return response.data; // returns full coin objects from your backend
+  } catch (error) {
+    console.error("Error fetching favorites:", error);
+    return [];
   }
 };
