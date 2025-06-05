@@ -19,7 +19,7 @@ export const CoinvaultLogo: React.FC<IconProps> = (props) => {
     y="580"
     textAnchor="middle"
     fontFamily="Helvetica, Arial, sans-serif"
-    font-size="192"
+    fontSize="192"
     fill="currentColor"
   >
     ₿
