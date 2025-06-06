@@ -1,5 +1,5 @@
 import { Box, Divider, Flex, Menu, Select } from "@chakra-ui/react";
-import { FilterParams } from "../services/coingecko";
+import { FilterParams } from "../services/crypto";
 
 interface SideMenuProps {
   setFilter: (filter: FilterParams) => void;

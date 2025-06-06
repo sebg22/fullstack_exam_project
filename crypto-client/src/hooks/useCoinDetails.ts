@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCoinDetails, CoinData } from "../services/coingecko";
+import { getCoinDetails, CoinData } from "../services/crypto";
 
 export default function useCoinDetails(id: string | undefined) {
   const [coin, setCoin] = useState<CoinData | null>(null);

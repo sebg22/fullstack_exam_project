@@ -1,7 +1,7 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer, Text, Center, Spinner, Td } from "@chakra-ui/react";
 import CryptoRow from "./CryptoRow";
 import CryptoSkeleton from "./CryptoRowSkeleton";
-import { CryptoData } from "../services/coingecko";
+import { CryptoData } from "../services/crypto";
 
 interface Props {
   cryptos: CryptoData[];
