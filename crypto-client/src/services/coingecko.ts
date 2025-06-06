@@ -21,6 +21,10 @@ export interface CryptoData {
   total_volume: number;
   circulating_supply: number;
   price_change_percentage_24h: number;
+  chart_data?: {
+  time: string;
+  price: number;
+  }[]; 
 }
 
 //Check om dette interface bliver brugt korrekt

@@ -3,10 +3,12 @@ import MediumCryptoCard from "./MediumCryptoCard";
 import coinCircles from "../assets/LearnPageCoinCircles.avif";
 import { useCryptoFilters } from "../hooks/useCryptoFilters";
 import { usePaginatedCryptos } from "../hooks/usePaginatedCryptos";
+import { useNavigate } from "react-router-dom";
 
 export default function LearnPageExplore() {
   const { filters } = useCryptoFilters({ top: "6" }); // Default filters
   const { data: cryptos, loading, error } = usePaginatedCryptos(filters, 6); // Only page 1
+  const navigate = useNavigate();
 
   if (error) {
     return <Text color="tomato">{error}</Text>;
@@ -14,9 +16,7 @@ export default function LearnPageExplore() {
 
   return (
     <Container maxW="7xl" px={{ base: 4, md: 8 }} py={{ base: 6, md: 12 }}>
-      {/* Hero + Grid */}
       <Flex direction={{ base: "column", md: "row" }} align="flex-start" gap={{ base: 8, md: 12 }}>
-        {/* Left: copy + CTA */}
         <Box flex="1">
           <Heading as="h1" fontSize={{ base: "2xl", md: "3xl" }} mb={4} color="text">
             Explore crypto like Bitcoin, Ethereum, and Dogecoin
@@ -24,12 +24,11 @@ export default function LearnPageExplore() {
           <Text fontSize={{ base: "md", md: "lg" }} color="text">
             Simply and securely buy, sell, and manage hundreds of cryptocurrencies.
           </Text>
-          <Button colorScheme="blue" size="lg" w="full" borderRadius="full" mt="4">
+          <Button colorScheme="blue" size="lg" w="full" borderRadius="full" mt="4" onClick={() => navigate("/cryptocurrencies")}>
             See more assets
           </Button>
         </Box>
 
-        {/* Right: icon grid */}
         <Box flex="2" w="90%">
           {loading ? (
             <Spinner size="xl" />
@@ -52,7 +51,7 @@ export default function LearnPageExplore() {
               Start your portfolio today and discover crypto
             </Heading>
             <Text mb={6} color="text">
-              We’re committed to creating more economic freedom through accessible, safe, and secure financial tools for everyone.
+              We&apos;re committed to creating more economic freedom through accessible, safe, and secure financial tools for everyone.
             </Text>
             <Flex as="form" align="center">
               <Input placeholder="Enter your e-mail address" size={{ base: "md", md: "lg" }} borderRadius="full" flex="1" mr={3} />

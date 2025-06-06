@@ -10,7 +10,6 @@ export default function LearnPageWallet() {
             align="center"
             gap={{ md: 8 }}
           >
-            {/* Wallet Picture */}
             <Box flex="1" display={{ base: 'none', md: 'block' }}>
               <Image
                 src={walletPicture}
@@ -20,7 +19,6 @@ export default function LearnPageWallet() {
               />
             </Box>
 
-            {/* Copy + CTA */}
             <Box flex="1">
               <Text
                 fontWeight="bold"

@@ -10,6 +10,7 @@ import useIsCoinFavorited from "../hooks/useIsCoinFavorited";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import { useNavigate } from "react-router-dom";
 import useCoinDetails from "../hooks/useCoinDetails";
+import Footer from "../components/Footer";
 
 export default function Coin() {
   const { id } = useParams<{ id: string }>();
@@ -48,6 +49,7 @@ export default function Coin() {
   }
 
   return (
+    <>
     <Box>
       {/* Header without border */}
       <Box px={6} py={4}>
@@ -95,5 +97,7 @@ export default function Coin() {
         </Box>
       </Flex>
     </Box>
+    < Footer />
+    </>
   );
 }
