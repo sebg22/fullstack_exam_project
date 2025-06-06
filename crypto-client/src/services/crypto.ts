@@ -1,11 +1,10 @@
 import axios from "axios";
 
-// const BASE_URL = "https://service-fullstack-exam-project-server.onrender.com";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // withCredentials: true is required to include cookies (session ID)
 // this ensures the server can recognize which user is making the request
-export const coingeckoApi = axios.create({
+export const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
@@ -57,7 +56,7 @@ export interface CoinData {
 // Fetch a single coin by ID from your backend
 export const getCoinDetails = async (id: string): Promise<CoinData> => {
   try {
-    const response = await coingeckoApi.get(`/coins/${id}`);
+    const response = await api.get(`/coins/${id}`);
 
     return {
       id: response.data.id,
@@ -114,7 +113,7 @@ export const getFilteredCryptos = async (
     const params = new URLSearchParams(adjustedFilters).toString();
     console.log("Fetching with:", params);
 
-    const res = await coingeckoApi.get(`/cryptos/filtered?${params}`);
+    const res = await api.get(`/cryptos/filtered?${params}`);
 
     return {
       data: res.data.data,
@@ -129,7 +128,7 @@ export const getFilteredCryptos = async (
 
 export const addFavorite = async (coinId: string): Promise<void> => {
   try {
-    await coingeckoApi.post(`/favorites/${coinId}`);
+    await api.post(`/favorites/${coinId}`);
   } catch (error) {
     console.error("Error adding favorite:", error);
     throw error;
@@ -138,7 +137,7 @@ export const addFavorite = async (coinId: string): Promise<void> => {
 
 export const removeFavorite = async (coinId: string): Promise<void> => {
   try {
-    await coingeckoApi.delete(`/favorites/${coinId}`);
+    await api.delete(`/favorites/${coinId}`);
   } catch (error) {
     console.error("Error removing favorite:", error);
     throw error;
@@ -147,7 +146,7 @@ export const removeFavorite = async (coinId: string): Promise<void> => {
 
 export const getFavorites = async (): Promise<CryptoData[]> => {
   try {
-    const response = await coingeckoApi.get("/favorites");
+    const response = await api.get("/favorites");
     return response.data; // returns full coin objects from your backend
   } catch (error) {
     console.error("Error fetching favorites:", error);

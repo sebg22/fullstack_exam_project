@@ -1,6 +1,6 @@
 import { Tr, Td, Image, Text, HStack, Button } from "@chakra-ui/react";
 import { LineChart, Line, YAxis } from "recharts";
-import { CryptoData } from "../services/coingecko";
+import { CryptoData } from "../services/crypto";
 import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { formatNumberCompact } from "../utils/formatNumber";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const CryptoRow = ({ coin }: Props) => {
   const { isFavorited, toggleFavorite } = useIsCoinFavorited(coin.id);
 
   const { user } = useAuth(); // use AuthContext to get the user
-  const isLoggedIn = !!user;  // convert to boolean
+  const isLoggedIn = !!user; // convert to boolean
 
   // this function runs when the user clicks the star icon
   const handleFavoriteClick = async (e: React.MouseEvent) => {
@@ -52,27 +52,18 @@ const CryptoRow = ({ coin }: Props) => {
         ${coin.current_price.toLocaleString()}
       </Td>
       {/* Mini Chart */}
-    <Td p={6} display={{ base: "none", md: "table-cell" }} width="120px">
-      {coin.chart_data && coin.chart_data.length > 0 ? (
-        <LineChart
-          width={100}
-          height={40}
-          data={coin.chart_data.map((point) => ({ price: point.price }))}
-        >
-          <YAxis hide domain= {['dataMin', 'dataMax']} />
-          <Line
-            type="monotone"
-            dataKey="price"
-            stroke={coin.price_change_percentage_24h >= 0 ? "#16c784" : "#ea3943"}
-            strokeWidth={2}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </LineChart>
-      ) : (
-        <Text fontSize="sm" color="gray.400">–</Text>
-      )}
-    </Td>   
+      <Td p={6} display={{ base: "none", md: "table-cell" }} width="120px">
+        {coin.chart_data && coin.chart_data.length > 0 ? (
+          <LineChart width={100} height={40} data={coin.chart_data.map((point) => ({ price: point.price }))}>
+            <YAxis hide domain={["dataMin", "dataMax"]} />
+            <Line type="monotone" dataKey="price" stroke={coin.price_change_percentage_24h >= 0 ? "#16c784" : "#ea3943"} strokeWidth={2} dot={false} isAnimationActive={false} />
+          </LineChart>
+        ) : (
+          <Text fontSize="sm" color="gray.400">
+            –
+          </Text>
+        )}
+      </Td>
       <Td p={{ base: 2, xl: 6 }} color={Number(coin.price_change_percentage_24h) >= 0 ? "green.500" : "red.500"}>
         {coin.price_change_percentage_24h !== null && coin.price_change_percentage_24h !== undefined && !isNaN(Number(coin.price_change_percentage_24h)) ? Number(coin.price_change_percentage_24h).toFixed(2) : "N/A"}%
       </Td>
