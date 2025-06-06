@@ -78,7 +78,7 @@ try:
         data = json.load(file)
 
     insert_query = """
-    INSERT INTO public.all_cryptos (
+    INSERT INTO public.cryptos (
         id, symbol, name, image, current_price, market_cap, market_cap_rank,
         total_volume, circulating_supply, price_change_percentage_24h,
         description, total_supply, max_supply, ath, price_change_percentage_1y,

@@ -22,9 +22,9 @@ export interface CryptoData {
   circulating_supply: number;
   price_change_percentage_24h: number;
   chart_data?: {
-  time: string;
-  price: number;
-  }[]; 
+    time: string;
+    price: number;
+  }[];
 }
 
 //Check om dette interface bliver brugt korrekt
@@ -114,7 +114,7 @@ export const getFilteredCryptos = async (
     const params = new URLSearchParams(adjustedFilters).toString();
     console.log("Fetching with:", params);
 
-    const res = await coingeckoApi.get(`/all_cryptos/filtered?${params}`);
+    const res = await coingeckoApi.get(`/cryptos/filtered?${params}`);
 
     return {
       data: res.data.data,
