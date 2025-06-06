@@ -4,8 +4,6 @@ import { formatCurrencyCompact } from "../utils/formatCurrency";
 import { ChartPoint } from "../services/coingecko";
 
 
-
-
 interface CoinPriceChartProps {
   price: number;
   change: number; // 24h percentage change

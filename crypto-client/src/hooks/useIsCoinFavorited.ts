@@ -7,7 +7,7 @@ export default function useIsCoinFavorited(coinId: string) {
   // this keeps track of whether the coin is favorited
   const [isFavorited, setIsFavorited] = useState(false);
 
-  // custom hook to check if the user is logged in
+  // hook to check if the user is logged in
   const isLoggedIn = useIsLoggedIn();
 
   // this runs when the component using this hook mounts or when coinId or login status changes
