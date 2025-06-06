@@ -1,7 +1,9 @@
 import { Box,
   Container, Flex, Heading, Text, Button, VStack, HStack,Divider} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export default function LearnPageBanner() {
+  const navigate = useNavigate();
     return (
         <Box bg="blue" color="white" py={{ base: 8, md: 16 }} mx={-5} px={5}>
                 <Container maxW="7xl">
@@ -23,10 +25,12 @@ export default function LearnPageBanner() {
                       </Text>
                       <Button
                         bg="white"
-                        color="blue.600"
+                        color="black"
                         size="lg"
                         borderRadius="full"
+                        _hover={{ bg: 'gray.300' }}
                         mt={6}
+                        onClick={() => navigate("/signup")}
                       >
                         Create account
                       </Button>
