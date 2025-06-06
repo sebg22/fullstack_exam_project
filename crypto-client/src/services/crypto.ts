@@ -26,7 +26,8 @@ export interface CryptoData {
   }[];
 }
 
-//Check om dette interface bliver brugt korrekt
+// chart data point type that goes into the CoinData type
+// this is used to display the price chart in the CoinDetails page
 export interface ChartPoint {
   time: string;
   price: number;
@@ -126,6 +127,8 @@ export const getFilteredCryptos = async (
   }
 };
 
+// Add a favorite coin
+// This will call the backend to add the coin to the user's favorites
 export const addFavorite = async (coinId: string): Promise<void> => {
   try {
     await api.post(`/favorites/${coinId}`);
@@ -135,6 +138,8 @@ export const addFavorite = async (coinId: string): Promise<void> => {
   }
 };
 
+// Remove a favorite coin
+// This will call the backend to remove the coin from the user's favorites
 export const removeFavorite = async (coinId: string): Promise<void> => {
   try {
     await api.delete(`/favorites/${coinId}`);
@@ -144,6 +149,8 @@ export const removeFavorite = async (coinId: string): Promise<void> => {
   }
 };
 
+// Get all favorite coins for the logged-in user
+// This will call the backend to get the user's favorite coins on the favorites page
 export const getFavorites = async (): Promise<CryptoData[]> => {
   try {
     const response = await api.get("/favorites");

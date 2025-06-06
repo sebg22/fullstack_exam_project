@@ -8,12 +8,15 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 
+// userID is stored in session
+// this allows us to identify the user across pages
 declare module "express-session" {
   interface SessionData {
     userId?: string | number;
   }
 }
 
+// This makes sure we can safely use req.session.userId in our routes without TypeScript errors
 interface CustomRequest extends Request {
   session: session.Session & {
     userId?: string | number;
@@ -32,15 +35,18 @@ app.use(
 
 app.use(express.json());
 
+
+// This sets up sessions so we can remember users for example after they log in
+// It stores a cookie in the browser and keeps session data on the server
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_session_secret",
-    resave: false,
-    saveUninitialized: false,
+    resave: false,                      // don't save session if nothing changed
+    saveUninitialized: false,          // only save sessions when something is stored
     cookie: {
-      secure: false, // set to true if using HTTPS
-      httpOnly: true,
-      sameSite: "lax",
+      secure: false,                   // set true if using HTTPS
+      httpOnly: true,                  // stops JavaScript from accessing the cookie
+      sameSite: "lax",                 // helps protect from some CSRF attacks
     },
   })
 );
@@ -79,12 +85,13 @@ AppDataSource.initialize().then(() => {
       if (!passwordRegex.test(password)) {
         errors.password = "Password must be at least 8 characters and contain letters and numbers.";
       }
-
+      // Check if there are any validation errors
+      // If there are, return them to the client
       if (Object.keys(errors).length > 0) {
         res.status(400).json({ errors });
         return;
       }
-
+      // Check if user with this email already exists
       const userRepo = AppDataSource.getRepository(User);
       const existingUser = await userRepo.findOneBy({ email });
 
@@ -112,7 +119,9 @@ AppDataSource.initialize().then(() => {
   });
 
   // POST /login
-  app.post("/login", async (req: CustomRequest, res: Response): Promise<void> => {
+  // we use custom request to access session
+  // this allows us to store userId in session after login
+  app.post("/login", async (req: CustomRequest, res: Response): Promise<void> => { 
     try {
       const { email, password } = req.body;
 
@@ -134,6 +143,8 @@ AppDataSource.initialize().then(() => {
         errors.password = "Password must be at least 8 characters and contain letters and numbers.";
       }
 
+      // Check if there are any validation errors
+      // If there are, return them to the client
       if (Object.keys(errors).length > 0) {
         res.status(400).json({ errors });
         return;
@@ -181,6 +192,7 @@ AppDataSource.initialize().then(() => {
   });
 
   // GET /me
+  // this returns the current user's ID if logged in
   app.get("/me", (req, res) => {
     if (req.session.userId) {
       res.json({ userId: req.session.userId });
@@ -201,6 +213,8 @@ AppDataSource.initialize().then(() => {
   });
 
   // PUT /profile
+  // again custom request allows us to access session
+  // this allows us to update the user's profile
   app.put("/profile", async (req: CustomRequest, res: Response): Promise<void> => {
     const userId = req.session.userId;
 
@@ -262,8 +276,12 @@ AppDataSource.initialize().then(() => {
   });
 
   // GET /user/:id - returns full profile info
+  // again custom request allows us to access session
+  // this allows us to fetch a user's profile by ID
   app.get("/user/:id", async (req: CustomRequest, res: Response): Promise<void> => {
     try {
+      // Get access to the User table
+      // Then find a user where the ID matches the one in the URL
       const user = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
 
       if (!user) {
@@ -412,9 +430,12 @@ AppDataSource.initialize().then(() => {
   });
 
   // GET /admin/users - only accessible by admin
+  // again custom request allows us to access session
   app.get("/admin/users", async (req: CustomRequest, res: Response) => {
+    // AppDataSource.getRepository(User) allows us to access the User table
     const userRepo = AppDataSource.getRepository(User);
 
+    // Check if user is logged in and is an admin
     const currentUser = await userRepo.findOneBy({ id: String(req.session.userId) });
 
     if (!currentUser || currentUser.role !== "admin") {
@@ -426,16 +447,19 @@ AppDataSource.initialize().then(() => {
     res.json(users);
   });
 
-  // BLOCK user
+    // BLOCK user
+    // again custom request allows us to access session
   app.patch("/admin/block/:id", async (req: CustomRequest, res: Response) => {
+    // Check if user is logged in and is an admin
     const userId = req.session.userId;
+    // AppDataSource.getRepository(User) allows us to access the User table
     const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
 
     if (!adminUser || adminUser.role !== "admin") {
       res.status(403).json({ error: "Access denied" });
       return;
     }
-
+    // Find the user to block
     const targetUser = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
     if (!targetUser) {
       res.status(404).json({ error: "User not found" });
@@ -449,10 +473,13 @@ AppDataSource.initialize().then(() => {
   });
 
   // UNBLOCK user
+  // again custom request allows us to access session
   app.patch("/admin/unblock/:id", async (req: CustomRequest, res: Response) => {
     const userId = req.session.userId;
+    // AppDataSource.getRepository(User) allows us to access the User table
     const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
 
+    // Check if user is logged in and is an admin
     if (!adminUser || adminUser.role !== "admin") {
       res.status(403).json({ error: "Access denied" });
       return;
@@ -471,8 +498,10 @@ AppDataSource.initialize().then(() => {
   });
 
   // SOFT DELETE user
+  // again custom request allows us to access session
   app.patch("/admin/delete/:id", async (req: CustomRequest, res: Response) => {
     const userId = req.session.userId;
+    // AppDataSource.getRepository(User) allows us to access the User table
     const adminUser = await AppDataSource.getRepository(User).findOneBy({ id: String(userId) });
 
     if (!adminUser || adminUser.role !== "admin") {
@@ -492,22 +521,25 @@ AppDataSource.initialize().then(() => {
     res.json({ message: "User soft deleted" });
   });
 
-  // Add coin to favorites
+// Add coin to favorites
+// again custom request allows us to access session
   app.post("/favorites/:coinId", async (req: CustomRequest, res: Response) => {
-    const userId = req.session.userId;
-    const coinId = req.params.coinId;
+  const userId = req.session.userId;
+  // coinId comes from the URL parameter
+  const coinId = req.params.coinId;
 
     if (!userId) {
       res.status(401).json({ error: "Not authenticated" });
       return;
     }
 
-    try {
-      const userRepo = AppDataSource.getRepository(User);
-      const user = await userRepo.findOne({
-        where: { id: String(userId) },
-        relations: ["favoriteCoins"],
-      });
+  try {
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOne({
+      where: { id: String(userId) },
+      // we need to load the favoriteCoins relation to check if the coin is already favorited
+      relations: ["favoriteCoins"],
+    });
 
       if (!user) {
         res.status(404).json({ error: "User not found" });
@@ -536,9 +568,11 @@ AppDataSource.initialize().then(() => {
     }
   });
 
-  // get user's favorite coins
-  app.get("/favorites", async (req: CustomRequest, res: Response) => {
-    const userId = req.session.userId;
+
+// get user's favorite coins
+// again custom request allows us to access session
+app.get("/favorites", async (req: CustomRequest, res: Response) => {
+  const userId = req.session.userId;
 
     if (!userId) {
       res.status(401).json({ error: "Not authenticated" });
@@ -556,19 +590,20 @@ AppDataSource.initialize().then(() => {
         return;
       }
 
-      // map to just the fields used in CryptoData
-      const simplifiedFavorites = user.favoriteCoins.map((coin) => ({
-        id: coin.id,
-        name: coin.name,
-        symbol: coin.symbol,
-        image: coin.image,
-        current_price: coin.current_price,
-        market_cap: coin.market_cap,
-        total_volume: coin.total_volume,
-        circulating_supply: coin.circulating_supply,
-        price_change_percentage_24h: coin.price_change_percentage_24h,
-        chart_data: coin.chart_data,
-      }));
+    // Simplify the favorite coins data
+    // This is to avoid sending unnecessary data to the client
+    const simplifiedFavorites = user.favoriteCoins.map((coin) => ({
+      id: coin.id,
+      name: coin.name,
+      symbol: coin.symbol,
+      image: coin.image,
+      current_price: coin.current_price,
+      market_cap: coin.market_cap,
+      total_volume: coin.total_volume,
+      circulating_supply: coin.circulating_supply,
+      price_change_percentage_24h: coin.price_change_percentage_24h,
+      chart_data: coin.chart_data,
+    }));
 
       res.json(simplifiedFavorites);
     } catch (err) {
@@ -578,6 +613,7 @@ AppDataSource.initialize().then(() => {
   });
 
   // Remove coin from favorites
+  // again custom request allows us to access session
   app.delete("/favorites/:coinId", async (req: CustomRequest, res: Response) => {
     const userId = req.session.userId;
     const coinId = req.params.coinId;

@@ -11,7 +11,7 @@ export default function useFavorites() {
   // State to handle loading spinner
   const [loading, setLoading] = useState(true);
 
-  // Chakra UI toast for error messages
+  // toast for error messages
   const toast = useToast();
 
   // React Router hook to redirect user
@@ -20,7 +20,7 @@ export default function useFavorites() {
   // custom hook to check if user is logged in
   const { user, loading: authLoading } = useAuth();
 
-  // useEffect runs when this hook is first used (on mount)
+  // useEffect runs when this hook is first used (when its first time added to the DOM)
   useEffect(() => {
     // wait for auth to finish loading
     if (authLoading) return;

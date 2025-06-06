@@ -4,6 +4,7 @@ import CryptoRow from "../components/CryptoRow";
 import Footer from "../components/Footer";
 import CryptoTable from "../components/CryptoTable";
 
+// It uses the useFavorites hook to fetch and display the favorite coins
 function FavoritesPage() {
   const { favorites, loading } = useFavorites();
 

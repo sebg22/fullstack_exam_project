@@ -7,7 +7,7 @@ const authApi = axios.create({
   withCredentials: true,
 });
 
-// Reusable types for auth
+// Reusable types for authentication
 export interface SignupData {
   name: string;
   lastName: string;
