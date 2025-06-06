@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column } from "typeorm";
 
-@Entity("all_cryptos")
+@Entity("cryptos")
 export class Crypto {
   @PrimaryColumn()
   id: string;
