@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCoinDetails, CoinData } from "../services/coingecko";
+import { getCoinDetails, CoinData } from "../services/crypto";
 
 // this hook fetches detailed data for a single coin based on its ID
 export default function useCoinDetails(id: string | undefined) {

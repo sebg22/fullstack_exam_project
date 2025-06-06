@@ -169,7 +169,7 @@ AppDataSource.initialize().then(() => {
       }
 
       const match = await bcrypt.compare(password, user.password);
-          
+
       if (!match) {
         res.status(401).json({ error: "Invalid credentials." });
         return;
@@ -225,28 +225,28 @@ AppDataSource.initialize().then(() => {
 
     const { name, lastName, email } = req.body;
 
-      // Regexes
-      const nameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,20}$/;
-      const lastNameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,50}$/;
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Regexes
+    const nameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,20}$/;
+    const lastNameRegex = /^[A-Za-zæøåÆØÅ\s'-]{2,50}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      // input validation
-      const errors: Record<string, string> = {};
+    // input validation
+    const errors: Record<string, string> = {};
 
-      if (!nameRegex.test(name)) {
-        errors.name = "First name must only contain letters and be between 2 and 20 characters.";
-      }
-      if (!lastNameRegex.test(lastName)) {
-        errors.lastName = "Last name must only contain letters and be between 2 and 20 characters.";
-      }
-      if (!emailRegex.test(email)) {
-        errors.email = "Invalid email format.";
-      }
+    if (!nameRegex.test(name)) {
+      errors.name = "First name must only contain letters and be between 2 and 20 characters.";
+    }
+    if (!lastNameRegex.test(lastName)) {
+      errors.lastName = "Last name must only contain letters and be between 2 and 20 characters.";
+    }
+    if (!emailRegex.test(email)) {
+      errors.email = "Invalid email format.";
+    }
 
-      if (Object.keys(errors).length > 0) {
-        res.status(400).json({ errors });
-        return;
-      }
+    if (Object.keys(errors).length > 0) {
+      res.status(400).json({ errors });
+      return;
+    }
 
     if (!name && !lastName && !email) {
       res.status(400).json({ error: "No fields to update." });
@@ -283,12 +283,12 @@ AppDataSource.initialize().then(() => {
       // Get access to the User table
       // Then find a user where the ID matches the one in the URL
       const user = await AppDataSource.getRepository(User).findOneBy({ id: req.params.id });
-    
+
       if (!user) {
         res.status(404).json({ error: "User not found" });
         return;
       }
-    
+
       res.json({
         id: user.id,
         name: user.name,
@@ -338,7 +338,7 @@ AppDataSource.initialize().then(() => {
   });
 
   // 🔍 ADVANCED: Filtered list for /cryptocurrencies page
-  app.get("/all_cryptos/filtered", async (req, res) => {
+  app.get("/cryptos/filtered", async (req, res) => {
     try {
       const {
         top, // <-- no default here
@@ -528,10 +528,10 @@ AppDataSource.initialize().then(() => {
   // coinId comes from the URL parameter
   const coinId = req.params.coinId;
 
-  if (!userId) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
+    if (!userId) {
+      res.status(401).json({ error: "Not authenticated" });
+      return;
+    }
 
   try {
     const userRepo = AppDataSource.getRepository(User);
@@ -541,30 +541,30 @@ AppDataSource.initialize().then(() => {
       relations: ["favoriteCoins"],
     });
 
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
+      if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
 
-    const coinRepo = AppDataSource.getRepository(Crypto);
-    const coin = await coinRepo.findOneBy({ id: coinId });
+      const coinRepo = AppDataSource.getRepository(Crypto);
+      const coin = await coinRepo.findOneBy({ id: coinId });
 
-    if (!coin) {
-      res.status(404).json({ error: "Coin not found" });
-      return;
-    }
+      if (!coin) {
+        res.status(404).json({ error: "Coin not found" });
+        return;
+      }
 
-    const alreadyFavorited = user.favoriteCoins.some((c) => c.id === coin.id);
+      const alreadyFavorited = user.favoriteCoins.some((c) => c.id === coin.id);
 
-    if (!alreadyFavorited) {
-      user.favoriteCoins.push(coin);
-      await userRepo.save(user);
-    }
+      if (!alreadyFavorited) {
+        user.favoriteCoins.push(coin);
+        await userRepo.save(user);
+      }
 
-    res.json({ message: "Coin added to favorites" });
-  } catch (err) {
-    console.error("Error adding favorite:", err);
-    res.status(500).json({ error: "Something went wrong" });
+      res.json({ message: "Coin added to favorites" });
+    } catch (err) {
+      console.error("Error adding favorite:", err);
+      res.status(500).json({ error: "Something went wrong" });
     }
   });
 
@@ -574,21 +574,21 @@ AppDataSource.initialize().then(() => {
 app.get("/favorites", async (req: CustomRequest, res: Response) => {
   const userId = req.session.userId;
 
-  if (!userId) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
-
-  try {
-    const user = await AppDataSource.getRepository(User).findOne({
-      where: { id: String(userId) },
-      relations: ["favoriteCoins"],
-    });
-
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
+    if (!userId) {
+      res.status(401).json({ error: "Not authenticated" });
       return;
     }
+
+    try {
+      const user = await AppDataSource.getRepository(User).findOne({
+        where: { id: String(userId) },
+        relations: ["favoriteCoins"],
+      });
+
+      if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
 
     // Simplify the favorite coins data
     // This is to avoid sending unnecessary data to the client
@@ -605,44 +605,44 @@ app.get("/favorites", async (req: CustomRequest, res: Response) => {
       chart_data: coin.chart_data,
     }));
 
-    res.json(simplifiedFavorites);
-  } catch (err) {
-    console.error("Error fetching favorites:", err);
-    res.status(500).json({ error: "Something went wrong" });
+      res.json(simplifiedFavorites);
+    } catch (err) {
+      console.error("Error fetching favorites:", err);
+      res.status(500).json({ error: "Something went wrong" });
     }
   });
 
   // Remove coin from favorites
   // again custom request allows us to access session
   app.delete("/favorites/:coinId", async (req: CustomRequest, res: Response) => {
-  const userId = req.session.userId;
-  const coinId = req.params.coinId;
+    const userId = req.session.userId;
+    const coinId = req.params.coinId;
 
-  if (!userId) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
-
-  try {
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOne({
-      where: { id: String(userId) },
-      relations: ["favoriteCoins"],
-    });
-
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
+    if (!userId) {
+      res.status(401).json({ error: "Not authenticated" });
       return;
     }
 
-    user.favoriteCoins = user.favoriteCoins.filter((coin) => coin.id !== coinId);
+    try {
+      const userRepo = AppDataSource.getRepository(User);
+      const user = await userRepo.findOne({
+        where: { id: String(userId) },
+        relations: ["favoriteCoins"],
+      });
 
-    await userRepo.save(user);
+      if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
 
-    res.json({ message: "Coin removed from favorites" });
-  } catch (err) {
-    console.error("Error removing favorite:", err);
-    res.status(500).json({ error: "Something went wrong" });
+      user.favoriteCoins = user.favoriteCoins.filter((coin) => coin.id !== coinId);
+
+      await userRepo.save(user);
+
+      res.json({ message: "Coin removed from favorites" });
+    } catch (err) {
+      console.error("Error removing favorite:", err);
+      res.status(500).json({ error: "Something went wrong" });
     }
   });
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { getFavorites, CryptoData } from "../services/coingecko";
+import { getFavorites, CryptoData } from "../services/crypto";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function useFavorites() {
@@ -29,8 +29,8 @@ export default function useFavorites() {
     if (user) {
       getFavorites()
         .then((data) => {
-          setFavorites(data);      // store the favorites in state
-          setLoading(false);       // stop showing spinner
+          setFavorites(data); // store the favorites in state
+          setLoading(false); // stop showing spinner
         })
         .catch((err) => {
           // if the request fails (e.g. not logged in), show error

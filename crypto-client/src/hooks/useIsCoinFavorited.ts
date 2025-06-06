@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFavorites, addFavorite, removeFavorite } from "../services/coingecko";
+import { getFavorites, addFavorite, removeFavorite } from "../services/crypto";
 import useIsLoggedIn from "./useIsLoggedIn";
 
 // custom hook to check and toggle if a coin is marked as favorite
@@ -21,7 +21,7 @@ export default function useIsCoinFavorited(coinId: string) {
           const favorites = await getFavorites();
 
           // see if any favorite has the same id as the current coin
-          const match = favorites.some(fav => fav.id === coinId);
+          const match = favorites.some((fav) => fav.id === coinId);
 
           // update the state with the result
           setIsFavorited(match);

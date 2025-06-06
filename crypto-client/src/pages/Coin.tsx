@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Spinner, Alert, AlertIcon, Flex } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { getCoinDetails, CoinData} from "../services/coingecko";
+import { getCoinDetails, CoinData } from "../services/crypto";
 import CoinHeader from "../components/CoinHeader";
 import AsideAboutCoin from "../components/AsideAboutCoin";
 import CoinPriceChart from "../components/CoinPriceChart";
@@ -50,54 +50,54 @@ export default function Coin() {
 
   return (
     <>
-    <Box>
-      {/* Header without border */}
-      <Box px={6} py={4}>
-        <CoinHeader
-          name={coin.name}
-          symbol={coin.symbol}
-          image={coin.image}
-          isFavorited={isFavorited}
-          onFavoriteToggle={() => {
-            if (!isLoggedIn) {
-              navigate("/login");
-              return;
-            }
-            toggleFavorite();
-          }}
-        />  
-      </Box>
-
-      {/* Main layout */}
-      <Flex direction={{ base: "column", md: "row" }} gap={{ base: 6, md: 8 }} align="start" px={6} py={6}>
-        {/* Sidebar */}
-        <Box order={{ base: 2, md: 1 }} pt={{ base: 6, md: 0 }} pr={{ md: 8 }}>
-          <AsideAboutCoin name={coin.name} description={coin.description} />
+      <Box>
+        {/* Header without border */}
+        <Box px={6} py={4}>
+          <CoinHeader
+            name={coin.name}
+            symbol={coin.symbol}
+            image={coin.image}
+            isFavorited={isFavorited}
+            onFavoriteToggle={() => {
+              if (!isLoggedIn) {
+                navigate("/login");
+                return;
+              }
+              toggleFavorite();
+            }}
+          />
         </Box>
 
-        {/* Main content */}
-        <Box flex="1" order={{ base: 1, md: 2 }} pb={{ base: 6, md: 0 }} pl={{ md: 8 }}>
-          <CoinPriceChart price={coin.price} change={coin.priceChangePercentage24h} chartData={coin.chartData} />
+        {/* Main layout */}
+        <Flex direction={{ base: "column", md: "row" }} gap={{ base: 6, md: 8 }} align="start" px={6} py={6}>
+          {/* Sidebar */}
+          <Box order={{ base: 2, md: 1 }} pt={{ base: 6, md: 0 }} pr={{ md: 8 }}>
+            <AsideAboutCoin name={coin.name} description={coin.description} />
+          </Box>
 
-          <Box>
-            <Box py={6}>
-              <CoinStats
-                marketCap={coin.marketCap}
-                fdv={coin.fdv}
-                circulatingSupply={coin.circulatingSupply}
-                totalSupply={coin.totalSupply}
-                maxSupply={coin.maxSupply}
-                ath={coin.ath}
-                marketCapRank={coin.marketCapRank}
-                volume24h={coin.volume24h}
-                priceChangePercentage1y={coin.priceChangePercentage1y}
-              />
+          {/* Main content */}
+          <Box flex="1" order={{ base: 1, md: 2 }} pb={{ base: 6, md: 0 }} pl={{ md: 8 }}>
+            <CoinPriceChart price={coin.price} change={coin.priceChangePercentage24h} chartData={coin.chartData} />
+
+            <Box>
+              <Box py={6}>
+                <CoinStats
+                  marketCap={coin.marketCap}
+                  fdv={coin.fdv}
+                  circulatingSupply={coin.circulatingSupply}
+                  totalSupply={coin.totalSupply}
+                  maxSupply={coin.maxSupply}
+                  ath={coin.ath}
+                  marketCapRank={coin.marketCapRank}
+                  volume24h={coin.volume24h}
+                  priceChangePercentage1y={coin.priceChangePercentage1y}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </Flex>
-    </Box>
-    < Footer />
+        </Flex>
+      </Box>
+      <Footer />
     </>
   );
 }

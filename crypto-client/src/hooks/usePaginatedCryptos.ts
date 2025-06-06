@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CryptoData, getFilteredCryptos } from "../services/coingecko";
+import { CryptoData, getFilteredCryptos } from "../services/crypto";
 import { Filters } from "./useCryptoFilters"; // import type from step 1
 
 export const usePaginatedCryptos = (filters: Filters, pageSize = 10) => {
