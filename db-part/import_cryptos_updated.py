@@ -1,8 +1,12 @@
 import json
+import os
+from dotenv import load_dotenv
 import psycopg2
 import bcrypt
 
-DATABASE_URL = "postgresql://postgres_db_lfd0_user:TfGhxX5Xtf0hAMtcLD4H12rm1yQUjv41@dpg-d0q5l4umcj7s73ep7dag-a.frankfurt-postgres.render.com/postgres_db_lfd0"
+load_dotenv()  # Load variables from .env
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def safe_get(entry, key, default=None):
     val = entry.get(key)
