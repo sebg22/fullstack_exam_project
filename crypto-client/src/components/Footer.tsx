@@ -8,8 +8,9 @@ import {
   Link,
   IconButton,
 } from "@chakra-ui/react";
-import { FaFacebookF, FaDiscord, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaDiscord } from "react-icons/fa";
 import CoinvaultLogo from "./CoinVaultLogo";
+import { FaXTwitter } from "react-icons/fa6";
 
 
 const Footer: React.FC = () => {
@@ -97,7 +98,7 @@ const Footer: React.FC = () => {
             <Link href="https://x.com" isExternal>
               <IconButton
                 aria-label="Twitter"
-                icon={<FaTwitter />}
+                icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
                 _hover={{bg: "footerHoverColor "}}
@@ -142,7 +143,7 @@ const Footer: React.FC = () => {
             <Link href="https://x.com" isExternal>
               <IconButton
                 aria-label="X / Twitter"
-                icon={<FaTwitter />}
+                icon={<FaXTwitter />}
                 variant="ghost"
                 size="lg"
                 _hover={{bg: "footerHoverColor "}}
