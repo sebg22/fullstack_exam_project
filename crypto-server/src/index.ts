@@ -177,10 +177,19 @@ AppDataSource.initialize().then(() => {
 
       req.session.userId = user.id;
 
-      res.json({
-        id: user.id,
-        email: user.email,
-        name: user.name,
+      req.session.save((err) => {
+        if (err) {
+          console.error("Session save error:", err);
+          return res.status(500).json({ error: "Failed to save session" });
+        }
+      
+        res.json({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        });
+      
+        console.log("✅ Session saved and ready:", req.session);
       });
 
       // DEBUG: log what's inside the session
