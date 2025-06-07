@@ -16,7 +16,7 @@ Do all the steps below in crypto-client (folder)
 - Create .env.local file with either (for local development):
   VITE_API_URL=http://localhost:5000
   Or (in production):
-  VITE_API_URL = "https://service-fullstack-exam-project-server.onrender.com";
+  VITE_API_URL = "https://server-URL.onrender.com";
 
 ### 3: start development server
 
