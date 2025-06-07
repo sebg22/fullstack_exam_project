@@ -23,7 +23,7 @@ Do all the steps below in crypto-server (folder)
 
 ### 3: start development server
 
-- Run the TypeScript server directyly without compiling first: npx ts-node src/index.ts
+- Run the TypeScript server directly without compiling first: npx ts-node src/index.ts
 - Or run the server with live reloading and automatic restarts on crashes: npm run dev
 
 ### 4: for production
