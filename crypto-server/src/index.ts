@@ -4,9 +4,9 @@ import { AppDataSource } from "./ormconfig";
 import { Crypto } from "./entities/Crypto";
 import { User } from "./entities/User";
 import session from "express-session";
-import Redis from "ioredis";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 // userID is stored in session
@@ -36,29 +36,20 @@ app.use(
 
 app.use(express.json());
 
-// REDIS SESSION SETUP
-const redisClient = new Redis(process.env.REDIS_URL as string); // ✅ tells TypeScript it's definitely a string
-const RedisStore = require("connect-redis")(session);
-const redisStore = new RedisStore({
-  client: redisClient,
-});
-
 // This sets up sessions so we can remember users for example after they log in
 // It stores a cookie in the browser and keeps session data on the server
 app.use(
   session({
-    store: redisStore,
     secret: process.env.SESSION_SECRET || "default_session_secret",
-    resave: false,                      // don't save session if nothing changed
-    saveUninitialized: false,          // only save sessions when something is stored
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      secure: true,                   // set true if using HTTPS (render.com requires this)
-      httpOnly: true,                  // stops JavaScript from accessing the cookie
-      sameSite: "none",                 // needed for cross-origin requests
+      secure: false,       // required for HTTPS (Render)
+      httpOnly: true,     // protects against XSS
+      sameSite: "lax",   // needed for cross-origin cookies
     },
   })
 );
-
 
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
