@@ -44,9 +44,9 @@ app.use(
     resave: false,                      // don't save session if nothing changed
     saveUninitialized: false,          // only save sessions when something is stored
     cookie: {
-      secure: false,                   // set true if using HTTPS
+      secure: true,                   // set true if using HTTPS (render.com requires this)
       httpOnly: true,                  // stops JavaScript from accessing the cookie
-      sameSite: "lax",                 // helps protect from some CSRF attacks
+      sameSite: "none",                 // needed for cross-origin requests
     },
   })
 );
