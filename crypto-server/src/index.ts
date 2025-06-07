@@ -4,6 +4,7 @@ import { AppDataSource } from "./ormconfig";
 import { Crypto } from "./entities/Crypto";
 import { User } from "./entities/User";
 import session from "express-session";
+import Redis from "ioredis";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
@@ -35,11 +36,18 @@ app.use(
 
 app.use(express.json());
 
+// REDIS SESSION SETUP
+const redisClient = new Redis(process.env.REDIS_URL as string); // ✅ tells TypeScript it's definitely a string
+const RedisStore = require("connect-redis")(session);
+const redisStore = new RedisStore({
+  client: redisClient,
+});
 
 // This sets up sessions so we can remember users for example after they log in
 // It stores a cookie in the browser and keeps session data on the server
 app.use(
   session({
+    store: redisStore,
     secret: process.env.SESSION_SECRET || "default_session_secret",
     resave: false,                      // don't save session if nothing changed
     saveUninitialized: false,          // only save sessions when something is stored
@@ -50,6 +58,7 @@ app.use(
     },
   })
 );
+
 
 AppDataSource.initialize().then(() => {
   console.log("Connected to DB");
@@ -177,20 +186,12 @@ AppDataSource.initialize().then(() => {
 
       req.session.userId = user.id;
 
-      req.session.save((err) => {
-        if (err) {
-          console.error("Session save error:", err);
-          return res.status(500).json({ error: "Failed to save session" });
-        }
-      
-        res.json({
-          id: user.id,
-          email: user.email,
-          name: user.name,
-        });
-      
-        console.log("✅ Session saved and ready:", req.session);
+      res.json({
+        id: user.id,
+        email: user.email,
+        name: user.name,
       });
+
 
       // DEBUG: log what's inside the session
       console.log("Session after login:", req.session);
