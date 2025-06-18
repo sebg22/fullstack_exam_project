@@ -6,7 +6,7 @@ import { Crypto } from "./entities/Crypto";
 dotenv.config();
 
 console.log("Using DATABASE_URL:", process.env.DATABASE_URL); // Debugging line
-
+// Konfiguere og opretter forbindelse til PostgreSQL-databasen med TypeORM
 export const AppDataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
