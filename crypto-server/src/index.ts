@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL, // Backend tillader CORS fra frontend URL: dette betyder at frontend kan lave requests til backend, og det håndhæves af browseren
     credentials: true,
   })
 );
@@ -45,8 +45,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: false,       // required for HTTPS (Render)
-      httpOnly: true,     // protects against XSS
-      sameSite: "lax",   // needed for cross-origin cookies
+      httpOnly: true,     // protects against XSS, by hiding the cookie from JavaScript and only allowing it to be sent with HTTP requests
+      sameSite: "lax",   // needed for cross-origin cookies, allows the cookie to be sent cross-site with GET requests not with POST
     },
   })
 );
@@ -414,7 +414,7 @@ AppDataSource.initialize().then(() => {
       // Query with pagination & sorting
       const cryptos = await qb
         .select(["crypto.id", "crypto.image", "crypto.name", "crypto.symbol", "crypto.current_price", "crypto.price_change_percentage_24h", "crypto.market_cap", "crypto.total_volume", "crypto.circulating_supply", "crypto.chart_data"])
-        .orderBy("crypto.market_cap", "DESC")
+        .orderBy("crypto.market_cap", "DESC") // sortere på market cap (DESC så de største kommer først)
         .skip(skip)
         .take(take)
         .getMany();

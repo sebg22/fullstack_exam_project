@@ -9,10 +9,12 @@ interface AuthContextType {
   logout: () => void;                        // a function to log the user out
   loading: boolean;                          // true while checking if a user is logged in
 }
-
+// This creates a global context (state) AuthContext
+// that can be used by any component in the app to access authentication data 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // this component sets up the auth context and checks the user's session on page load
+// it wraps around the app to provide auth data to all components
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
         if (res.ok) {
           const data = await res.json();
-          setUser(data); // expects { id, email, name }
+          setUser(data); // expects id
         }
       } catch {
         // silently fail
@@ -45,7 +47,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
     setUser(null);
   };
-
+// this provides the auth context to all components wrapped by AuthProvider
+// it makes the user, setUser function, logout function, and loading state available globally
   return (
     <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
