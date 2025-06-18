@@ -3,7 +3,7 @@ import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { getFavorites, CryptoData } from "../services/crypto";
 import { useAuth } from "../contexts/AuthContext";
-
+// This hook fetches the user's favorite coins from the server
 export default function useFavorites() {
   // State to store the list of favorite coins
   const [favorites, setFavorites] = useState<CryptoData[]>([]);
